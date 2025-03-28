@@ -1,0 +1,30 @@
+<nav>
+    <ul>
+        {% load static %}
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        {% endif %}
+        <li><a href="{% url 'books' %}">Buscar llibres</a></li>
+        <li><a href="{% url 'new_books' %}">Novetats</a></li>
+        {% if request.user.is_authenticated %}
+            {% if has_unread_notifications %}
+            <li><a href="{% url 'notifications' %}"><img style="height: 36px;" src="{% static 'buzonAlerta.png' %}" alt="bústia (amb notificacions)"></a></li>
+
+            {% else %}
+            <li><a href="{% url 'notifications' %}"><img style="height: 36px;" src="{% static 'buzon.png' %}" alt="bústia"></a></li>
+            
+            {% endif %}
+            <li><a href="{% url 'create_book' %}">Afegir llibres</a></li>
+            <li><a href="{% url 'wishlist' %}">Llista de desitjats</a></li>
+            <li><a href="{% url 'logout' %}">Tancar Sessió</a></li>
+        {% else %}
+        
+            <li><a href="{% url 'login' %}">Iniciar Sessió</a></li>
+            <li><a href="{% url 'register' %}">Registrar-se</a></li>
+
+        {% endif %}
+    </ul>
+</nav>
+
+{% block content %}
+{% endblock %}

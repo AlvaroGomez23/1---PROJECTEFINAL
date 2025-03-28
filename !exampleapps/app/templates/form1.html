@@ -1,0 +1,20 @@
+{% extends 'navbar.html' %}
+
+
+{% block content %}
+<title>Crear una tasca</title>
+<h1>Crear una tasca</h1>
+
+<form method="post">
+
+    {% csrf_token %}
+    
+    {{form.as_p}}
+    <button>
+        Guardar
+    </button>
+</form>
+
+
+
+{% endblock %}

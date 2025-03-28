@@ -1,0 +1,17 @@
+{% extends 'newnavbar.html' %}
+
+{% block content %}
+
+<h1>Create task</h1>
+
+<form method="POST" action="{% url 'create_task' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Create task</button>
+</form>
+
+{% if errors %}
+    <p>{{ errors }}</p>
+{% endif %}
+
+{% endblock %}

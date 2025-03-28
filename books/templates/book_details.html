@@ -1,0 +1,30 @@
+<h1>Detalls del llibre</h1>
+
+{% block content %}
+
+{% if book %}
+    <h2>Titol: {{ book.title }}</h2>
+    <p><img src="../../media/{{ book.image }}" alt="Portada de {{ book.title }}"></p>
+    <p>Autor: {{ book.author }}</p>
+    <p>Descripció: {{ book.description }}</p>
+    <p>ISBN: {{ book.isbn }}</p>
+    <p>Creat el: {{ book.created_at }} (Hora del servidor)</p>
+    <p>Preu: {{ book.price }}€</p>
+    <p>Estat del llibre: {{ book.state }}</p>
+    {% if book.link %}
+    <p>Enllaç de compra: <a href="{{ book.link }}" target="_blank">{{ book.link }}</a></p>
+    {% endif %}
+    {% if book.visible == False %}
+        <p>Visibilitat: Amagat</p>
+    {% else %}
+        <p>Visibilitat: Publicat</p>
+    {% endif %}
+{% else %}
+    <p>El llibre no existeix</p>
+{% endif %}
+    <a href="{% url 'books' %}">Tornar a la llista de llibres</a>
+    
+    {% if book.owner == request.user %}
+        <a href="{% url 'modify_book' book.id %}" class="btn">Editar</a>
+    {% endif %}
+{% endblock %}

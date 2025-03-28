@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <script>
+        const toggleWishlistUrl = "{% url 'toggle_wishlist' %}";
+    </script>
+    <script src="{% static 'js/wishlist.js' %}"></script>
+    <title>Novetats</title>
+</head>
+<body>
+    {% block content %}
+<h1>Novetats</h1>
+
+{% if books %}
+    <ul>
+    {% for book in books %}
+    <li>
+        <div>
+            <h3>{{ book.title }}</h3>
+            <p>{{ book.author }}</p>
+            <p>Propietari: <a href="{% url 'view_profile' book.owner_id %}">{{ book.owner.first_name }}</a></p> 
+            <a href="{% url 'book_details' book.id %}">Consultar detalls</a>
+
+            <button class="wishlist-btn" data-book-id="{{ book.id }}">
+                {% if user_wishlist and book.isbn in user_wishlist.get_isbns %}
+                    Eliminar de la llista de desitjats
+                {% else %}
+                   Afegir a llista de desitjats
+                {% endif %}
+            </button>
+        </div>
+    </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No hi ha llibres</p>
+{% endif %}
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+{% endblock %}
+    
+</body>
+</html>
+

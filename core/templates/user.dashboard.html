@@ -1,0 +1,92 @@
+<title>Vestíbul</title>
+
+<style>
+    .ranking-list {
+    list-style: decimal;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.ranking-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+</style>
+
+{% extends 'usernav.html' %}
+
+
+{% block content %}
+
+<h1>Home user</h1>
+
+<div>
+    <ul>
+        <li>
+            {% for book in books %}
+                <h2>{{book.title}}</h2>
+                <p><img src="../../media/{{ book.image }}" alt="Portada de {{ book.title }}"></p>
+                <p>{{book.description}}</p>  
+                <p>{{book.author}}</p>
+                <p>{{book.created_at}}</p>
+                {% if book.visible == False %}
+
+                    <p>Visible: No</p>
+
+                {% endif %}
+                {% if book.visible == True %}
+
+                    <p>Visible: Sí</p>
+
+                {% endif %}
+
+                
+                <a href="{% url 'modify_book' book.id %}" class="btn">Editar Llibre</a>
+                <a href="{% url 'book_details' book.id %}">Veure detalls</a>
+                
+            {% endfor %}
+        </li>
+    </ul>
+</div>
+
+<div>
+    <h3>Últims intercanvis</h3>
+    {% if last_exchanges %}
+        <ul class="exchange-list">
+            {% for exchange in last_exchanges %}
+                <li class="exchange-item">
+                    <p><strong>Intercanviat:</strong> {{ exchange.book_from.title }} (de {{ exchange.from_user.username }})</p>
+                    <p><strong>Per:</strong> {{ exchange.book_for.title }} (de {{ exchange.to_user.username }})</p>
+                    <p><strong>Data:</strong> {{ exchange.exchanged_at|date:"d M Y H:i" }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hi ha intercanvis recents.</p>
+    {% endif %}
+</div>
+
+
+<div>
+    <h3>Rànquing de llibres més intercanviats</h3>
+    {% if ranking %}
+        <ol class="ranking-list">
+            {% for book in ranking %}
+                <li class="ranking-item">
+                    <p><strong>{{ book.title }}</strong> (ISBN: {{ book.isbn }})</p>
+                    <p>Autor: {{ book.author }}</p>
+                    <p>Intercanvis: {{ book.exchange_count }}</p>
+                </li>
+            {% endfor %}
+        </ol>
+    {% else %}
+        <p>No hi ha llibres intercanviats.</p>
+    {% endif %}
+</div>
+
+
+{% endblock %}
+

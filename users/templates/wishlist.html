@@ -1,0 +1,30 @@
+{% extends 'usernav.html' %}
+
+{% block content %}
+
+<h1>Llista de desitjats</h1>
+
+<div>
+    <h3>Afegir ISBN a la llista de desitjats</h3>
+    <input type="text" id="isbn-input" placeholder="Introdueix l'ISBN">
+    <button id="add-isbn-btn">Afegir ISBN</button>
+</div>
+
+<div>
+    {% if books %}
+        <ul>
+            {% for book in books %}
+                <li>
+                    <h3>{{ book.title }}</h3>
+                    <p>Autor: {{ book.author }}</p>
+                    <p>ISBN: {{ book.isbn }}</p>
+                    <a href="{% url 'book_details' book.id %}">Consultar detalls</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tens llibres a la llista de desitjats.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

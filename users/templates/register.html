@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <title>Registrar-se</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="image-container"></div>
+        <div class="login-container">
+            <h1>Registrar-se</h1>
+            <div class="form-container">
+
+            {% block content %}
+
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                {% if errors %}
+                    <p class="error">{{ errors }}</p>
+                {% endif %}
+
+                {% if success %}
+                    <p class="success">{{success}}</p>
+                {% endif %}
+
+                <button type="submit" class="btn">Registrar-se</button>
+                <p>Ja tens compte? <a href="{% url 'login' %}">Clica aquí</a></p>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+        {% endblock %}
+
+</body>
+</html>

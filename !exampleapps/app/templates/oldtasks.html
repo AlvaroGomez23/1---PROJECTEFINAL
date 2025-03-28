@@ -1,0 +1,29 @@
+{% extends 'navbar.html' %}
+
+
+
+{% block content %}
+
+<h1>TAREAaaaaaaaS</h1>
+    {% for task in tasks %}
+
+    <h1>TAREAAAA</h1>
+    {% if task.completed == True %}
+    <p>Tarea hecha</p>
+
+    {% else %}
+    
+    <p>Tarea no hecha</p>
+    {% endif %}
+
+    <div>
+    {{task.title}}
+    <button>
+        Done
+    </button>
+    </div>
+
+    <br>
+    {% endfor %}
+
+{% endblock %}

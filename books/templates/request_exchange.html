@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sol·licitud d'intercanvi</title>
+</head>
+<body>
+    <h1>Sol·licitud d'intercanvi</h1>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% else %}
+        <form method="post">
+            {% csrf_token %}
+            <label for="book_to_exchange">Llibre per intercanviar:</label>
+            {{ form.book_to_exchange }}<br><br>
+            
+            <button type="submit">Enviar sol·licitud d'intercanvi</button>
+        </form>
+    {% endif %}
+    <a href="{% url 'books' %}">Tornar a la llista de llibres</a>
+</body>
+</html>

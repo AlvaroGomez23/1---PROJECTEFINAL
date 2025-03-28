@@ -1,0 +1,13 @@
+<h1>Editar perfil</h1>
+
+
+<form method="post">
+{% csrf_token %}
+{{ user_form.as_p }}
+{{ profile_form.as_p }}
+<button>
+    Actualitzar perfil
+</button>
+
+</form>
+<a href="{% url 'dashboard' %}">Tornar a l'inici</a>

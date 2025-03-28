@@ -1,0 +1,17 @@
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+</head>
+
+<header class="header">
+    <a href="#" class="logo">Lib2Change</a>
+    <nav>
+        <ul class="nav-list">
+            <li><a href="{% url 'books' %}" class="nav-link">Llibres disponibles</a></li>
+            <li><a href="{% url 'login' %}" class="btn btn-login">Iniciar Sessió</a></li>
+            <li><a href="{% url 'register' %}" class="btn btn-register">Registrar-se</a></li>
+        </ul>
+    </nav>
+</header>
+
+{% block content %}{% endblock %}

@@ -1,0 +1,37 @@
+<h1>Bústia</h1>
+
+<div class="notifications">
+    {% for notification in notifications %}
+    <div class="notification">
+        <div class="notification__content">
+            <!-- Formatear el título con <h3> -->
+            <h3 class="notification__title">{{ notification.title }}</h3>
+            <!-- Formatear el mensaje con <p> -->
+            <p class="notification__message">{{ notification.message }}</p>
+        </div>
+        <div>
+            {% if not notification.is_read %}
+            <form method="post" action="{% url 'mark_as_read' notification.id %}">
+                {% csrf_token %}
+                <button type="submit">Marcar com llegida</button>
+            </form>
+            {% endif %}
+            
+            {% if notification.exchange %}
+                {% if not notification.exchange.completed and not notification.exchange.declined %}
+                <form method="post" action="{% url 'accept_exchange' notification.exchange.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Aceptar</button>
+                </form>
+                <form method="post" action="{% url 'decline_exchange' notification.exchange.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Declinar</button>
+                </form>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <br>
+    <br>
+    {% endfor %}
+</div>

@@ -1,0 +1,23 @@
+<h1>Perfil de {{user.first_name}}</h1>
+
+<div>
+    <p>Nom complet: {{user.first_name}} {{user.last_name}}</p>
+    {% if request.user.is_authenticated %}
+    {% if profile_info.city == null %}
+        <p>Localitat: No s'ha especificat</p>
+    {% else %}
+        <p>Localitat: {{profile_info.city}}</p>
+    {% endif %}
+    {% if profile_info.phone_number == null %}
+        <p>Telèfon: No s'ha especificat</p>
+    {% else %}
+        <p>Telèfon: {{profile_info.phone_number}}</p>
+    {% endif %}
+    {% endif %}
+    <p>Correu electrònic: {{user.email}}</p>
+
+    {% if user == request.user %}
+        <a href="{% url 'edit_profile' %}" class="btn">Editar perfil</a>
+    {% endif %}
+    <a href="{% url 'dashboard' %}">Tornar a l'inici</a>
+</div>

@@ -1,0 +1,231 @@
+from django.utils import timezone
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Book, Exchange, Category
+from users.models import Wishlist, Notification
+from .forms import createBook, ExchangeForm
+from django.contrib.auth.decorators import login_required
+from users.utils import send_user_notification
+
+
+# Create your views here.
+
+def books(request):
+    books = Book.objects.all()
+    categories = Category.objects.all()
+    user_wishlist = Wishlist.objects.filter(user=request.user).first()
+    has_unread_notifications = Notification.objects.filter(user=request.user, is_read=False).exists()
+
+    # Obtener parámetros de consulta
+    title = request.GET.get('title', '')
+    author = request.GET.get('author', '')
+    isbn = request.GET.get('isbn', '')
+    min_price = request.GET.get('min_price', None)
+    max_price = request.GET.get('max_price', None)
+    category = request.GET.get('category', '')
+
+    # Filtrar por título
+    if title:
+        books = books.filter(title__icontains=title)
+
+    # Filtrar por autor
+    if author:
+        books = books.filter(author__icontains=author)
+
+    # Filtrar por ISBN
+    if isbn:
+        books = books.filter(isbn__icontains=isbn)
+
+    # Filtrar por rango de precios
+    if min_price:
+        books = books.filter(price__gte=min_price)
+    if max_price:
+        books = books.filter(price__lte=max_price)
+
+    # Filtrar por categoría
+    if category:
+        books = books.filter(category__name=category)
+
+    exchanges_pending = {
+        book.id: Exchange.objects.filter(
+            book_for=book,
+            from_user=request.user,
+            completed=False,
+            declined=False
+        ).exists()
+        for book in books
+    }
+
+    return render(request, 'books.html', {
+        'books': books,
+        'exchanges_pending': exchanges_pending,
+        'user_wishlist': user_wishlist,
+        'has_unread_notifications': has_unread_notifications,
+        'categories': categories
+    })
+
+
+def book_details(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    print(book_id)
+    print(book)
+    return render(request, 'book_details.html', {
+        'book': book
+    })
+
+
+
+def check_isbn_in_wishlists(isbn):
+    wishlists = Wishlist.objects.filter(desired_isbns__contains=isbn)
+    for wishlist in wishlists:
+        # Si se encuentra el ISBN en la wishlist de algún usuario, enviar una notificación
+        user = wishlist.user
+        title = f"¡Un libro que deseas está disponible!"
+        message = f"El libro con ISBN {isbn} que tenías en tu wishlist ahora está disponible."
+        
+        # Enviar la notificación
+        send_user_notification(user, None, title, message, None)
+
+
+@login_required
+def create_book(request):
+    if request.method == 'GET':
+        form = createBook()
+        return render(request, 'create_book.html', {'form': form})
+    
+    else:
+        form = createBook(request.POST, request.FILES)
+        if form.is_valid():
+            book = form.save(commit=False)
+            book.owner = request.user
+            book.save()
+            
+            return redirect('book_details', book_id=book.pk)
+
+
+        return render(request, 'create_book.html', {'form': form})
+    
+
+@login_required
+def modify_book(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    
+    # Verifica si el usuario actual es el propietario del libro
+    if book.owner != request.user:
+        return redirect('books')  # Redirige a la lista de libros si no es el propietario
+
+    if request.method == 'GET':
+        form = createBook(instance=book)
+        return render(request, 'modify_book.html', {
+            'form': form,
+            'book': book
+        })
+    
+    else:
+        form = createBook(request.POST, request.FILES, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('book_details', book_id=book.pk)
+        
+        return render(request, 'modify_book.html', {'form': form})
+    
+
+def new_books(request):
+    books = Book.objects.order_by('-created_at')[:10]  # Últimos 10 libros
+    return render(request, 'new_books.html', {'books': books})
+
+
+
+@login_required
+def request_exchange(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    
+    if book.owner == request.user:
+        return redirect('books')  # No puedes solicitar un intercambio con tu propio libro
+    
+    # Verificar si ya existe un intercambio pendiente entre estos usuarios y libros
+    existing_exchange = Exchange.objects.filter(
+        book_for=book,
+        book_from__in=Book.objects.filter(owner=request.user),
+        from_user=request.user,
+        to_user=book.owner,
+        completed=False,
+        declined=False,
+        accepted=False
+    ).exists()
+
+    if existing_exchange:
+        # Redirigir o mostrar un mensaje de error si ya existe un intercambio pendiente
+        return render(request, 'request_exchange.html', {
+            'book': book,
+            'form': None,
+            'error': 'Ja has enviat una sol·licitud d\'intercambi per aquest llibre'
+        })
+    
+    if request.method == 'POST':
+        form = ExchangeForm(request.POST, user=request.user)
+        if form.is_valid():
+            exchange = form.save(commit=False)
+            exchange.book_for = book
+            exchange.book_from = form.cleaned_data['book_to_exchange']
+            exchange.from_user = request.user
+            exchange.to_user = book.owner
+            exchange.save()
+
+            user = book.owner
+            user_from = request.user
+            title = f"Sol·licitud d'intercambi per {book.title}"
+            message = f"{request.user.first_name} vol intercambiar {exchange.book_from.title} pel teu llibre {book.title}"
+
+            send_user_notification(user, user_from, title, message, exchange)
+            
+            return redirect('book_details', book_id=book.pk)
+    else:
+        form = ExchangeForm(user=request.user)
+    
+    return render(request, 'request_exchange.html', {
+        'book': book,
+        'form': form,
+    })
+
+
+@login_required
+def accept_exchange(request, exchange_id):
+    exchange = get_object_or_404(Exchange, pk=exchange_id, to_user=request.user)
+    exchange.accepted = True
+    exchange.completed = True
+    exchange.save()
+
+    # Transferir la propiedad de los libros
+    exchange.book_from.owner = exchange.to_user
+    exchange.book_for.owner = exchange.from_user
+    exchange.book_from.save()
+    exchange.book_for.save()
+
+    user = exchange.from_user
+    user_from = request.user
+    title = f"Intercambi acceptat de {exchange.book_for.title}"
+    message = f"{request.user.username} ha acceptat intercambiar {exchange.book_from.title} per {exchange.book_for.title}"
+    
+    send_user_notification(user, user_from, title, message, None)
+
+    return redirect('notifications')
+
+@login_required
+def decline_exchange(request, exchange_id):
+    exchange = get_object_or_404(Exchange, pk=exchange_id, to_user=request.user)
+    exchange.declined = True
+    exchange.completed = True
+    exchange.save()
+
+    user = exchange.from_user
+    user_from = request.user
+    title = f"Intercambi declinat de {exchange.book_for.title}"
+    message = f"{request.user.username} no vol intercambiar {exchange.book_from.title} per {exchange.book_for.title}"
+
+    send_user_notification(user, user_from, title, message, None)
+
+    return redirect('notifications')
+
+
+
+

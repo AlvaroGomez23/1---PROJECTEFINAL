@@ -1,0 +1,23 @@
+<h1>Afegir llibres</h1>
+
+{% block content %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button>
+        Guardar llibre
+    </button>
+</form>
+
+{% if success %}
+    <p class="success">{{ success }}</p>
+{% endif %}
+
+{% if errors %}
+    <p class="error">{{ errors }}</p>
+{% endif %}
+
+
+{% endblock %}
+

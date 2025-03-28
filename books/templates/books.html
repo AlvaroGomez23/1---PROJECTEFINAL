@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/books.css' %}">
+    <title>Buscar llibres</title>   
+    <script>
+        const toggleWishlistUrl = "{% url 'toggle_wishlist' %}";
+    </script>
+    <script src="{% static 'js/wishlist.js' %}"></script>
+</head>
+
+
+<body>
+
+
+{% block content %}
+
+
+<nav>
+    <ul>
+        {% load static %}
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        {% endif %}
+        <li><a href="{% url 'books' %}">Buscar llibres</a></li>
+        <li><a href="{% url 'new_books' %}">Novetats</a></li>
+        {% if request.user.is_authenticated %}
+            {% if has_unread_notifications %}
+            <li><a href="{% url 'notifications' %}"><img style="height: 36px;" src="{% static 'buzonAlerta.png' %}" alt="bústia (amb notificacions)"></a></li>
+
+            {% else %}
+            <li><a href="{% url 'notifications' %}"><img style="height: 36px;" src="{% static 'buzon.png' %}" alt="bústia"></a></li>
+            
+            {% endif %}
+            <li><a href="{% url 'create_book' %}">Afegir llibres</a></li>
+            <li><a href="{% url 'wishlist' %}">Llista de desitjats</a></li>
+            <li><a href="{% url 'logout' %}">Tancar Sessió</a></li>
+        {% else %}
+        
+            <li><a href="{% url 'login' %}">Iniciar Sessió</a></li>
+            <li><a href="{% url 'register' %}">Registrar-se</a></li>
+
+        {% endif %}
+    </ul>
+</nav>
+
+<h1>Tots els llibres</h1>
+<form method="get" action="{% url 'books' %}">
+    <div>
+        <label for="title">Títol:</label>
+        <input type="text" id="title" name="title" value="{{ request.GET.title }}">
+    </div>
+    <div>
+        <label for="author">Autor:</label>
+        <input type="text" id="author" name="author" value="{{ request.GET.author }}">
+    </div>
+    <div>
+        <label for="isbn">ISBN:</label>
+        <input type="text" id="isbn" name="isbn" value="{{ request.GET.isbn }}">
+    </div>
+    <div>
+        <label for="min_price">Preu mínim:</label>
+        <input type="number" id="min_price" name="min_price" step="0.01" value="{{ request.GET.min_price }}">
+    </div>
+    <div>
+        <label for="max_price">Preu màxim:</label>
+        <input type="number" id="max_price" name="max_price" step="0.01" value="{{ request.GET.max_price }}">
+    </div>
+    <div>
+        <label for="category">Categoria:</label>
+        <select id="category" name="category">
+            <option value="">Totes les categories</option>
+            {% for cat in categories %}
+                <option value="{{ cat.name }}" {% if request.GET.category == cat.name %}selected{% endif %}>
+                    {{ cat.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit">Filtrar</button>
+    <a href="{% url 'books' %}" class="reset-btn">Restablir filtres</a>
+</form>
+
+{% if books %}
+    <ul>
+        {% for book in books %}
+        {% if book.owner_id != request.user.id %}
+        <li>
+            <div>
+                <h3>{{ book.title }}</h3>
+                {% if book.image %}
+                    <p><img src="{{ book.image.url }}" alt="Portada de {{ book.title }}"></p>
+                {% else %}
+                    <p><img src="{% static 'img/default-book.png' %}" alt="Imagen no disponible"></p>
+                {% endif %}
+                <p>{{ book.author }}</p>
+                <p>Propietari: 
+                    <a href="{% url 'view_profile' book.owner_id %}">
+                        {{ book.owner.first_name }}
+                    </a>
+                </p>
+                <a href="{% url 'book_details' book.id %}">Consultar detalls</a>
+                <button class="wishlist-btn" data-book-id="{{ book.id }}">
+                    {% if user_wishlist.desired_isbns == book.isbn %} 
+                        data-in-wishlist="true">Eliminar de la llista de desitjats
+                    {% elif user_wishlist and book.isbn in user_wishlist.get_isbns %} 
+                        data-in-wishlist="true">Eliminar de la llista de desitjats
+                    {% else %} 
+                        data-in-wishlist="false">Afegir a llista de desitjats
+                    {% endif %}
+                </button>
+            </div>
+        </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No hi ha llibres disponibles.</p>
+{% endif %}
+
+<!-- Incluir el token CSRF en el HTML -->
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+{% endblock %}
+</body>
+</html>
+
+
+

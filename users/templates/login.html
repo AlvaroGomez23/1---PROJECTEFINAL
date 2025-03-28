@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <title>Iniciar sessió</title>
+</head>
+<body>
+
+{% block content %}
+<div class="container">
+    <div class="image-container"></div>
+    <div class="login-container">
+        <h1>Iniciar Sessió</h1>
+        <div class="form-container">
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {% if errors %}
+                    <p class="error">{{ errors }}</p>
+                {% endif %}
+                <br>
+                <button type="submit" class="btn">Iniciar sessió</button>
+                <p>No tens compte? <a href="{% url 'register' %}">Clica aquí</a></p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+</body>
+</html>
