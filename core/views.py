@@ -1,39 +1,69 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from books.models import Book, Exchange
+from books.models import Book, Exchange, Category
 from users.models import Notification
 from django.db.models import Q, Count
+from django.core.paginator import Paginator
 
 # Create your views here.
 
 
 def index(request):
-    return render(request, 'index.html')
+    categories = {
+        "Novel·la": Book.objects.filter(category_id=1),  # ID real de cada categoría
+        "Acció": Book.objects.filter(category_id=2),
+        "Educació": Book.objects.filter(category_id=3),
+        "Fantasia": Book.objects.filter(category_id=4),
+        "Ciència Ficció": Book.objects.filter(category_id=5)
+    }
+    
+    return render(request, 'index.html', {
+        'categories': categories
+    })
 
 @login_required
 def dashboard(request):
-    books = Book.objects.filter(owner=request.user)
-    last_exchanges = Exchange.objects.filter(accepted=True).order_by('-exchanged_at')[:10]
-    
-    has_unread_notifications = Notification.objects.filter(user=request.user, is_read=False).exists()
+    # Obtener los parámetros de búsqueda
+    title = request.GET.get('title', '').strip()
+    author = request.GET.get('author', '').strip()
+    category_id = request.GET.get('category', '').strip()
 
+    # Filtrar libros del usuario
+    books = Book.objects.filter(owner=request.user)
+
+    # Aplicar filtros si se proporcionan
+    if title:
+        books = books.filter(Q(title__icontains=title) | Q(isbn__icontains=title))
+    if author:
+        books = books.filter(author__icontains=author)
+    if category_id:
+        books = books.filter(category_id=category_id)
+
+    # Paginación
+    paginator = Paginator(books, 3)  # Mostrar 9 libros por página
+    page_number = request.GET.get('page')
+    books = paginator.get_page(page_number)
+
+    # Ranking de libros más intercambiados
     ranking = (
         Book.objects.filter(
             Q(exchanges_given__completed=True) | Q(exchanges_received__completed=True)
         )
-        .values('isbn', 'title', 'author')
-        .annotate(
-            exchange_count=Count('exchanges_given', distinct=True) + Count('exchanges_received', distinct=True)
-        )
-        .order_by('-exchange_count')[:10]
+        .values('title')
+        .annotate(exchange_count=Count('exchanges_given') + Count('exchanges_received'))
+        .order_by('-exchange_count')[:5]
     )
 
+    # Novedades (últimos libros añadidos)
+    new_books = Book.objects.filter(visible=True).order_by('-created_at')[:3]
 
-    print(books)
+    # Categorías para los filtros
+    categories = Category.objects.all()
+
     return render(request, 'user.dashboard.html', {
         'books': books,
-        'last_exchanges': last_exchanges,
-        'has_unread_notifications': has_unread_notifications,
         'ranking': ranking,
+        'new_books': new_books,
+        'categories': categories,
     })

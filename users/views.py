@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import Login, Register, UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login as _login, logout as _logout
 from django.contrib.auth.models import User
-from .models import UserProfile, Notification, Wishlist
+from .models import UserProfile, Notification, Wishlist, Message
 from books.models import Book
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import json
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 def login(request):
@@ -189,3 +190,34 @@ def toggle_wishlist(request):
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+
+
+
+@csrf_exempt
+def send_message(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        sender = get_object_or_404(User, id=data["sender_id"])
+        receiver = get_object_or_404(User, id=data["receiver_id"])
+        content = data["content"]
+
+        message = Message.objects.create(sender=sender, receiver=receiver, content=content)
+        return JsonResponse({"message": "Mensaje enviado", "id": message.id})
+    
+    return JsonResponse({"error": "No es pot entrar per GET"}, status=405)
+
+def get_conversation(request, user1_id, user2_id):
+    messages = Message.objects.filter(
+        sender_id__in=[user1_id, user2_id], 
+        receiver_id__in=[user1_id, user2_id]
+    ).order_by("timestamp")
+
+    messages_data = [{"sender": msg.sender.username, "receiver": msg.receiver.username, "content": msg.content, "timestamp": msg.timestamp} for msg in messages]
+    
+    return JsonResponse({"messages": messages_data})
+
+
+def chat_view(request, user1, user2):
+    return render(request, "chat.html", {"user1": user1, "user2": user2})

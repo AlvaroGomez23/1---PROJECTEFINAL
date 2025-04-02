@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'core',
     'books',
     'cities_light',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -75,7 +76,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'projectefinal.wsgi.application'
+ASGI_APPLICATION = 'projectefinal.asgi.application'
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -135,3 +142,5 @@ LOGIN_URL = '/users/login/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

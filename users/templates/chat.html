@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xat usuaris</title>
+    <style>
+        #chat-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Xat entre <span id="username"></span> i <span id="receiver"></span></h2>
+    <div id="chat-box"></div>
+    <input type="text" id="message-input" placeholder="Escribe un mensaje">
+    <button id="send-button">Enviar</button>
+
+    <script>
+        const user1 = "{{ user1 }}";
+        const user2 = "{{ user2 }}";
+        document.getElementById("username").innerText = user1;
+        document.getElementById("receiver").innerText = user2;
+
+        const chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${user1}/${user2}/`);
+
+        chatSocket.onopen = function() {
+            console.log("Conexión WebSocket establecida.");
+        };
+
+        chatSocket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            const chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += `<p><strong>${data.sender}:</strong> ${data.message}</p>`;
+            chatBox.scrollTop = chatBox.scrollHeight; // Desplazar hacia abajo
+        };
+
+        chatSocket.onerror = function(error) {
+            console.error("Error en WebSocket:", error);
+        };
+
+        chatSocket.onclose = function() {
+            console.log("Conexión WebSocket cerrada.");
+        };
+
+        document.getElementById("send-button").onclick = function() {
+            const messageInput = document.getElementById("message-input");
+            if (messageInput.value.trim() !== "") {
+                chatSocket.send(JSON.stringify({
+                    "sender": user1,
+                    "receiver": user2,
+                    "message": messageInput.value
+                }));
+                messageInput.value = "";
+            }
+        };
+    </script>
+</body>
+</html>

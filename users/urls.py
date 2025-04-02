@@ -13,4 +13,7 @@ urlpatterns = [
     path('notifications/mark_as_read/<int:notification_id>/', views.mark_as_read, name='mark_as_read'),
     path('wishlist/', views.wishlist, name='wishlist'),
     path('toggle_wishlist/', views.toggle_wishlist, name='toggle_wishlist'),
+    path("chat/<str:user1>/<str:user2>/", views.chat_view, name="chat_view"),
+    path("send/", views.send_message, name="send_message"),
+    path("conversation/<int:user1_id>/<int:user2_id>/", views.get_conversation, name="get_conversation"),
 ]
