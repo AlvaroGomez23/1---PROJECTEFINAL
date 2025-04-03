@@ -2,6 +2,87 @@
 <html>
 <head>
     <title>Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            margin: 20px 0;
+        }
+
+        #chat-container {
+            width: 90%;
+            max-width: 600px;
+            height: 400px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background-color: #dcf8c6; /* Verde claro */
+            color: #000;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background-color: #ffffff; /* Blanco */
+            border: 1px solid #ddd;
+            color: #000;
+        }
+
+        #message-input-container {
+            width: 90%;
+            max-width: 600px;
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        #message-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #25d366; /* Verde WhatsApp */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #1da851;
+        }
+    </style>
     <script>
         const conversationId = "{{ conversation_id }}";
         const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
@@ -12,14 +93,47 @@
 
             // Si se reciben todos los mensajes
             if (data.messages) {
-                const chatLog = document.getElementById('chat-log');
-                chatLog.value = data.messages;  // Cargar todos los mensajes existentes
+                const chatContainer = document.getElementById('chat-container');
+                chatContainer.innerHTML = ''; // Limpiar el contenedor
+
+                // Procesar cada mensaje
+                data.messages.forEach(msg => {
+                    const messageDiv = document.createElement('div');
+
+                    // Verificar si el mensaje fue enviado por el usuario actual
+                    if (msg.sender === "{{ request.user.username }}") {
+                        messageDiv.classList.add('message', 'sent'); // Mensajes enviados
+                        messageDiv.textContent = `Tú: ${msg.content}`;
+                    } else {
+                        messageDiv.classList.add('message', 'received'); // Mensajes recibidos
+                        messageDiv.textContent = `${msg.sender}: ${msg.content}`;
+                    }
+
+                    chatContainer.appendChild(messageDiv);
+                });
+
+                // Desplazar hacia abajo automáticamente
+                chatContainer.scrollTop = chatContainer.scrollHeight;
             }
 
             // Si se recibe un mensaje nuevo
             if (data.message) {
-                const chatLog = document.getElementById('chat-log');
-                chatLog.value += `${data.sender}: ${data.message}\n`;
+                const data = JSON.parse(event.data);
+    const chatContainer = document.getElementById('chat-container');
+
+    // Si el mensaje proviene del propio usuario, no lo agregamos de nuevo
+    if (data.sender === "{{ request.user.username }}") {
+        return;
+    }
+
+    // Mostrar el mensaje como recibido
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message', 'received'); // Mensajes recibidos
+    messageDiv.textContent = `${data.sender}: ${data.message}`;
+    chatContainer.appendChild(messageDiv);
+
+    // Desplazar hacia abajo automáticamente
+    chatContainer.scrollTop = chatContainer.scrollHeight;
             }
         };
 
@@ -33,19 +147,40 @@
 
             if (message.trim() === "") return;
 
+            // Generar un identificador único para el mensaje
+            const messageId = Date.now(); // Usar un timestamp como identificador único
+
+            // Enviar el mensaje al servidor
             ws.send(JSON.stringify({
                 'message': message,
-                'sender': "{{ request.user.username }}"
+                'sender': "{{ request.user.username }}",
+                'id': messageId // Incluir el identificador único
             }));
 
+            // Mostrar el mensaje en el chat como enviado
+            const chatContainer = document.getElementById('chat-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', 'sent'); // Mensajes enviados
+            messageDiv.textContent = `Tú: ${message}`;
+            messageDiv.dataset.id = messageId; // Guardar el identificador único en el DOM
+            chatContainer.appendChild(messageDiv);
+
+            // Desplazar hacia abajo automáticamente
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Limpiar el campo de entrada
             messageInput.value = '';
         }
     </script>
 </head>
 <body>
     <h1>Xat amb {{ other_user.first_name }}</h1> <!-- Mostrar el nombre del remitente -->
-    <textarea id="chat-log" cols="100" rows="20" readonly></textarea><br>
-    <input id="message-input" type="text" size="100">
-    <button onclick="sendMessage()">Enviar</button>
+    <div id="chat-container">
+        <!-- Aquí se agregarán los mensajes dinámicamente -->
+    </div>
+    <div id="message-input-container">
+        <input id="message-input" type="text" placeholder="Escribe un mensaje..." />
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
 </body>
 </html>

@@ -17,8 +17,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Cargar mensajes existentes
         conversation = await self.get_conversation()
         if conversation:
+            messages = conversation.messages.split('\n')  # Dividir los mensajes por líneas
+            formatted_messages = []
+            for msg in messages:
+                if msg.strip():
+                    # Suponiendo que los mensajes están formateados como "username: mensaje"
+                    sender, content = msg.split(': ', 1)
+                    formatted_messages.append({'sender': sender, 'content': content.strip()})
+
             await self.send(text_data=json.dumps({
-                'messages': conversation.messages
+                'messages': formatted_messages
             }))
 
     async def disconnect(self, close_code):
