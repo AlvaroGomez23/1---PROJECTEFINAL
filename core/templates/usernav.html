@@ -1,27 +1,77 @@
-<nav>
-    <ul>
+<style>
+    /* Añade esto a tu CSS existente */
+
+/* Iconos de notificaciones */
+.nav-icon {
+    height: 36px;
+    vertical-align: middle;
+    transition: transform 0.3s ease;
+}
+
+.nav-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Botón de logout */
+.btn-logout {
+    background-color: transparent;
+    color: #e74c3c;
+    border: 2px solid #e74c3c;
+}
+
+.btn-logout:hover {
+    background-color: #e74c3c;
+    color: white;
+}
+
+/* Ajustes específicos para la navegación */
+.header ul.nav-list {
+    gap: 1.5rem;
+}
+
+/* Mejor alineación en móviles */
+@media (max-width: 480px) {
+    .header {
+        padding: 0.5rem 3%;
+    }
+    
+    .nav-list li:not(:last-child) {
+        margin-bottom: 0.5rem;
+    }
+}
+</style>
+
+<nav class="header">
+    <!-- Añade tu logo -->
+    <a href="{% url 'dashboard' %}" class="logo">Book4Book</a>
+    
+    <ul class="nav-list">
         {% load static %}
         {% if request.user.is_authenticated %}
-        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
         {% endif %}
-        <li><a href="{% url 'books' %}">Buscar llibres</a></li>
-        <li><a href="{% url 'new_books' %}">Novetats</a></li>
-        {% if request.user.is_authenticated %}
-            {% if has_unread_notifications %}
-            <li><a href="{% url 'notifications' %}"><img style="height: 36px;" src="{% static 'buzonAlerta.png' %}" alt="bústia (amb notificacions)"></a></li>
-
-            {% else %}
-            <li><a href="{% url 'notifications' %}"><img style="height: 36px;" src="{% static 'buzon.png' %}" alt="bústia"></a></li>
-            
-            {% endif %}
-            <li><a href="{% url 'create_book' %}">Afegir llibres</a></li>
-            <li><a href="{% url 'wishlist' %}">Llista de desitjats</a></li>
-            <li><a href="{% url 'logout' %}">Tancar Sessió</a></li>
-        {% else %}
+        <li><a class="nav-link" href="{% url 'books' %}">Buscar llibres</a></li>
+        <li><a class="nav-link" href="{% url 'new_books' %}">Novetats</a></li>
         
-            <li><a href="{% url 'login' %}">Iniciar Sessió</a></li>
-            <li><a href="{% url 'register' %}">Registrar-se</a></li>
-
+        {% if request.user.is_authenticated %}
+            <!-- Notificaciones -->
+            <li>
+                <a href="{% url 'notifications' %}">
+                    {% if has_unread_notifications %}
+                    <img class="nav-icon" src="{% static 'buzonAlerta.png' %}" alt="Notificaciones no leídas">
+                    {% else %}
+                    <img class="nav-icon" src="{% static 'buzon.png' %}" alt="Buzón de notificaciones">
+                    {% endif %}
+                </a>
+            </li>
+            
+            <li><a class="nav-link" href="{% url 'create_book' %}">Afegir llibres</a></li>
+            <li><a class="nav-link" href="{% url 'wishlist' %}">Llista de desitjats</a></li>
+            <li><a class="nav-link btn btn-logout" href="{% url 'logout' %}">Tancar Sessió</a></li>
+        {% else %}
+            <!-- Botones de autenticación -->
+            <li><a class="nav-link btn btn-login" href="{% url 'login' %}">Iniciar Sessió</a></li>
+            <li><a class="nav-link btn btn-register" href="{% url 'register' %}">Registrar-se</a></li>
         {% endif %}
     </ul>
 </nav>
