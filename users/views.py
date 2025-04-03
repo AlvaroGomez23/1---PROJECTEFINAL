@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import Login, Register, UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login as _login, logout as _logout
 from django.contrib.auth.models import User
-from .models import UserProfile, Notification, Wishlist, Message
+from .models import UserProfile, Notification, Wishlist, Conversation
 from books.models import Book
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 import json
 from django.views.decorators.csrf import csrf_exempt
 from asgiref.sync import async_to_sync
@@ -96,13 +96,18 @@ def logout(request):
 def view_profile(request, user_id):
     user = User.objects.filter(pk=user_id).first()
     profile_info = UserProfile.objects.filter(user=user).first()
+    
 
-    if user is None:
-        return redirect('index')
+    if user_id is None or user_id == request.user.id:
+        user_to_view = request.user
+    else:
+        # Obtener el perfil de otro usuario
+        user_to_view = get_object_or_404(User, id=user_id)
 
     return render(request, 'view_profile.html', {
         'user': user,
-        'profile_info': profile_info
+        'profile_info': profile_info,
+        'other_user': user_to_view,
     })
 
 
@@ -199,6 +204,26 @@ def chat_room(request, room_name):
     return render(request, 'chat.html', {
         'room_name': room_name
     })
+
+
+@login_required
+def private_chat(request, user_id):
+    # Obtener el usuario con el que se quiere chatear
+    other_user = get_object_or_404(User, id=user_id)
+
+    # Verificar que el usuario no está intentando chatear consigo mismo
+    if request.user == other_user:
+        return redirect('view_profile', user_id=request.user.id)
+
+    # Buscar o crear una conversación entre los dos usuarios
+    conversation = Conversation.objects.filter(participants=request.user).filter(participants=other_user).first()
+    if not conversation:
+        conversation = Conversation.objects.create()
+        conversation.participants.add(request.user, other_user)
+
+    # Redirigir al puerto 8000 para el chat
+    chat_url = f"http://127.0.0.1:8000/chat/{conversation.id}/"
+    return HttpResponseRedirect(chat_url)
 
 
 

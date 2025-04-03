@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
-
-
+from .consumers import ChatConsumer  # Importa ChatConsumer desde consumers.py
 
 urlpatterns = [
     path('login/', views.login, name='login'),
@@ -13,5 +12,7 @@ urlpatterns = [
     path('notifications/mark_as_read/<int:notification_id>/', views.mark_as_read, name='mark_as_read'),
     path('wishlist/', views.wishlist, name='wishlist'),
     path('toggle_wishlist/', views.toggle_wishlist, name='toggle_wishlist'),
-    path('chat/<str:room_name>/', views.chat_room, name='chat_room'),
+    path('chat/<int:conversation_id>/', views.chat_room, name='chat_room'),
+    path('start_chat/<int:user_id>/', views.private_chat, name='private_chat'),
+    path('ws/chat/<int:conversation_id>/', ChatConsumer.as_asgi(), name='chat_ws'),  # Cambiado a ChatConsumer
 ]

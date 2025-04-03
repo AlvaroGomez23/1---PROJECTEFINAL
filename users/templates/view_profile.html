@@ -16,6 +16,10 @@
     {% endif %}
     <p>Correu electrònic: {{user.email}}</p>
 
+    <a href="{% url 'private_chat' user_id=other_user.id %}">
+        <button>Iniciar chat</button>
+    </a>
+
     {% if user == request.user %}
         <a href="{% url 'edit_profile' %}" class="btn">Editar perfil</a>
     {% endif %}

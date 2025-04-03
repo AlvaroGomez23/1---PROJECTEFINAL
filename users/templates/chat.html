@@ -3,53 +3,47 @@
 <head>
     <title>Chat</title>
     <script>
-        const roomName = "{{ room_name }}";
-        const currentUser = "{{ request.user.username }}";
-        const otherUser = roomName;
-    
-        // Verifica si la conexión es correcta (ws:// o wss:// según el protocolo)
+        const conversationId = "{{ conversation_id }}";
         const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
-        const ws = new WebSocket(`${wsProtocol}://${window.location.host}/ws/chat/${roomName}/`);
-    
-        ws.onopen = function() {
-            console.log("✅ WebSocket conectado con éxito!");
-        };
-    
-        ws.onerror = function(error) {
-            console.error("❌ Error en WebSocket:", error);
-        };
-    
+        const ws = new WebSocket(`${wsProtocol}://${window.location.host}/ws/chat/${conversationId}/`);
+
         ws.onmessage = function(event) {
             const data = JSON.parse(event.data);
-            console.log("📩 Mensaje recibido:", data);
-            const chatLog = document.getElementById('chat-log');
-            chatLog.value += `${data.sender}: ${data.message}\n`;
+
+            // Si se reciben todos los mensajes
+            if (data.messages) {
+                const chatLog = document.getElementById('chat-log');
+                chatLog.value = data.messages;  // Cargar todos los mensajes existentes
+            }
+
+            // Si se recibe un mensaje nuevo
+            if (data.message) {
+                const chatLog = document.getElementById('chat-log');
+                chatLog.value += `${data.sender}: ${data.message}\n`;
+            }
         };
-    
+
         ws.onclose = function() {
             console.warn("⚠️ WebSocket cerrado.");
         };
-    
+
         function sendMessage() {
             const messageInput = document.getElementById('message-input');
             const message = messageInput.value;
-    
+
             if (message.trim() === "") return;
-    
-            console.log("📤 Enviando mensaje:", message);
-    
+
             ws.send(JSON.stringify({
                 'message': message,
-                'sender': currentUser,
-                'receiver': otherUser
+                'sender': "{{ request.user.username }}"
             }));
-    
+
             messageInput.value = '';
         }
     </script>
 </head>
 <body>
-    <h1>Chat</h1>
+    <h1>Xat amb {{ other_user.first_name }}</h1> <!-- Mostrar el nombre del remitente -->
     <textarea id="chat-log" cols="100" rows="20" readonly></textarea><br>
     <input id="message-input" type="text" size="100">
     <button onclick="sendMessage()">Enviar</button>
