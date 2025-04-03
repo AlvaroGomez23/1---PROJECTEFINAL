@@ -200,9 +200,20 @@ def toggle_wishlist(request):
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
-def chat_room(request, room_name):
+def chat_room(request, conversation_id):
+    # Obtener la conversación
+    conversation = get_object_or_404(Conversation, id=conversation_id)
+
+    # Verificar que el usuario actual sea parte de la conversación
+    if request.user not in conversation.participants.all():
+        return redirect('view_profile', user_id=request.user.id)
+
+    # Obtener el otro participante (remitente)
+    other_user = conversation.participants.exclude(id=request.user.id).first()
+
     return render(request, 'chat.html', {
-        'room_name': room_name
+        'conversation_id': conversation.id,
+        'other_user': other_user,
     })
 
 
@@ -222,7 +233,7 @@ def private_chat(request, user_id):
         conversation.participants.add(request.user, other_user)
 
     # Redirigir al puerto 8000 para el chat
-    chat_url = f"http://127.0.0.1:8000/chat/{conversation.id}/"
+    chat_url = f"http://127.0.0.1:8000/users/chat/{conversation.id}/"
     return HttpResponseRedirect(chat_url)
 
 
