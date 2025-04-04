@@ -5,6 +5,7 @@ from books.models import Book, Exchange, Category
 from users.models import Notification
 from django.db.models import Q, Count
 from django.core.paginator import Paginator
+from django.http import QueryDict
 
 # Create your views here.
 
@@ -61,9 +62,19 @@ def dashboard(request):
     # Categorías para los filtros
     categories = Category.objects.all()
 
-    return render(request, 'user.dashboard.html', {
+    # Copiar los parámetros GET
+    query_params = request.GET.copy()
+
+    # Eliminar el parámetro 'page' si existe
+    query_params.pop('page', None)
+
+    # Pasar los parámetros restantes al contexto
+    context = {
         'books': books,
         'ranking': ranking,
         'new_books': new_books,
         'categories': categories,
-    })
+        'query_params': query_params.urlencode(),  # Parámetros GET sin 'page'
+    }
+
+    return render(request, 'user.dashboard.html', context)

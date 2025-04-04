@@ -129,7 +129,7 @@
     // Mostrar el mensaje como recibido
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', 'received'); // Mensajes recibidos
-    messageDiv.textContent = `${data.sender}: ${data.message}`;
+    messageDiv.textContent = data.message;
     chatContainer.appendChild(messageDiv);
 
     // Desplazar hacia abajo automáticamente
@@ -161,7 +161,7 @@
             const chatContainer = document.getElementById('chat-container');
             const messageDiv = document.createElement('div');
             messageDiv.classList.add('message', 'sent'); // Mensajes enviados
-            messageDiv.textContent = `Tú: ${message}`;
+            messageDiv.textContent = message;
             messageDiv.dataset.id = messageId; // Guardar el identificador único en el DOM
             chatContainer.appendChild(messageDiv);
 

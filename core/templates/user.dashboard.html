@@ -149,6 +149,38 @@
         border-color: #FFC099;
         color: #1E1E24; /* Texto oscuro */
     }
+
+    .card {
+        background-color: #111D4A; /* Fondo oscuro */
+        color: white; /* Texto blanco */
+        border: none; /* Sin bordes */
+        border-radius: 0.75rem; /* Bordes redondeados */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
+        margin-bottom: 1rem; /* Separación entre tarjetas */
+    }
+
+    .card-title {
+        font-size: 1.25rem; /* Tamaño del título */
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .list-group-item {
+        background-color: transparent; /* Fondo transparente */
+        color: white; /* Texto blanco */
+        border: none; /* Sin bordes */
+    }
+
+    .list-group-item .badge {
+        background-color: #FFC099; /* Color sunset */
+        color: #1E1E24; /* Texto oscuro */
+    }
+
+    /* Contenedor de la columna derecha */
+    .sidebar {
+        padding: 0; /* Elimina el padding del contenedor */
+        background-color: transparent; /* Fondo transparente */
+    }
 </style>
 
 {% extends 'usernav.html' %}
@@ -198,7 +230,7 @@
                         {% if book.image %}
                         <img src="{{ book.image.url }}" alt="{{ book.title }}" class="img-fluid">
                         {% else %}
-                        <img src="./media/img/logo.png" alt="{{ book.title }}" class="img-fluid">
+                        <img src="../../media/img/logo.png" alt="{{ book.title }}" class="img-fluid">
                         {% endif %}
                         <h4>{{ book.title }}</h4>
                         <p class="small">{{ book.author }}</p>
@@ -214,12 +246,12 @@
                         <!-- Botón "Primera página" -->
                         {% if books.has_previous %}
                         <li class="page-item">
-                            <a class="page-link" href="?page=1" aria-label="Primera">
+                            <a class="page-link" href="?page=1&{{ query_params }}" aria-label="Primera">
                                 <span aria-hidden="true">&laquo;&laquo;</span>
                             </a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ books.previous_page_number }}" aria-label="Anterior">
+                            <a class="page-link" href="?page={{ books.previous_page_number }}&{{ query_params }}" aria-label="Anterior">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
@@ -233,7 +265,7 @@
                         </li>
                         {% elif num > books.number|add:'-3' and num < books.number|add:'3' %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            <a class="page-link" href="?page={{ num }}&{{ query_params }}">{{ num }}</a>
                         </li>
                         {% endif %}
                         {% endfor %}
@@ -241,12 +273,12 @@
                         <!-- Botón "Siguiente página" -->
                         {% if books.has_next %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ books.next_page_number }}" aria-label="Següent">
+                            <a class="page-link" href="?page={{ books.next_page_number }}&{{ query_params }}" aria-label="Següent">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ books.paginator.num_pages }}" aria-label="Última">
+                            <a class="page-link" href="?page={{ books.paginator.num_pages }}&{{ query_params }}" aria-label="Última">
                                 <span aria-hidden="true">&raquo;&raquo;</span>
                             </a>
                         </li>
@@ -258,29 +290,39 @@
 
         <!-- Columna derecha: Libros más intercambiados y novedades -->
         <div class="col-md-2 sidebar">
-            <h5>Més intercanviats</h5>
-            <ul class="list-group small">
-                {% for book in ranking %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>{{ book.title }}</span>
-                    <span class="badge bg-primary rounded-pill">{{ book.exchange_count }} intercanvis</span>
-                </li>
-                {% empty %}
-                <li class="list-group-item">No hi ha llibres intercanviats.</li>
-                {% endfor %}
-            </ul>
+            <!-- Tarjeta: Libros más intercambiados -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Més intercanviats</h5>
+                    <ul class="list-group list-group-flush small">
+                        {% for book in ranking %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{{ book.title }}</span>
+                            <span class="badge bg-primary rounded-pill">{{ book.exchange_count }} intercanvis</span>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item">No hi ha llibres intercanviats.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
 
-            <h5 class="mt-4">Novetats</h5>
-            <ul class="list-group small">
-                {% for book in new_books %}
-                <li class="list-group-item">
-                    <strong>{{ book.title }}</strong>
-                    <p class="mb-0 small text-muted">{{ book.created_at|date:"d M Y" }}</p>
-                </li>
-                {% empty %}
-                <li class="list-group-item">No hi ha novetats.</li>
-                {% endfor %}
-            </ul>
+            <!-- Tarjeta: Novedades -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Novetats</h5>
+                    <ul class="list-group list-group-flush small">
+                        {% for book in new_books %}
+                        <li class="list-group-item">
+                            <strong>{{ book.title }}</strong>
+                            <p class="mb-0 small text-muted">{{ book.created_at|date:"d M Y" }}</p>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item">No hi ha novetats.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
