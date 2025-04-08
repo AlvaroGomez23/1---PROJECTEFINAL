@@ -103,10 +103,10 @@
                     // Verificar si el mensaje fue enviado por el usuario actual
                     if (msg.sender === "{{ request.user.username }}") {
                         messageDiv.classList.add('message', 'sent'); // Mensajes enviados
-                        messageDiv.textContent = `Tú: ${msg.content}`;
+                        messageDiv.textContent = `${msg.content}`;
                     } else {
                         messageDiv.classList.add('message', 'received'); // Mensajes recibidos
-                        messageDiv.textContent = `${msg.sender}: ${msg.content}`;
+                        messageDiv.textContent = `${msg.content}`;
                     }
 
                     chatContainer.appendChild(messageDiv);
@@ -181,6 +181,7 @@
     <div id="message-input-container">
         <input id="message-input" type="text" placeholder="Escribe un mensaje..." />
         <button onclick="sendMessage()">Enviar</button>
+        <a href="http://127.0.0.1:3000/users/inbox/">Tornar al inbox</a>
     </div>
 </body>
 </html>

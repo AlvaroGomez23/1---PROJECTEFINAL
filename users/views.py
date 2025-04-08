@@ -16,15 +16,17 @@ from channels.layers import get_channel_layer
 def login(request):
     if request.method == 'GET':
         form = Login()
+        # Retornar vista amb el formulari
         return render(request, 'login.html', {
             'form': form
         })
     else:
+        # Enviar dades de l'usuari i logar-lo
         form = Login(request.POST)
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        # Search user by email
+        # Buscar el seu mail
         user = User.objects.filter(email=email).first()
 
         if user is None:
@@ -33,9 +35,10 @@ def login(request):
                 'errors': "L'usuari no existeix"
             })
 
-        # Autenticate user by username and password
+        # Autenticar l'usuari
         user = authenticate(request, username=user.username, password=password)
 
+        # Mostrar error si no s'ha pogut autenticar
         if user is None:
             return render(request, 'login.html', {
                 'form': form,
@@ -50,11 +53,13 @@ def login(request):
 def register(request):
     if request.method == 'GET':
         form = Register()
+        # Retornar vista amb el formulari
         return render(request, 'register.html', {
             'form': form
         })
     
     else:
+        # Enviar dades de l'usuari i crear-li un compte
         form = Register(request.POST)
         name = request.POST.get('name')
         email = request.POST.get('email')
@@ -62,21 +67,21 @@ def register(request):
         password2 = request.POST.get('password2')
 
 
-        # Verify if both passwords match
+        # Verificacions per enregistrar-lo
         if password != password2:
             return render(request, 'register.html', {
                 'form': form,
                 'errors': "Les contrasenyes no coincideixen"
             })
 
-        # Verify that the email is not already in use
+        
         if User.objects.filter(email=email).exists():
             return render(request, 'register.html', {
                 'form': form,
                 'errors': "Aquest correu electrònic ja està registrat"
             })
 
-        # Create user and save it
+        # Crar l'usuari
         user = User.objects.create_user(username=email, email=email, password=password)
         user.first_name = name
         user.save()
@@ -88,6 +93,7 @@ def register(request):
         })
     
 
+# Tancar la sessió
 def logout(request):
     _logout(request)
     return redirect('index')
@@ -97,11 +103,11 @@ def view_profile(request, user_id):
     user = User.objects.filter(pk=user_id).first()
     profile_info = UserProfile.objects.filter(user=user).first()
     
-
+    # Si no troba un usuari, mostra les dades del usuari logat
     if user_id is None or user_id == request.user.id:
         user_to_view = request.user
     else:
-        # Obtener el perfil de otro usuario
+        # Obtenir perfil de l'altre usuari
         user_to_view = get_object_or_404(User, id=user_id)
 
     return render(request, 'view_profile.html', {
@@ -114,13 +120,16 @@ def view_profile(request, user_id):
 
 @login_required
 def edit_profile(request):
+    #  Obtenir el formulari amb les dades de l'usuari
     if request.method == 'GET':
         user_form = UserForm(instance=request.user)
         profile_form = UserProfileForm(instance=request.user.userprofile)
     else:
+        # Enviar les dades per modificar el perfil
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = UserProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
 
+        # Si el formulari és vàlid, guardar les dades
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
@@ -132,6 +141,7 @@ def edit_profile(request):
     })
 
 
+# Funció per mostrar les notificacions de l'usuari
 @login_required
 def notifications(request):
     notifications = Notification.objects.filter(user=request.user).select_related('exchange').order_by('-created_at')
@@ -139,6 +149,7 @@ def notifications(request):
         'notifications': notifications,
     })
 
+# Funció per marcar una notificació com a llegida
 @login_required
 def mark_as_read(request, notification_id):
     notification = get_object_or_404(Notification, pk=notification_id, user=request.user)
@@ -146,8 +157,7 @@ def mark_as_read(request, notification_id):
     notification.save()
     return redirect('notifications')
 
-
-
+# Funció per mostrar la llista de llibres desitjats de l'usuari 
 @login_required
 def wishlist(request):
     wishlist = Wishlist.objects.filter(user=request.user).first()
@@ -158,6 +168,7 @@ def wishlist(request):
     return render(request, 'wishlist.html', {'books': books})
 
 
+# Funció per afegir o eliminar llibres de la llista de desitjos
 @login_required
 def toggle_wishlist(request):
     if request.method == 'POST':
@@ -170,26 +181,26 @@ def toggle_wishlist(request):
 
             book = get_object_or_404(Book, pk=book_id)
 
-            # Obtener o crear la wishlist del usuario
+            # Obtenir o crear la wishlist de l'usuari
             wishlist, created = Wishlist.objects.get_or_create(user=request.user)
 
             if book in wishlist.books.all():
-                # Si el libro ya está en la wishlist, eliminarlo
+                # Si el llibre ja està a la wishlist, eliminar-lo
                 wishlist.books.remove(book)
 
-                # También eliminar su ISBN de la lista
+                # Eliminar el ISBN de la llista de desitjos
                 isbns = wishlist.get_isbns()
                 if book.isbn in isbns:
                     isbns.remove(book.isbn)
-                    wishlist.desired_isbns = ','.join(isbns) if isbns else None  # Evitar strings vacíos
+                    wishlist.desired_isbns = ','.join(isbns) if isbns else None  # Si no té cap llibre com a desitjat, posarà un None a la bd
                 wishlist.save()
 
                 return JsonResponse({'status': 'removed'})
             else:
-                # Si el libro no está en la wishlist, agregarlo
+                # En cas contrari, afegir el llibre
                 wishlist.books.add(book)
 
-                # Agregar el ISBN
+                # Afegir el ISBN
                 wishlist.add_isbn(book.isbn)
 
                 return JsonResponse({'status': 'added'})
@@ -237,6 +248,31 @@ def private_chat(request, user_id):
     return HttpResponseRedirect(chat_url)
 
 
+@login_required
+def inbox(request):
+    conversations = Conversation.objects.filter(participants=request.user)
+    conversations_with_unread = []
 
+    for conversation in conversations:
+        # Obtener el otro participante
+        other_user = conversation.participants.exclude(id=request.user.id).first()
+
+        # Contar los mensajes no leídos
+        unread_count = conversation.count_unread_messages(request.user)
+
+        # Agregar la conversación al contexto
+        conversations_with_unread.append({
+            "conversation": conversation,
+            "unread_count": unread_count,
+            "other_user_id": other_user.id if other_user else None,
+            "other_user_name": other_user.username if other_user else "Desconocido",
+        })
+
+    # Ordenar las conversaciones: primero las que tienen mensajes no leídos
+    conversations_with_unread.sort(key=lambda x: x['unread_count'], reverse=True)
+
+    return render(request, 'inbox.html', {
+        'conversations_with_unread': conversations_with_unread,
+    })
 
 

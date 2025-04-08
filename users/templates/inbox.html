@@ -1,0 +1,45 @@
+{% extends 'usernav.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Inbox</h1>
+
+    <!-- Chats con mensajes no leídos -->
+    <div class="unread-messages">
+        <h2>Missatges no llegits</h2>
+        <ul class="list-group">
+            {% for item in conversations_with_unread %}
+            {% if item.unread_count > 0 %}
+            <li class="list-group-item d-flex justify-content-between align-items-center bg-warning">
+                <a href="{% url 'private_chat' item.other_user_id %}">
+                    Conversación amb {{ item.other_user_name }}
+                </a>
+                <span class="badge bg-danger">{{ item.unread_count }} nous missatges</span>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Chats sin mensajes no leídos -->
+    <div class="read-messages mt-5">
+        <h2>Altres converses</h2>
+        <ul class="list-group">
+            {% for item in conversations_with_unread %}
+            {% if item.unread_count == 0 %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{% url 'private_chat' item.other_user_id %}">
+                    Conversación amb {{ item.other_user_name }}
+                </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Si no hay conversaciones -->
+    {% if conversations_with_unread|length == 0 %}
+    <p>No tens converses actives.</p>
+    {% endif %}
+</div>
+{% endblock %}

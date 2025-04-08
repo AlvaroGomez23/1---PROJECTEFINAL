@@ -15,4 +15,5 @@ urlpatterns = [
     path('chat/<int:conversation_id>/', views.chat_room, name='chat_room'),
     path('start_chat/<int:user_id>/', views.private_chat, name='private_chat'),
     path('ws/chat/<int:conversation_id>/', ChatConsumer.as_asgi(), name='chat_ws'),  # Cambiado a ChatConsumer
+    path('inbox/', views.inbox, name='inbox'),
 ]
