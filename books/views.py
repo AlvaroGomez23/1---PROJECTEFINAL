@@ -131,8 +131,11 @@ def modify_book(request, book_id):
 
 def new_books(request):
     books = Book.objects.order_by('-created_at')[:10]  # Últimos 10 libros
-    return render(request, 'new_books.html', {'books': books})
-
+    user_wishlist = Wishlist.objects.filter(user=request.user).first()  # Obtener la wishlist del usuario
+    return render(request, 'new_books.html', {
+        'books': books,
+        'user_wishlist': user_wishlist,  # Pasar la wishlist al contexto
+    })
 
 
 @login_required

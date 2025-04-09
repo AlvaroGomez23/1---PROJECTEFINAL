@@ -29,7 +29,7 @@
                 </li>
 
                 <!-- Botón de cuenta -->
-                <li class="dropdown">
+                <li class="dropdown nav-group">
                     <a href="#" class="nav-link dropdown-toggle">Compte</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{% url 'view_profile' user_id=request.user.id %}">Veure perfil</a></li>
@@ -130,8 +130,8 @@
         display: flex;
         gap: 10px;
         padding: 10px 20px;
-        background-color: #1a2b48;
-        border-radius: 20px;
+        background-color: #1a2b48; /* Fondo azul oscuro */
+        border-radius: 20px; /* Bordes redondeados */
         align-items: center;
         justify-content: center;
         margin: auto; /* Centra la burbuja */
@@ -156,6 +156,53 @@
         align-items: center;
         gap: 10px;
         flex-grow: 0; /* Evita que los elementos de la derecha ocupen más espacio */
+    }
+
+    .dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0; /* Posiciona desde el lado derecho del contenedor */
+    top: 100%; /* Justo debajo del botón */
+    background-color: #ffffff;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 5px;
+    overflow: hidden;
+    min-width: 150px;
+
+    /* Animación */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px); /* Desplazado hacia arriba por defecto */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block; /* Este podría omitirse si usas visibility y opacity bien */
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* Baja al hacer hover */
+}
+
+    .dropdown-menu li {
+        padding: 10px;
+        text-align: left;
+    }
+
+    .dropdown-menu li a {
+        text-decoration: none;
+        color: #111D4A;
+        display: block;
+        padding: 10px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .dropdown-menu li a:hover {
+        background-color: #FFCF99;
+        color: #111D4A;
     }
 </style>
 

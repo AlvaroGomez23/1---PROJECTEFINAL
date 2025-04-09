@@ -162,10 +162,21 @@ def mark_as_read(request, notification_id):
 def wishlist(request):
     wishlist = Wishlist.objects.filter(user=request.user).first()
 
-    # Obtenir els llibres de la relació many to many
+    # Obtener los libros de la relación many-to-many
     books = wishlist.books.all() if wishlist else []
 
-    return render(request, 'wishlist.html', {'books': books})
+    # Obtener los parámetros de búsqueda
+    search_query = request.GET.get('search', '').strip()
+
+    # Filtrar los libros por nombre o ISBN
+    if search_query:
+        books = books.filter(title__icontains=search_query) | books.filter(isbn__icontains=search_query)
+
+    return render(request, 'wishlist.html', {
+        'books': books,
+        'search_query': search_query,
+        'user_wishlist': wishlist,  # Asegúrate de pasar la wishlist del usuario
+    })
 
 
 # Funció per afegir o eliminar llibres de la llista de desitjos

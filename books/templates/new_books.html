@@ -83,7 +83,10 @@
                     <a href="{% url 'book_details' book.id %}" class="btn btn-primary btn-sm">Consultar detalls</a>
                     <form method="post" class="wishlist-form d-inline">
                         {% csrf_token %}
-                        <button type="button" class="btn btn-secondary btn-sm wishlist-btn" data-book-id="{{ book.id }}">
+                        <button type="button" 
+                                class="btn btn-secondary btn-sm wishlist-btn" 
+                                data-book-id="{{ book.id }}" 
+                                data-in-wishlist="{% if user_wishlist and book.isbn in user_wishlist.get_isbns %}true{% else %}false{% endif %}">
                             {% if user_wishlist and book.isbn in user_wishlist.get_isbns %}
                                 Eliminar de la llista de desitjats
                             {% else %}
