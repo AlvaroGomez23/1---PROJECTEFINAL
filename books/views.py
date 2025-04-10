@@ -10,7 +10,8 @@ from users.utils import send_user_notification
 # Create your views here.
 
 def books(request):
-    books = Book.objects.all()
+    # Filtrar solo libros visibles
+    books = Book.objects.filter(visible=True)
     categories = Category.objects.all()
     user_wishlist = Wishlist.objects.filter(user=request.user).first()
     has_unread_notifications = Notification.objects.filter(user=request.user, is_read=False).exists()
@@ -185,9 +186,12 @@ def request_exchange(request, book_id):
     else:
         form = ExchangeForm(user=request.user)
     
+    user_books = Book.objects.filter(owner=request.user)
+
     return render(request, 'request_exchange.html', {
         'book': book,
         'form': form,
+        'user_books': user_books,
     })
 
 
@@ -204,6 +208,13 @@ def accept_exchange(request, exchange_id):
     exchange.book_from.save()
     exchange.book_for.save()
 
+    # Incrementar el contador de intercambios solo si el intercambio es aceptado
+    exchange.book_from.exchange_count += 1
+    exchange.book_for.exchange_count += 1
+    exchange.book_from.save()
+    exchange.book_for.save()
+
+    # Enviar notificación al usuario que solicitó el intercambio
     user = exchange.from_user
     user_from = request.user
     title = f"Intercambi acceptat de {exchange.book_for.title}"

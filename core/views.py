@@ -25,56 +25,40 @@ def index(request):
 
 @login_required
 def dashboard(request):
-    # Obtener los parámetros de búsqueda
-    title = request.GET.get('title', '').strip()
-    author = request.GET.get('author', '').strip()
-    category_id = request.GET.get('category', '').strip()
-
-    # Filtrar libros del usuario
+    # Obtener los libros del usuario actual
     books = Book.objects.filter(owner=request.user)
 
-    # Aplicar filtros si se proporcionan
-    if title:
-        books = books.filter(Q(title__icontains=title) | Q(isbn__icontains=title))
-    if author:
-        books = books.filter(author__icontains=author)
-    if category_id:
-        books = books.filter(category_id=category_id)
-
-    # Paginación
-    paginator = Paginator(books, 3)  # Mostrar 9 libros por página
+    # Paginación para los libros del usuario
+    paginator = Paginator(books, 3)  # Mostrar 6 libros por página
     page_number = request.GET.get('page')
-    books = paginator.get_page(page_number)
+    books_page = paginator.get_page(page_number)
 
-    # Ranking de libros más intercambiados
-    ranking = (
-        Book.objects.filter(
-            Q(exchanges_given__completed=True) | Q(exchanges_received__completed=True)
-        )
-        .values('title')
-        .annotate(exchange_count=Count('exchanges_given') + Count('exchanges_received'))
-        .order_by('-exchange_count')[:5]
-    )
+    # Obtener los libros más intercambiados
+    ranking = Book.objects.filter(exchange_count__gt=0).order_by('-exchange_count')[:4]
 
-    # Novedades (últimos libros añadidos)
-    new_books = Book.objects.filter(visible=True).order_by('-created_at')[:3]
+    # Obtener las novedades (últimos libros creados)
+    new_books = Book.objects.order_by('-created_at')[:4]
 
-    # Categorías para los filtros
+    # Obtener categorías para los filtros
     categories = Category.objects.all()
 
-    # Copiar los parámetros GET
-    query_params = request.GET.copy()
+    # Parámetros de búsqueda
+    title = request.GET.get('title', '')
+    author = request.GET.get('author', '')
+    category = request.GET.get('category', '')
 
-    # Eliminar el parámetro 'page' si existe
-    query_params.pop('page', None)
+    # Filtrar libros del usuario
+    if title:
+        books = books.filter(title__icontains=title)
+    if author:
+        books = books.filter(author__icontains=author)
+    if category:
+        books = books.filter(category_id=category)
 
-    # Pasar los parámetros restantes al contexto
-    context = {
-        'books': books,
+    return render(request, 'user.dashboard.html', {
+        'books': books_page,  # Pasar la página actual de libros
         'ranking': ranking,
         'new_books': new_books,
         'categories': categories,
-        'query_params': query_params.urlencode(),  # Parámetros GET sin 'page'
-    }
-
-    return render(request, 'user.dashboard.html', context)
+        'query_params': f"title={title}&author={author}&category={category}",
+    })

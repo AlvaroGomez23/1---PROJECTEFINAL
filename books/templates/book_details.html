@@ -1,30 +1,107 @@
-<h1>Detalls del llibre</h1>
+{% extends 'usernav.html' %}
 
 {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalls del llibre</title>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #FFF8F0;
+            color: #1E1E24;
+            font-family: Arial, sans-serif;
+        }
 
-{% if book %}
-    <h2>Titol: {{ book.title }}</h2>
-    <p><img src="../../media/{{ book.image }}" alt="Portada de {{ book.title }}"></p>
-    <p>Autor: {{ book.author }}</p>
-    <p>Descripció: {{ book.description }}</p>
-    <p>ISBN: {{ book.isbn }}</p>
-    <p>Creat el: {{ book.created_at }} (Hora del servidor)</p>
-    <p>Preu: {{ book.price }}€</p>
-    <p>Estat del llibre: {{ book.state }}</p>
-    {% if book.link %}
-    <p>Enllaç de compra: <a href="{{ book.link }}" target="_blank">{{ book.link }}</a></p>
-    {% endif %}
-    {% if book.visible == False %}
-        <p>Visibilitat: Amagat</p>
-    {% else %}
-        <p>Visibilitat: Publicat</p>
-    {% endif %}
-{% else %}
-    <p>El llibre no existeix</p>
-{% endif %}
-    <a href="{% url 'books' %}">Tornar a la llista de llibres</a>
-    
-    {% if book.owner == request.user %}
-        <a href="{% url 'modify_book' book.id %}" class="btn">Editar</a>
-    {% endif %}
+        .book-details-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        .book-details-container img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .book-details-container h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .book-details-container p {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .book-details-container a.btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #111D4A;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .book-details-container a.btn:hover {
+            background-color: #FFCF99;
+            color: #1E1E24;
+        }
+
+        .book-details-container .btn-edit {
+            background-color: #198754;
+        }
+
+        .book-details-container .btn-edit:hover {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="book-details-container">
+            {% if book %}
+                <h2>{{ book.title }}</h2>
+                {% if book.image %}
+                    <img src="{{ book.image.url }}" alt="Portada de {{ book.title }}">
+                {% else %}
+                    <img src="/media/default-book.png" alt="Imatge predeterminada">
+                {% endif %}
+                <p><strong>Autor:</strong> {{ book.author }}</p>
+                <p><strong>Descripció:</strong> {{ book.description }}</p>
+                <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+                <p><strong>Creat el:</strong> {{ book.created_at|date:"d M Y" }}</p>
+                <p><strong>Preu:</strong> {{ book.price }}€</p>
+                <p><strong>Estat del llibre:</strong> {{ book.state }}</p>
+                {% if book.link %}
+                    <p><strong>Enllaç de compra:</strong> <a href="{{ book.link }}" target="_blank">{{ book.link }}</a></p>
+                {% endif %}
+                <p><strong>Visibilitat:</strong> 
+                    {% if book.visible %}
+                        Publicat
+                    {% else %}
+                        Amagat
+                    {% endif %}
+                </p>
+                <a href="{% url 'books' %}" class="btn">Tornar a la llista de llibres</a>
+                {% if book.owner == request.user %}
+                    <a href="{% url 'modify_book' book.id %}" class="btn btn-edit">Editar</a>
+                {% endif %}
+            {% else %}
+                <p>El llibre no existeix</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
 {% endblock %}

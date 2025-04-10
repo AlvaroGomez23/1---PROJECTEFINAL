@@ -1,37 +1,98 @@
-<h1>Bústia</h1>
+{% extends 'usernav.html' %}
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="notifications-wrapper mx-auto px-4 py-2" style="max-width: 800px;">
+        <h1 class="mb-4 text-center">Bústia</h1>
 
-<div class="notifications">
-    {% for notification in notifications %}
-    <div class="notification">
-        <div class="notification__content">
-            <!-- Formatear el título con <h3> -->
-            <h3 class="notification__title">{{ notification.title }}</h3>
-            <!-- Formatear el mensaje con <p> -->
-            <p class="notification__message">{{ notification.message }}</p>
-        </div>
-        <div>
-            {% if not notification.is_read %}
-            <form method="post" action="{% url 'mark_as_read' notification.id %}">
-                {% csrf_token %}
-                <button type="submit">Marcar com llegida</button>
-            </form>
-            {% endif %}
-            
-            {% if notification.exchange %}
-                {% if not notification.exchange.completed and not notification.exchange.declined %}
-                <form method="post" action="{% url 'accept_exchange' notification.exchange.id %}">
-                    {% csrf_token %}
-                    <button type="submit">Aceptar</button>
-                </form>
-                <form method="post" action="{% url 'decline_exchange' notification.exchange.id %}">
-                    {% csrf_token %}
-                    <button type="submit">Declinar</button>
-                </form>
-                {% endif %}
-            {% endif %}
-        </div>
+        {% if notifications %}
+            {% for notification in notifications %}
+            <div class="notification p-4 mb-4 rounded shadow-sm {% if not notification.is_read %}bg-warning-subtle{% else %}bg-light{% endif %}">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="notification__content">
+                        <h3 class="notification__title text-primary-emphasis">{{ notification.title }}</h3>
+                        <p class="notification__message">{{ notification.message }}</p>
+                    </div>
+                    <div class="notification__actions text-end ms-3">
+                        {% if not notification.is_read %}
+                        <form method="post" action="{% url 'mark_as_read' notification.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-secondary mb-1">Marcar com llegida</button>
+                        </form>
+                        {% endif %}
+
+                        {% if notification.exchange %}
+                            {% if not notification.exchange.completed and not notification.exchange.declined %}
+                            <form method="post" action="{% url 'accept_exchange' notification.exchange.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-success mb-1">Acceptar</button>
+                            </form>
+                            <form method="post" action="{% url 'decline_exchange' notification.exchange.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger mb-1">Declinar</button>
+                            </form>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center">No tens notificacions.</p>
+        {% endif %}
     </div>
-    <br>
-    <br>
-    {% endfor %}
 </div>
+
+<style>
+   
+
+    .notifications-wrapper {
+        border-left: 5px solid #111D4A;
+        background-color: #FFF8F0;
+        padding: 20px; /* Espaciado interno */
+        margin: 0 auto; /* Centra el contenedor */
+        max-width: 800px; /* Ancho máximo */
+        border-radius: 10px; /* Bordes redondeados */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    }
+
+    .notification {
+        border-left: 5px solid #111D4A;
+        background-color: #FFF8F0;
+        margin-bottom: 20px; /* Espaciado entre notificaciones */
+        padding: 15px; /* Espaciado interno */
+        border-radius: 10px; /* Bordes redondeados */
+    }
+
+    .notification__title {
+        color: #111D4A;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .notification__message {
+        color: #1E1E24;
+        margin-bottom: 0.75rem;
+    }
+
+    .btn-secondary {
+        background-color: #FFCF99;
+        border: none;
+        color: #1E1E24;
+        font-weight: 500;
+    }
+
+    .btn-secondary:hover {
+        background-color: #ffc07a;
+    }
+
+    .btn-success {
+        background-color: #198754;
+        border: none;
+    }
+
+    .btn-danger {
+        background-color: #92140C;
+        border: none;
+    }
+</style>
+{% endblock %}

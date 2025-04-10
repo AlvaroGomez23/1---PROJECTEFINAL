@@ -15,6 +15,7 @@ class Book(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="books")
     visible = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now) 
+    exchange_count = models.PositiveIntegerField(default=0)  # Contador de intercambios
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
