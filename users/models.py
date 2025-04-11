@@ -44,6 +44,9 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, blank=True)
     phone_number = models.CharField(max_length=255, blank=True, null=True)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+    movement_radius_km = models.PositiveIntegerField(default=3)
 
     def __str__(self):
         return f"Perfil de {self.user.username}"

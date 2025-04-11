@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views
+from . import views, autocomplete
 from .consumers import ChatConsumer  # Importa ChatConsumer desde consumers.py
+
 
 urlpatterns = [
     path('login/', views.login, name='login'),
@@ -16,4 +17,7 @@ urlpatterns = [
     path('start_chat/<int:user_id>/', views.private_chat, name='private_chat'),
     path('ws/chat/<int:conversation_id>/', ChatConsumer.as_asgi(), name='chat_ws'),  # Cambiado a ChatConsumer
     path('inbox/', views.inbox, name='inbox'),
+    path('mymap/', views.view_map, name='mymap'),  # Mapa del usuario actual
+    path('mymap/<int:user_id>/', views.view_map, name='user_map'),  # Mapa de otro usuario
+    path('city-autocomplete/', autocomplete.CityAutocomplete.as_view(), name='city-autocomplete'),
 ]

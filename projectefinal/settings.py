@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'books',
     'cities_light',
     'channels',
+    'dal',
+    'dal_select2',
 ]
 
 MIDDLEWARE = [

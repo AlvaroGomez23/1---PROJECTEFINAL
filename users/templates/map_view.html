@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de {{ user.first_name }}</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh;
+        }
+
+        /* Estilo para el botón flotante */
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #111D4A;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 1000; /* Asegurar que esté encima del mapa */
+            text-decoration: none;
+        }
+
+        .floating-button:hover {
+            background-color: #0a0f36;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <!-- Botón flotante para volver al perfil -->
+    <a href="{% url 'view_profile' user.id %}" class="floating-button">
+        Tornar al perfil
+    </a>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Usar valores predeterminados si las variables no están definidas
+        const lat = parseFloat("{{ lat|default:'0' }}");
+        const lng = parseFloat("{{ lng|default:'0' }}");
+        const radiusKm = parseFloat("{{ radius|default:'0' }}");
+        const radius = radiusKm * 1000;
+
+        // Verificar si las coordenadas son válidas
+        if (!isNaN(lat) && !isNaN(lng) && radius > 0) {
+            const map = L.map('map').setView([lat, lng], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            L.marker([lat, lng]).addTo(map).bindPopup("Ubicación de {{ user.first_name }}");
+
+            L.circle([lat, lng], {
+                color: 'green',
+                fillColor: '#0f0',
+                fillOpacity: 0.3,
+                radius: radius
+            }).addTo(map).bindPopup(`Radio de movimiento: ${radiusKm} km`);
+        } else {
+            // Mostrar un mensaje de error si las coordenadas no son válidas
+            document.getElementById('map').innerHTML = '<p style="text-align: center; color: red;">No se pudo cargar el mapa. Verifica la ubicación.</p>';
+        }
+    </script>
+</body>
+</html>

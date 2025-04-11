@@ -1,13 +1,32 @@
-<h1>Editar perfil</h1>
+{% extends 'usernav.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">Editar Perfil</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Dades personals</h3>
+                {{ user_form.as_p }}
+            </div>
+            <div class="col-md-6">
+                <h3>Ubicació</h3>
+                {{ profile_form.city.label_tag }}
+                {{ profile_form.city }}
+                <br>
+                {{ profile_form.movement_radius_km.label_tag }}
+                {{ profile_form.movement_radius_km }}
+                <br>
+                {{ profile_form.phone_number.label_tag }}
+                {{ profile_form.phone_number }}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Guardar canvis</button>
+    </form>
+</div>
 
-
-<form method="post">
-{% csrf_token %}
-{{ user_form.as_p }}
-{{ profile_form.as_p }}
-<button>
-    Actualitzar perfil
-</button>
-
-</form>
-<a href="{% url 'dashboard' %}">Tornar a l'inici</a>
+<!-- Archivos necesarios para django-autocomplete-light -->
+{% block extrahead %}
+    {{ form.media }}
+{% endblock %}
+{% endblock %}

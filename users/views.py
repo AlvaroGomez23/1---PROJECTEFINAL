@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import Login, Register, UserForm, UserProfileForm
+from .forms import Login, Register, UserForm, UserProfileForm, LocationForm
 from django.contrib.auth import authenticate, login as _login, logout as _logout
 from django.contrib.auth.models import User
 from .models import UserProfile, Notification, Wishlist, Conversation
@@ -120,19 +120,23 @@ def view_profile(request, user_id):
 
 @login_required
 def edit_profile(request):
-    #  Obtenir el formulari amb les dades de l'usuari
     if request.method == 'GET':
         user_form = UserForm(instance=request.user)
         profile_form = UserProfileForm(instance=request.user.userprofile)
     else:
-        # Enviar les dades per modificar el perfil
         user_form = UserForm(request.POST, instance=request.user)
-        profile_form = UserProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
+        profile_form = UserProfileForm(request.POST, instance=request.user.userprofile)
 
-        # Si el formulari és vàlid, guardar les dades
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
-            profile_form.save()
+            user_profile = profile_form.save(commit=False)
+
+            # Actualizar las coordenadas según la ciudad seleccionada
+            if user_profile.city:
+                user_profile.latitude = user_profile.city.latitude
+                user_profile.longitude = user_profile.city.longitude
+
+            user_profile.save()
             return redirect('view_profile', user_id=request.user.pk)
 
     return render(request, 'edit_profile.html', {
@@ -286,4 +290,23 @@ def inbox(request):
         'conversations_with_unread': conversations_with_unread,
     })
 
+
+# views.py
+@login_required
+def view_map(request, user_id=None):
+    # Si no se proporciona un user_id, usar el usuario actual
+    if user_id is None:
+        user_profile = request.user.userprofile
+    else:
+        # Obtener el perfil del usuario especificado
+        user = get_object_or_404(User, pk=user_id)
+        user_profile = user.userprofile
+
+    context = {
+        'lat': user_profile.latitude,
+        'lng': user_profile.longitude,
+        'radius': user_profile.movement_radius_km,
+        'user': user_profile.user,  # Pasar el usuario al contexto
+    }
+    return render(request, 'map_view.html', context)
 

@@ -17,24 +17,19 @@ def books(request):
     has_unread_notifications = Notification.objects.filter(user=request.user, is_read=False).exists()
 
     # Obtener parámetros de consulta
-    title = request.GET.get('title', '')
+    title_or_isbn = request.GET.get('title', '')  # Usar el mismo campo para título e ISBN
     author = request.GET.get('author', '')
-    isbn = request.GET.get('isbn', '')
     min_price = request.GET.get('min_price', None)
     max_price = request.GET.get('max_price', None)
     category = request.GET.get('category', '')
 
-    # Filtrar por título
-    if title:
-        books = books.filter(title__icontains=title)
+    # Filtrar por título o ISBN
+    if title_or_isbn:
+        books = books.filter(title__icontains=title_or_isbn) | books.filter(isbn__icontains=title_or_isbn)
 
     # Filtrar por autor
     if author:
         books = books.filter(author__icontains=author)
-
-    # Filtrar por ISBN
-    if isbn:
-        books = books.filter(isbn__icontains=isbn)
 
     # Filtrar por rango de precios
     if min_price:

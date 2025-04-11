@@ -27,10 +27,11 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['city', 'phone_number']
+        fields = ['city', 'phone_number', 'movement_radius_km']  # Añadir el campo de radio de movimiento
         labels = {
-            'city': 'Ciutat (Pot trigar en carregar degut a la gran quantitat de ciutats)',
+            'city': 'Selecciona el teu poble',
             'phone_number': 'Número de telèfon',
+            'movement_radius_km': 'Radi de moviment (km)',
         }
 
 
@@ -39,3 +40,13 @@ class EditProfile(forms.Form):
     last_name = forms.CharField(label="Cognom", max_length=100)
     city = forms.CharField(label="Ciutat (Pot trigar en carregar degut a la gran quantitat de ciutats)", max_length=100)
     phone_number = forms.CharField(label="Número de telèfon", max_length=100)
+
+
+class LocationForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['city', 'movement_radius_km']
+        labels = {
+            'city': 'Selecciona el teu poble',
+            'movement_radius_km': 'Radi de moviment (km)',
+        }

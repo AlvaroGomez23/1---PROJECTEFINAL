@@ -93,9 +93,15 @@
             <p><strong>Correu electrònic:</strong> {{ user.email }}</p>
 
             <div class="d-flex justify-content-center gap-3">
-                <a href="{% url 'private_chat' user_id=other_user.id %}" class="btn">Iniciar chat</a>
                 {% if user == request.user %}
                     <a href="{% url 'edit_profile' %}" class="btn btn-edit">Editar perfil</a>
+                {% else %}
+                <a href="{% url 'private_chat' user_id=other_user.id %}" class="btn">Iniciar chat</a>
+                {% endif %}
+                {% if profile_info.city %}
+                    <a href="{% url 'user_map' user_id=profile_info.user.id %}" class="btn btn-primary">Veure mapa</a>
+                {% else %}
+                    <p class="text-muted">Ubicació no configurada</p>
                 {% endif %}
                 <a href="{% url 'dashboard' %}" class="btn btn-back">Tornar a l'inici</a>
             </div>
