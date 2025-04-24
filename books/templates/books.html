@@ -14,146 +14,52 @@
         const toggleWishlistUrl = "{% url 'toggle_wishlist' %}";
     </script>
     <script src="{% static 'js/wishlist.js' %}"></script>
-    <style>
-        body {
-            background-color: #FFF8F0;
-            color: #1E1E24;
-            font-family: Arial, sans-serif;
-            text-decoration: none;
-        }
-
-        .container {
-            margin-top: 20px;
-        }
-
-        .book-card {
-            background-color: #ffffff;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .book-card img {
-            border-radius: 10px;
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            margin-bottom: 10px;
-        }
-
-        .book-card h4 {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .book-card p {
-            font-size: 1rem;
-            margin-bottom: 10px;
-            color: #555;
-        }
-
-        .book-card .btn-primary {
-            background-color: #111D4A; /* Cambiar el color del botón principal */
-            color: #ffffff;
-            border: none;
-            padding: 10px 15px;
-            font-size: 0.875rem;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .book-card .btn-primary:hover {
-            background-color: #0a0f36; /* Color más oscuro al pasar el ratón */
-        }
-
-        .book-card .btn-secondary {
-            background-color: #FFCF99;
-            color: #1E1E24;
-            border: none;
-            padding: 10px 15px;
-            font-size: 0.875rem;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .book-card .btn-secondary:hover {
-            background-color: #ffc07a;
-        }
-
-        .filters {
-            background-color: #ffffff;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .filters h5 {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .filters .form-label {
-            font-size: 0.875rem;
-            font-weight: bold;
-        }
-
-        .filters .btn {
-            width: 100%;
-        }
-
-        a {
-            text-decoration: none; /* Eliminar el subrayado de todos los enlaces */
-        }
-
-        a:hover {
-            text-decoration: none; /* Asegurar que tampoco se subraye al pasar el ratón */
-        }
-    </style>
 </head>
 <body>
     <div class="container">
         <div class="row">
             <!-- Columna izquierda: Filtros -->
-            <div class="col-md-3 filters">
-                <h5>Filtres</h5>
-                <form method="get" action="{% url 'books' %}">
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Títol o ISBN:</label>
-                        <input type="text" id="title" name="title" class="form-control" value="{{ request.GET.title }}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="author" class="form-label">Autor:</label>
-                        <input type="text" id="author" name="author" class="form-control" value="{{ request.GET.author }}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="min_price" class="form-label">Preu mínim:</label>
-                        <input type="number" id="min_price" name="min_price" class="form-control" step="0.01" value="{{ request.GET.min_price }}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="max_price" class="form-label">Preu màxim:</label>
-                        <input type="number" id="max_price" name="max_price" class="form-control" step="0.01" value="{{ request.GET.max_price }}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="category" class="form-label">Categoria:</label>
-                        <select id="category" name="category" class="form-select">
-                            <option value="">Totes les categories</option>
-                            {% for cat in categories %}
-                                <option value="{{ cat.name }}" {% if request.GET.category == cat.name %}selected{% endif %}>
-                                    {{ cat.name }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
-                    <a href="{% url 'books' %}" class="btn btn-danger">Restablir filtres</a>
-                </form>
+            <div class="col-md-3">
+                <!-- Botón para mostrar/ocultar filtros en móviles -->
+                <div class="d-md-none mb-3">
+                    <button class="btn btn-primary w-100" id="toggleFiltersBtn">Mostrar Filtres</button>
+                </div>
+
+                <!-- Contenedor de filtros -->
+                <div class="filters d-md-block" id="filtersPanel">
+                    <h5>Filtres</h5>
+                    <form method="get" action="{% url 'books' %}">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Títol o ISBN:</label>
+                            <input type="text" id="title" name="title" class="form-control" value="{{ request.GET.title }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="author" class="form-label">Autor:</label>
+                            <input type="text" id="author" name="author" class="form-control" value="{{ request.GET.author }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="min_price" class="form-label">Preu mínim:</label>
+                            <input type="number" id="min_price" name="min_price" class="form-control" step="0.01" value="{{ request.GET.min_price }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="max_price" class="form-label">Preu màxim:</label>
+                            <input type="number" id="max_price" name="max_price" class="form-control" step="0.01" value="{{ request.GET.max_price }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Categoria:</label>
+                            <select id="category" name="category" class="form-select">
+                                <option value="">Totes les categories</option>
+                                {% for cat in categories %}
+                                    <option value="{{ cat.name }}" {% if request.GET.category == cat.name %}selected{% endif %}>
+                                        {{ cat.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+                        <a href="{% url 'books' %}" class="btn btn-danger">Restablir filtres</a>
+                    </form>
+                </div>
             </div>
 
             <!-- Columna central: Libros -->
@@ -178,6 +84,19 @@
                             </p>
                             <a href="{% url 'book_details' book.id %}" class="btn btn-primary btn-sm">Consultar detalls</a>
                             <a href="{% url 'request_exchange' book.id %}" class="btn btn-secondary btn-sm">Sol·licitar intercanvi</a>
+                            <form method="post" class="wishlist-form d-inline">
+                                {% csrf_token %}
+                                <button type="button" 
+                                        class="btn btn-secondary btn-sm wishlist-btn" 
+                                        data-book-id="{{ book.id }}" 
+                                        data-in-wishlist="{% if user_wishlist and book.isbn in user_wishlist.get_isbns %}true{% else %}false{% endif %}">
+                                    {% if user_wishlist and book.isbn in user_wishlist.get_isbns %}
+                                        Eliminar de la llista de desitjats
+                                    {% else %}
+                                        Afegir a llista de desitjats
+                                    {% endif %}
+                                </button>
+                            </form>
                         </div>
                     </div>
                     {% endfor %}
@@ -188,8 +107,36 @@
             </div>
         </div>
     </div>
+
+    <!-- Script para mostrar/ocultar filtros en móviles -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleBtn = document.getElementById('toggleFiltersBtn');
+            const filtersPanel = document.getElementById('filtersPanel');
+
+            // Ocultar filtros inicialmente en pantallas pequeñas
+            if (window.innerWidth < 768) {
+                filtersPanel.classList.add('d-none');
+                toggleBtn.textContent = 'Mostrar Filtres';
+            }
+
+            toggleBtn.addEventListener('click', function () {
+                filtersPanel.classList.toggle('d-none');
+                toggleBtn.textContent = filtersPanel.classList.contains('d-none') ? 'Mostrar Filtres' : 'Amagar Filtres';
+            });
+
+            // Ajustar si cambia el tamaño de pantalla
+            window.addEventListener('resize', function () {
+                if (window.innerWidth >= 768) {
+                    filtersPanel.classList.remove('d-none');
+                    toggleBtn.textContent = 'Amagar Filtres';
+                } else {
+                    filtersPanel.classList.add('d-none');
+                    toggleBtn.textContent = 'Mostrar Filtres';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 {% endblock %}
-
-

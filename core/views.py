@@ -28,17 +28,6 @@ def dashboard(request):
     # Obtener los libros del usuario actual
     books = Book.objects.filter(owner=request.user)
 
-    # Paginación para los libros del usuario
-    paginator = Paginator(books, 3)  # Mostrar 6 libros por página
-    page_number = request.GET.get('page')
-    books_page = paginator.get_page(page_number)
-
-    # Obtener los libros más intercambiados
-    ranking = Book.objects.filter(exchange_count__gt=0).order_by('-exchange_count')[:4]
-
-    # Obtener las novedades (últimos libros creados)
-    new_books = Book.objects.order_by('-created_at')[:4]
-
     # Obtener categorías para los filtros
     categories = Category.objects.all()
 
@@ -55,8 +44,19 @@ def dashboard(request):
     if category:
         books = books.filter(category_id=category)
 
+    # Paginación después de filtrar
+    paginator = Paginator(books, 3)  # Mostrar 3 libros por página
+    page_number = request.GET.get('page')
+    books_page = paginator.get_page(page_number)
+
+    # Obtener los libros más intercambiados
+    ranking = Book.objects.filter(exchange_count__gt=0).order_by('-exchange_count')[:3]
+
+    # Obtener las novedades (últimos libros creados)
+    new_books = Book.objects.order_by('-created_at')[:3]
+
     return render(request, 'user.dashboard.html', {
-        'books': books_page,  # Pasar la página actual de libros
+        'books': books_page,
         'ranking': ranking,
         'new_books': new_books,
         'categories': categories,

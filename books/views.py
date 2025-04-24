@@ -11,7 +11,7 @@ from users.utils import send_user_notification
 
 def books(request):
     # Filtrar solo libros visibles
-    books = Book.objects.filter(visible=True)
+    books = Book.objects.filter(visible=True).exclude(owner=request.user)
     categories = Category.objects.all()
     user_wishlist = Wishlist.objects.filter(user=request.user).first()
     has_unread_notifications = Notification.objects.filter(user=request.user, is_read=False).exists()
