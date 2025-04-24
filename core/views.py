@@ -26,7 +26,7 @@ def index(request):
 @login_required
 def dashboard(request):
     # Obtener los libros del usuario actual
-    books = Book.objects.filter(owner=request.user)
+    books = Book.objects.filter(owner=request.user).order_by('-created_at')  # Ordenar por fecha de creación
 
     # Obtener categorías para los filtros
     categories = Category.objects.all()

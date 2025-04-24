@@ -12,4 +12,5 @@ urlpatterns = [
    path('request_exchange/<int:book_id>', views.request_exchange, name='request_exchange'),
    path('accept_exchange/<int:exchange_id>/', views.accept_exchange, name='accept_exchange'),
    path('decline_exchange/<int:exchange_id>/', views.decline_exchange, name='decline_exchange'),
+   path('delete_book/<int:book_id>/', views.delete_book, name='delete_book'),
 ]

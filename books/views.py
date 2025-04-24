@@ -6,6 +6,7 @@ from .forms import createBook, ExchangeForm
 from django.contrib.auth.decorators import login_required
 from users.utils import send_user_notification
 from django.db.models import Avg
+from django.contrib import messages
 
 
 # Create your views here.
@@ -238,6 +239,17 @@ def decline_exchange(request, exchange_id):
     send_user_notification(user, user_from, title, message, None)
 
     return redirect('notifications')
+
+@login_required
+def delete_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id, owner=request.user)
+
+    if request.method == "POST":
+        book.delete()
+        messages.success(request, f"El llibre '{book.title}' s'ha eliminat correctament.")
+        return redirect('dashboard')
+
+    return redirect('dashboard')
 
 
 
