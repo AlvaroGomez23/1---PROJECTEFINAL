@@ -104,6 +104,19 @@
                     <p class="text-muted">Ubicació no configurada</p>
                 {% endif %}
                 <a href="{% url 'dashboard' %}" class="btn btn-back">Tornar a l'inici</a>
+                {% if average_rating %}
+                <h3>Valoració: {{ average_rating }}★</h3>
+                <ul>
+                    {% for review in reviews %}
+                    <li>
+                        <strong>{{ review.reviewer.username }}</strong>: {{ review.rating }}★
+                        <p>{{ review.comment }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                    <p>Encara no hi ha valoracions per aquest usuari.</p>
+                {% endif %}
             </div>
         </div>
     </div>

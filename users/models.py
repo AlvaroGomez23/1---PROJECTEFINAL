@@ -51,6 +51,12 @@ class UserProfile(models.Model):
     def __str__(self):
         return f"Perfil de {self.user.username}"
 
+    def average_rating(self):
+        reviews = self.user.reviews_received.all()
+        if reviews.exists():
+            return round(reviews.aggregate(models.Avg('rating'))['rating__avg'], 2)
+        return 0
+
 class Conversation(models.Model):
     participants = models.ManyToManyField(User, related_name='conversations')
     messages = models.TextField(default="", blank=True)  # Almacenar mensajes como texto plano
@@ -105,4 +111,15 @@ class Conversation(models.Model):
                 if len(parts) == 4 and parts[0] != str(user.id) and parts[1] == "False":
                     unread_count += 1
         return unread_count
+    
+
+class Review(models.Model):
+    reviewed_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_reviews_received")
+    reviewer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_reviews_given")
+    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    comment = models.TextField(blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.reviewer.username} -> {self.reviewed_user.username} - {self.rating}★"
 

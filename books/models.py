@@ -28,6 +28,12 @@ class Book(models.Model):
             self.previous_visible = old_instance.visible
         super().save(*args, **kwargs)
 
+    def average_rating(self):
+        reviews = self.reviews.all()
+        if reviews.exists():
+            return round(reviews.aggregate(models.Avg('rating'))['rating__avg'], 2)
+        return 0
+
     def __str__(self):
         return self.title
 
@@ -47,8 +53,8 @@ class State(models.Model):
 
 
 class Review(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True, blank=True)
-    reviewer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reviews_given")
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True, blank=True, related_name="book_reviews_recieved")
+    reviewer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="book_reviews_given")
     rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])  # 1 a 5 estrellas
     comment = models.TextField(blank=True)
     date_created = models.DateTimeField(auto_now_add=True)

@@ -93,6 +93,19 @@
                         Amagat
                     {% endif %}
                 </p>
+                {% if average_rating %}
+                <h3>Valoració: {{ average_rating }}★</h3>
+                <ul>
+                    {% for review in reviews %}
+                    <li>
+                        <strong>{{ review.reviewer.username }}</strong>: {{ review.rating }}★
+                        <p>{{ review.comment }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                    <p>No hi ha valoracions per a aquest llibre.</p>
+                {% endif %}
                 <a href="{% url 'books' %}" class="btn">Tornar a la llista de llibres</a>
                 {% if book.owner == request.user %}
                     <a href="{% url 'modify_book' book.id %}" class="btn btn-edit">Editar</a>

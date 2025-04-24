@@ -5,6 +5,7 @@ from users.models import Wishlist, Notification
 from .forms import createBook, ExchangeForm
 from django.contrib.auth.decorators import login_required
 from users.utils import send_user_notification
+from django.db.models import Avg
 
 
 # Create your views here.
@@ -61,12 +62,15 @@ def books(request):
 
 
 def book_details(request, book_id):
-    book = get_object_or_404(Book, pk=book_id)
-    print(book_id)
-    print(book)
-    return render(request, 'book_details.html', {
-        'book': book
-    })
+    book = get_object_or_404(Book, id=book_id)
+    reviews = book.book_reviews_recieved.all()
+    average_rating = reviews.aggregate(Avg('rating'))['rating__avg'] or 0
+    context = {
+        'book': book,
+        'reviews': reviews,
+        'average_rating': average_rating,
+    }
+    return render(request, 'book_details.html', context)
 
 
 

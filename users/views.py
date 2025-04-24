@@ -10,6 +10,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from django.db.models import Avg
 
 # Create your views here.
 
@@ -109,11 +110,17 @@ def view_profile(request, user_id):
     else:
         # Obtenir perfil de l'altre usuari
         user_to_view = get_object_or_404(User, id=user_id)
+        
+    reviews = user.user_reviews_received.all()
+    average_rating = reviews.aggregate(Avg('rating'))['rating__avg'] or 0
 
     return render(request, 'view_profile.html', {
         'user': user,
         'profile_info': profile_info,
         'other_user': user_to_view,
+        'reviews': reviews,
+        'average_rating': average_rating,
+        
     })
 
 

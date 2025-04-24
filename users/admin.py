@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Wishlist, Notification, UserProfile
+from .models import Wishlist, Notification, UserProfile, Review
 
 # Register your models here.
 
@@ -11,3 +11,4 @@ class WishlistAdmin(admin.ModelAdmin):
 admin.site.register(Wishlist, WishlistAdmin)
 admin.site.register(Notification)
 admin.site.register(UserProfile)
+admin.site.register(Review)
