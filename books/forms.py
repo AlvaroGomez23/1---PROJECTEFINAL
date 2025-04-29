@@ -4,7 +4,7 @@ from .models import Category, Book, Exchange
 class createBook(forms.ModelForm):
     class Meta:
         model = Book
-        fields = ['title', 'author', 'category', 'description','price', 'isbn', 'state', 'link', 'image', 'visible']
+        fields = ['title', 'author', 'category', 'description','price', 'isbn', 'state', 'image', 'visible']
         labels = {
             'title': 'Títol',
             'author': 'Autor',
@@ -13,7 +13,6 @@ class createBook(forms.ModelForm):
             'price': 'Preu',
             'isbn': 'ISBN',
             'state': 'Estat',
-            'link': 'Enllaç',
             'image': 'Imatge',
             'visible': 'Visible'
         }
@@ -23,7 +22,7 @@ class createBook(forms.ModelForm):
 
 
 class ExchangeForm(forms.ModelForm):
-    book_to_exchange = forms.ModelChoiceField(queryset=Book.objects.none(), label="Libro para intercambiar")
+    book_to_exchange = forms.ModelChoiceField(queryset=Book.objects.none())
 
     class Meta:
         model = Exchange

@@ -101,6 +101,9 @@ def create_book(request):
             book.save()
             
             return redirect('book_details', book_id=book.pk)
+        else:
+            print("Error al crear el llibre")
+            print(form.errors)
 
 
         return render(request, 'create_book.html', {'form': form})
@@ -162,7 +165,7 @@ def request_exchange(request, book_id):
         return render(request, 'request_exchange.html', {
             'book': book,
             'form': None,
-            'error': 'Ja has enviat una sol·licitud d\'intercambi per aquest llibre'
+            'error': 'Ja has enviat una sol·licitud d\'intercanvi per aquest llibre'
         })
     
     if request.method == 'POST':
@@ -177,8 +180,8 @@ def request_exchange(request, book_id):
 
             user = book.owner
             user_from = request.user
-            title = f"Sol·licitud d'intercambi per {book.title}"
-            message = f"{request.user.first_name} vol intercambiar {exchange.book_from.title} pel teu llibre {book.title}"
+            title = f"Sol·licitud d'intercanvi per {book.title}"
+            message = f"{request.user.first_name} vol intercanviar {exchange.book_from.title} pel teu llibre {book.title}"
 
             send_user_notification(user, user_from, title, message, exchange)
             
@@ -217,8 +220,8 @@ def accept_exchange(request, exchange_id):
     # Enviar notificación al usuario que solicitó el intercambio
     user = exchange.from_user
     user_from = request.user
-    title = f"Intercambi acceptat de {exchange.book_for.title}"
-    message = f"{request.user.username} ha acceptat intercambiar {exchange.book_from.title} per {exchange.book_for.title}"
+    title = f"Intercanvi acceptat de {exchange.book_for.title}"
+    message = f"{request.user.username} ha acceptat intercanvi {exchange.book_from.title} per {exchange.book_for.title}"
     
     send_user_notification(user, user_from, title, message, None)
 
@@ -233,8 +236,8 @@ def decline_exchange(request, exchange_id):
 
     user = exchange.from_user
     user_from = request.user
-    title = f"Intercambi declinat de {exchange.book_for.title}"
-    message = f"{request.user.username} no vol intercambiar {exchange.book_from.title} per {exchange.book_for.title}"
+    title = f"Intercanvi declinat de {exchange.book_for.title}"
+    message = f"{request.user.username} no vol intercanviar {exchange.book_from.title} per {exchange.book_for.title}"
 
     send_user_notification(user, user_from, title, message, None)
 
@@ -250,6 +253,35 @@ def delete_book(request, book_id):
         return redirect('dashboard')
 
     return redirect('dashboard')
+
+@login_required
+def add_review_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    
+    existing_review = book.book_reviews_recieved.filter(reviewer_id=request.user).first()
+
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment')
+        
+        
+        if existing_review:
+            # Actualiza la reseña existente
+            existing_review.rating = rating
+            existing_review.comment = comment
+            existing_review.save()
+            
+        else:
+            # Crea una nueva reseña
+            book.book_reviews_recieved.create(reviewer_id=request.user.id, rating=rating, comment=comment)
+            
+        
+        return redirect('book_details', book_id=book.pk)
+    
+
+    return render(request, 'add_review_book.html', {
+        'book': book, 
+        'existing_review': existing_review})
 
 
 

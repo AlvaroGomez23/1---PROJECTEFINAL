@@ -111,6 +111,13 @@
                             </div>
                         </div>
 
+                        <div class="col-12">
+                            <div class="form-group">
+                                {{ form.title.label_tag }}
+                                {{ form.title }}
+                            </div>
+                        </div>
+
                         <!-- Fila 1: Descripción y Autor -->
                         <div class="col-md-6">
                             <div class="form-group">
@@ -146,12 +153,7 @@
                                 {{ form.category }}
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                {{ form.link.label_tag }}
-                                {{ form.link }}
-                            </div>
-                        </div>
+                        
 
                         <!-- Campos full-width -->
                         <div class="col-12">
@@ -164,6 +166,13 @@
                             <div class="form-group">
                                 {{ form.status.label_tag }}
                                 {{ form.status }}
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                {{ form.visible.label_tag }}
+                                {{ form.visible }}
                             </div>
                         </div>
                     </div>

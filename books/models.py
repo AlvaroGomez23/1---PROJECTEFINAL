@@ -11,7 +11,6 @@ class Book(models.Model):
     isbn = models.CharField(max_length=13, unique=False)
     state = models.ForeignKey('state', on_delete=models.SET_NULL, null=True)
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
-    link = models.URLField(blank=True, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="books")
     visible = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now) 

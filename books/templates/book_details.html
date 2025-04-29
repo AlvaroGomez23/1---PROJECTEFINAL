@@ -2,7 +2,7 @@
 
 {% block content %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ca">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,6 +65,48 @@
         .book-details-container .btn-edit:hover {
             background-color: #28a745;
         }
+
+        /* Estilos para las tarjetas de valoraciones */
+        .reviews-container {
+            margin-top: 30px;
+            overflow: auto;
+        }
+
+        .review-card {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-card h5 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .review-card p {
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        .review-card .review-rating {
+            color: #FFD700;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .review-card .review-comment {
+            font-style: italic;
+            color: #555;
+        }
+
+        .review-card .review-date {
+            font-size: 0.85rem;
+            color: #888;
+        }
     </style>
 </head>
 <body>
@@ -83,9 +125,6 @@
                 <p><strong>Creat el:</strong> {{ book.created_at|date:"d M Y" }}</p>
                 <p><strong>Preu:</strong> {{ book.price }}€</p>
                 <p><strong>Estat del llibre:</strong> {{ book.state }}</p>
-                {% if book.link %}
-                    <p><strong>Enllaç de compra:</strong> <a href="{{ book.link }}" target="_blank">{{ book.link }}</a></p>
-                {% endif %}
                 <p><strong>Visibilitat:</strong> 
                     {% if book.visible %}
                         Publicat
@@ -93,19 +132,26 @@
                         Amagat
                     {% endif %}
                 </p>
-                {% if average_rating %}
-                <h3>Valoració: {{ average_rating }}★</h3>
-                <ul>
-                    {% for review in reviews %}
-                    <li>
-                        <strong>{{ review.reviewer.username }}</strong>: {{ review.rating }}★
-                        <p>{{ review.comment }}</p>
-                    </li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                    <p>No hi ha valoracions per a aquest llibre.</p>
-                {% endif %}
+                <a href="{% url 'add_review_book' book.id %}">+ Afegir valoració</a>
+
+                <!-- Contenedor de valoraciones -->
+                <p class="reviews-container">
+                    <h3>Valoracions</h3>
+                    {% if reviews %}
+                    <p>Valoració mitjana: {{ average_rating }} ★</p>
+                        {% for review in reviews %}
+                        <div class="review-card">
+                            <h5>{{ review.reviewer.first_name }}</h5>
+                            <p class="review-rating">{{ review.rating }}★</p>
+                            <p class="review-comment">{{ review.comment }}</p>
+                            <p class="review-date">Publicat el {{ review.date_created|date:"d M Y" }}</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No hi ha valoracions per a aquest llibre.</p>
+                    {% endif %}
+                </div>
+
                 <a href="{% url 'books' %}" class="btn">Tornar a la llista de llibres</a>
                 {% if book.owner == request.user %}
                     <a href="{% url 'modify_book' book.id %}" class="btn btn-edit">Editar</a>
