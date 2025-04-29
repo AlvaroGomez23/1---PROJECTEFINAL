@@ -1,59 +1,80 @@
 {% load static %}
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
 
-<nav class="header">
-    <!-- Logo -->
-    <a href="{% url 'dashboard' %}" class="logo">Book4Book</a>
-
-    <div class="nav-container">
-        <ul class="nav-list">
-            <li class="nav-group">
-                <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
-                <a class="nav-link" href="{% url 'books' %}">Buscar llibres</a>
-                <a class="nav-link" href="{% url 'new_books' %}">Novetats</a>
-                <a class="nav-link" href="{% url 'wishlist' %}">Wishlist</a>
-                <a class="nav-link" href="{% url 'inbox' %}">Missatges (Xat)</a>
+<nav class="navbar navbar-expand-lg header">
+    <div class="container-fluid">
+      <!-- Logo -->
+      <a class="navbar-brand logo" href="{% url 'dashboard' %}">Book4Book</a>
+  
+      <!-- Botón de colapso (hamburger) -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <!-- Contenido colapsable -->
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-list">
+          <li class="nav-group d-flex flex-wrap gap-2">
+            <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+            <a class="nav-link" href="{% url 'books' %}">Buscar llibres</a>
+            <a class="nav-link" href="{% url 'new_books' %}">Novetats</a>
+            <a class="nav-link" href="{% url 'wishlist' %}">Wishlist</a>
+            <a class="nav-link" href="{% url 'inbox' %}">Missatges (Xat)</a>
+          </li>
+        </ul>
+  
+        <!-- Derecha -->
+        <ul class="navbar-nav nav-list-right">
+          {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'notifications' %}">
+                {% if has_unread_notifications %}
+                <img class="nav-icon" src="{% static 'buzonAlerta.png' %}" alt="Notificaciones no leídas">
+                {% else %}
+                <img class="nav-icon" src="{% static 'buzon.png' %}" alt="Buzón de notificaciones">
+                {% endif %}
+              </a>
             </li>
+  
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle nav-compte" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Compte</a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="{% url 'view_profile' user_id=request.user.id %}">Veure perfil</a></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Tancar sessió</a></li>
+              </ul>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link btn btn-login" href="{% url 'login' %}">Iniciar Sessió</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link btn btn-register" href="{% url 'register' %}">Registrar-se</a>
+            </li>
+          {% endif %}
         </ul>
-
-        <ul class="nav-list-right">
-            {% if request.user.is_authenticated %}
-                <!-- Icono de Notificaciones -->
-                <li>
-                    <a href="{% url 'notifications' %}">
-                        {% if has_unread_notifications %}
-                        <img class="nav-icon" src="{% static 'buzonAlerta.png' %}" alt="Notificaciones no leídas">
-                        {% else %}
-                        <img class="nav-icon" src="{% static 'buzon.png' %}" alt="Buzón de notificaciones">
-                        {% endif %}
-                    </a>
-                </li>
-
-                <!-- Botón de cuenta -->
-                <li class="dropdown nav-group">
-                    <a href="#" class="nav-link dropdown-toggle">Compte</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'view_profile' user_id=request.user.id %}">Veure perfil</a></li>
-                        <li><a class="dropdown-item" href="{% url 'logout' %}">Tancar sessió</a></li>
-                    </ul>
-                </li>
-            {% else %}
-                <!-- Botones de autenticación -->
-                <li><a class="nav-link btn btn-login" href="{% url 'login' %}">Iniciar Sessió</a></li>
-                <li><a class="nav-link btn btn-register" href="{% url 'register' %}">Registrar-se</a></li>
-            {% endif %}
-        </ul>
+      </div>
     </div>
-</nav>
+  </nav>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 
     body {
-        background-color: #FFF8F0; /* Color de fondo claro */
-        color: #111D4A; /* Texto oscuro */
-        font-family: 'Arial', sans-serif; /* Fuente sans-serif para un aspecto moderno */
-        margin: 0; /* Elimina el margen por defecto del body */
-        padding: 0; /* Elimina el padding por defecto del body */
+        background-color: #FFF8F0 !important; /* Fondo claro */
+        color: #1E1E24 !important; /* Texto oscuro */
+        font-family: Arial, sans-serif !important;
     }
+    
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
     .header {
         background-color: #FFFFFF;
         color: #ecf0f1;
@@ -66,6 +87,7 @@
         top: 0;
         z-index: 1000;
     }
+
 
     .logo {
         font-size: 24px;
@@ -93,17 +115,17 @@
 
     .nav-link {
         text-decoration: none;
-        color: #ecf0f1;
+        color: #ecf0f1 !important;
         font-size: 16px;
         padding: 10px 15px;
-        border-radius: 20px;
+        border-radius: 10px;
         background-color: #1a2b48;
         transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .nav-link:hover {
         background-color: #FFCF99;
-        color: #111D4A;
+        color: #111D4A !important;
     }
 
     .nav-icon {
@@ -114,6 +136,8 @@
     .dropdown {
         position: relative;
         display: inline-block;
+        background-color: #111D4A;
+        border-radius: 10px;
     }
 
     .dropdown-menu {
@@ -213,6 +237,7 @@
         background-color: #FFCF99;
         color: #111D4A;
     }
+
 </style>
 
 

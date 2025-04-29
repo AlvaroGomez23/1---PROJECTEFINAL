@@ -1,6 +1,6 @@
 from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Book, Exchange, Category
+from .models import Book, Exchange, Category, Review
 from users.models import Wishlist, Notification
 from .forms import createBook, ExchangeForm
 from django.contrib.auth.decorators import login_required
@@ -282,6 +282,18 @@ def add_review_book(request, book_id):
     return render(request, 'add_review_book.html', {
         'book': book, 
         'existing_review': existing_review})
+
+
+@login_required
+def delete_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id, reviewer=request.user)
+
+    if request.method == "POST":
+        review.delete()
+        messages.success(request, "La valoració s'ha eliminat correctament.")
+        return redirect('book_details', book_id=review.book.id)
+
+    return redirect('book_details', book_id=review.book.id)
 
 
 

@@ -9,13 +9,11 @@
     <title>Detalls del llibre</title>
     {% load static %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <style>
-        body {
-            background-color: #FFF8F0;
-            color: #1E1E24;
-            font-family: Arial, sans-serif;
-        }
 
+        /* Contenedor principal */
         .book-details-container {
             background-color: #ffffff;
             border-radius: 10px;
@@ -25,14 +23,20 @@
             margin: 20px auto;
         }
 
-        .book-details-container img {
+        /* Imagen del libro */
+        .book-image {
             max-width: 100%;
+            border: 2px solid #ddd; /* Borde para distinguir imágenes con fondo blanco */
             border-radius: 10px;
+            padding: 5px;
+            background-color: #f8f8f8; /* Fondo gris claro */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
+        /* Información del libro */
         .book-details-container h2 {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: bold;
             margin-bottom: 15px;
         }
@@ -42,8 +46,7 @@
             margin-bottom: 10px;
         }
 
-        .book-details-container a.btn {
-            display: inline-block;
+        .book-details-container .btn {
             margin-top: 15px;
             padding: 10px 20px;
             background-color: #111D4A;
@@ -53,7 +56,7 @@
             transition: background-color 0.3s ease;
         }
 
-        .book-details-container a.btn:hover {
+        .book-details-container .btn:hover {
             background-color: #FFCF99;
             color: #1E1E24;
         }
@@ -66,12 +69,37 @@
             background-color: #28a745;
         }
 
-        /* Estilos para las tarjetas de valoraciones */
+        /* Contenedor principal de valoraciones */
         .reviews-container {
             margin-top: 30px;
-            overflow: auto;
         }
 
+        /* Contenedor con scroll para las tarjetas */
+        .reviews-scroll {
+            max-height: 300px; /* Altura máxima del contenedor */
+            overflow-y: auto; /* Habilitar scroll vertical */
+            padding-right: 10px; /* Espacio para evitar que el scroll tape contenido */
+        }
+
+        /* Estilo para ocultar la barra de scroll en navegadores modernos */
+        .reviews-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .reviews-scroll::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 4px;
+        }
+
+        .reviews-scroll::-webkit-scrollbar-thumb:hover {
+            background-color: #aaa;
+        }
+
+        .reviews-scroll::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+        }
+
+        /* Tarjetas de reseñas */
         .review-card {
             background-color: #ffffff;
             border: 1px solid #ddd;
@@ -110,15 +138,30 @@
     </style>
 </head>
 <body>
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
     <div class="container mt-4">
-        <div class="book-details-container">
-            {% if book %}
-                <h2>{{ book.title }}</h2>
+        <div class="book-details-container row">
+            <!-- Columna izquierda: Imagen del libro -->
+            <div class="col-md-4 text-center">
                 {% if book.image %}
-                    <img src="{{ book.image.url }}" alt="Portada de {{ book.title }}">
+                    <img src="{{ book.image.url }}" alt="Portada de {{ book.title }}" class="book-image">
                 {% else %}
-                    <img src="/media/default-book.png" alt="Imatge predeterminada">
+                    <img src="/media/default-book.png" alt="Imatge predeterminada" class="book-image">
                 {% endif %}
+            </div>
+
+            <!-- Columna derecha: Información del libro -->
+            <div class="col-md-8">
+                <h2>{{ book.title }}</h2>
                 <p><strong>Autor:</strong> {{ book.author }}</p>
                 <p><strong>Descripció:</strong> {{ book.description }}</p>
                 <p><strong>ISBN:</strong> {{ book.isbn }}</p>
@@ -132,35 +175,80 @@
                         Amagat
                     {% endif %}
                 </p>
-                <a href="{% url 'add_review_book' book.id %}">+ Afegir valoració</a>
+                <a href="{% url 'add_review_book' book.id %}" class="btn btn-primary">+ Afegir valoració</a>
+            </div>
+        </div>
 
-                <!-- Contenedor de valoraciones -->
-                <p class="reviews-container">
-                    <h3>Valoracions</h3>
-                    {% if reviews %}
-                    <p>Valoració mitjana: {{ average_rating }} ★</p>
-                        {% for review in reviews %}
-                        <div class="review-card">
-                            <h5>{{ review.reviewer.first_name }}</h5>
-                            <p class="review-rating">{{ review.rating }}★</p>
-                            <p class="review-comment">{{ review.comment }}</p>
-                            <p class="review-date">Publicat el {{ review.date_created|date:"d M Y" }}</p>
-                        </div>
-                        {% endfor %}
-                    {% else %}
-                        <p>No hi ha valoracions per a aquest llibre.</p>
-                    {% endif %}
+        <!-- Contenedor de valoraciones -->
+        <div class="reviews-container">
+            <h3>Valoracions</h3>
+            {% if reviews %}
+                <p>Valoració mitjana: {{ average_rating }} ★</p>
+                <div class="reviews-scroll">
+                    {% for review in reviews %}
+                    <div class="review-card">
+                        <h5>{{ review.reviewer.first_name }}</h5>
+                        <p class="review-rating">{{ review.rating }}★</p>
+                        <p class="review-comment">{{ review.comment }}</p>
+                        <p class="review-date">Publicat el {{ review.date_created|date:"d M Y" }}</p>
+                        {% if review.reviewer == request.user %}
+                        <button type="button" class="btn btn-danger btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#deleteReviewModal" data-review-id="{{ review.id }}">
+                            Eliminar
+                        </button>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
                 </div>
-
-                <a href="{% url 'books' %}" class="btn">Tornar a la llista de llibres</a>
-                {% if book.owner == request.user %}
-                    <a href="{% url 'modify_book' book.id %}" class="btn btn-edit">Editar</a>
-                {% endif %}
             {% else %}
-                <p>El llibre no existeix</p>
+                <p>No hi ha valoracions per a aquest llibre.</p>
             {% endif %}
         </div>
+
+        <!-- Modal de confirmación -->
+        <div class="modal fade" id="deleteReviewModal" tabindex="-1" aria-labelledby="deleteReviewModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteReviewModalLabel">Confirmar eliminació</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Estàs segur que vols eliminar aquesta valoració?</p>
+                        <p>ID de la valoració: <strong id="modalReviewId"></strong></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel·lar</button>
+                        <form method="post" action="{% url 'delete_review' 0 %}" id="deleteReviewForm">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="{% url 'books' %}" class="btn">Tornar a la llista de llibres</a>
+        {% if book.owner == request.user %}
+            <a href="{% url 'modify_book' book.id %}" class="btn btn-edit">Editar</a>
+        {% endif %}
     </div>
+    <script>
+        const deleteReviewModal = document.getElementById('deleteReviewModal');
+        deleteReviewModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget; // Botón que abrió el modal
+            const reviewId = button.getAttribute('data-review-id'); // Obtener el ID de la valoración
+
+            // Actualizar el contenido del modal con el ID de la valoración
+            const modalReviewId = document.getElementById('modalReviewId');
+            modalReviewId.textContent = reviewId;
+
+            // Actualizar la acción del formulario con el ID de la valoración
+            const deleteReviewForm = document.getElementById('deleteReviewForm');
+            const originalAction = deleteReviewForm.getAttribute('action'); // Obtener la acción original
+            const newAction = originalAction.replace(/\/\d+\/$/, `/${reviewId}/`); // Reemplazar el ID dinámicamente
+            deleteReviewForm.setAttribute('action', newAction); // Establecer la nueva acción
+        });
+    </script>
 </body>
 </html>
 {% endblock %}
