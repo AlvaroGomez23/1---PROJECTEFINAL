@@ -132,11 +132,11 @@ def modify_book(request, book_id):
     
 
 def new_books(request):
-    books = Book.objects.order_by('-created_at')[:10]  # Últimos 10 libros
-    user_wishlist = Wishlist.objects.filter(user=request.user).first()  # Obtener la wishlist del usuario
+    books = Book.objects.order_by('-created_at')[:9]  
+    user_wishlist = Wishlist.objects.filter(user=request.user).first()
     return render(request, 'new_books.html', {
         'books': books,
-        'user_wishlist': user_wishlist,  # Pasar la wishlist al contexto
+        'user_wishlist': user_wishlist,  
     })
 
 
