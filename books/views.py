@@ -125,6 +125,7 @@ def modify_book(request, book_id):
         form = createBook(request.POST, request.FILES, instance=book)
         if form.is_valid():
             form.save()
+            messages.success(request, f"El llibre '{book.title}' s'ha modificat correctament.")
             return redirect('book_details', book_id=book.pk)
         
         return render(request, 'modify_book.html', {'form': form})
