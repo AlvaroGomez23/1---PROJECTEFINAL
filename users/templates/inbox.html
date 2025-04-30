@@ -95,41 +95,41 @@
         <h1 class="inbox-title">Missatges</h1>
 
         <!-- Chats con mensajes no leídos -->
-        <div class="inbox-section">
-            <h2 class="section-title">Missatges no llegits</h2>
-            <ul class="message-list">
-                {% for item in conversations_with_unread %}
-                {% if item.unread_count > 0 %}
-                <li class="message-item unread">
-                    <a class="message-link" href="{% url 'private_chat' item.other_user_id %}">
-                        Conversa amb <strong>{{ item.other_user_name }}</strong>
-                    </a>
-                    <span class="badge">{{ item.unread_count }} nous</span>
-                </li>
-                {% endif %}
-                {% endfor %}
-            </ul>
-        </div>
+{% if unread_conversations %}
+<div class="inbox-section">
+    <h2 class="section-title">Missatges no llegits</h2>
+    <ul class="message-list">
+        {% for item in unread_conversations %}
+        <li class="message-item unread">
+            <a class="message-link" href="{% url 'private_chat' item.other_user_id %}">
+                Conversa amb <strong>{{ item.other_user_name }}</strong>
+            </a>
+            <span class="badge">{{ item.unread_count }} nous</span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
 
-        <!-- Chats sin mensajes no leídos -->
-        <div class="inbox-section">
-            <h2 class="section-title">Altres converses</h2>
-            <ul class="message-list">
-                {% for item in conversations_with_unread %}
-                {% if item.unread_count == 0 %}
-                <li class="message-item">
-                    <a class="message-link" href="{% url 'private_chat' item.other_user_id %}">
-                        Conversa amb <strong>{{ item.other_user_name }}</strong>
-                    </a>
-                </li>
-                {% endif %}
-                {% endfor %}
-            </ul>
-        </div>
+<!-- Chats leídos -->
+{% if read_conversations %}
+<div class="inbox-section">
+    <h2 class="section-title">Altres converses</h2>
+    <ul class="message-list">
+        {% for item in read_conversations %}
+        <li class="message-item">
+            <a class="message-link" href="{% url 'private_chat' item.other_user_id %}">
+                Conversa amb <strong>{{ item.other_user_name }}</strong>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
 
-        {% if conversations_with_unread|length == 0 %}
-        <p class="empty-message">No tens converses actives.</p>
-        {% endif %}
+{% if not unread_conversations and not read_conversations %}
+<p class="empty-message">No tens converses actives.</p>
+{% endif %}
     </div>
 
     

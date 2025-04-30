@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.db.models import Avg
+from users.utils import send_user_notification
 
 # Create your views here.
 
@@ -264,6 +265,7 @@ def private_chat(request, user_id):
     if not conversation:
         conversation = Conversation.objects.create()
         conversation.participants.add(request.user, other_user)
+        send_user_notification(other_user, request.user, f"{request.user.username} ha començat una conversa amb tu", "Probablement tinguis missatges nous, revisa-ho!", None)
 
     # Redirigir al puerto 8000 para el chat
     chat_url = f"http://127.0.0.1:8000/users/chat/{conversation.id}/"
@@ -273,30 +275,34 @@ def private_chat(request, user_id):
 @login_required
 def inbox(request):
     conversations = Conversation.objects.filter(participants=request.user)
-    conversations_with_unread = []
+    unread_conversations = []
+    read_conversations = []
 
     for conversation in conversations:
-        # Obtener el otro participante
         other_user = conversation.participants.exclude(id=request.user.id).first()
-
-        # Contar los mensajes no leídos
         unread_count = conversation.count_unread_messages(request.user)
 
-        # Agregar la conversación al contexto
-        conversations_with_unread.append({
+        print("Conversation ID:", conversation.id)
+        print("Unread count for conversation:", unread_count)
+
+        item = {
             "conversation": conversation,
             "unread_count": unread_count,
             "other_user_id": other_user.id if other_user else None,
-            "other_user_name": other_user.username if other_user else "Desconocido",
-        })
+            "other_user_name": other_user.username if other_user else "Desconegut",
+        }
 
-    # Ordenar las conversaciones: primero las que tienen mensajes no leídos
-    conversations_with_unread.sort(key=lambda x: x['unread_count'], reverse=True)
+        if unread_count > 0:
+            unread_conversations.append(item)
+        else:
+            read_conversations.append(item)
+
+    print("Unread conversations:", unread_conversations)
 
     return render(request, 'inbox.html', {
-        'conversations_with_unread': conversations_with_unread,
+        'unread_conversations': unread_conversations,
+        'read_conversations': read_conversations,
     })
-
 
 # views.py
 @login_required

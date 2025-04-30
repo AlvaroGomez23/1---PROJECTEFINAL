@@ -103,13 +103,14 @@ class Conversation(models.Model):
             self.save()
 
     def count_unread_messages(self, user):
-        """Cuenta los mensajes no leídos para un usuario."""
         unread_count = 0
         if self.messages:
-            for line in self.messages.split("\n"):
-                parts = line.split("|", 3)
-                if len(parts) == 4 and parts[0] != str(user.id) and parts[1] == "False":
-                    unread_count += 1
+            for line in self.messages.strip().split("\n"):
+                parts = [p.strip() for p in line.split("|", 3)]
+                if len(parts) == 4:
+                    sender_id, is_read, timestamp, content = parts
+                    if sender_id != str(user.id) and is_read == "False":
+                        unread_count += 1
         return unread_count
     
 

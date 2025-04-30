@@ -31,7 +31,7 @@
           {% if request.user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'notifications' %}">
-                {% if has_unread_notifications %}
+                {% if unread_notifications_count > 0 %}
                 <img class="nav-icon" src="{% static 'buzonAlerta.png' %}" alt="Notificaciones no leídas">
                 {% else %}
                 <img class="nav-icon" src="{% static 'buzon.png' %}" alt="Buzón de notificaciones">

@@ -16,8 +16,6 @@ def books(request):
     books = Book.objects.filter(visible=True).exclude(owner=request.user)
     categories = Category.objects.all()
     user_wishlist = Wishlist.objects.filter(user=request.user).first()
-    has_unread_notifications = Notification.objects.filter(user=request.user, is_read=False).exists()
-
     # Obtener parámetros de consulta
     title_or_isbn = request.GET.get('title', '')  # Usar el mismo campo para título e ISBN
     author = request.GET.get('author', '')
@@ -57,7 +55,6 @@ def books(request):
         'books': books,
         'exchanges_pending': exchanges_pending,
         'user_wishlist': user_wishlist,
-        'has_unread_notifications': has_unread_notifications,
         'categories': categories
     })
 
