@@ -6,6 +6,7 @@ from users.models import Notification
 from django.db.models import Q, Count
 from django.core.paginator import Paginator
 from django.http import QueryDict
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -27,6 +28,7 @@ def index(request):
 def dashboard(request):
     # Obtener los libros del usuario actual
     books = Book.objects.filter(owner=request.user).order_by('-created_at')  # Ordenar por fecha de creación
+    new_user = books
 
     # Obtener categorías para los filtros
     categories = Category.objects.all()
@@ -42,6 +44,7 @@ def dashboard(request):
     if author:
         books = books.filter(author__icontains=author)
     if category:
+        category = get_object_or_404(Category, id=category)  # Obtener la categoría por ID
         books = books.filter(category_id=category)
 
     # Paginación después de filtrar
@@ -61,4 +64,6 @@ def dashboard(request):
         'new_books': new_books,
         'categories': categories,
         'query_params': f"title={title}&author={author}&category={category}",
+        'new_user': new_user,
+        'category': category,
     })

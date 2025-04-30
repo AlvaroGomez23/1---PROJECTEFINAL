@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 
 
@@ -16,3 +18,6 @@ urlpatterns = [
    path('add_review_book/<int:book_id>/', views.add_review_book, name='add_review_book'),
    path('delete_review/<int:review_id>/', views.delete_review, name='delete_review'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

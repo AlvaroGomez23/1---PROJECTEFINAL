@@ -91,17 +91,17 @@ def create_book(request):
         return render(request, 'create_book.html', {'form': form})
     
     else:
-        form = createBook(request.POST, request.FILES)
+        form = createBook(request.POST, request.FILES)  # Asegúrate de incluir request.FILES
+        print(request.POST)
+        print(request.FILES)
         if form.is_valid():
             book = form.save(commit=False)
             book.owner = request.user
             book.save()
-            
             return redirect('book_details', book_id=book.pk)
         else:
             print("Error al crear el llibre")
             print(form.errors)
-
 
         return render(request, 'create_book.html', {'form': form})
     
@@ -245,6 +245,7 @@ def delete_book(request, book_id):
     book = get_object_or_404(Book, id=book_id, owner=request.user)
 
     if request.method == "POST":
+        book.image.delete(save=False)
         book.delete()
         messages.success(request, f"El llibre '{book.title}' s'ha eliminat correctament.")
         return redirect('dashboard')

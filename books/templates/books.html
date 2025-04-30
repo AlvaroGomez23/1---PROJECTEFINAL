@@ -84,7 +84,9 @@
                                 </a>
                             </p>
                             <a href="{% url 'book_details' book.id %}" class="btn btn-primary btn-sm">Consultar detalls</a>
+                            <p></p>
                             <a href="{% url 'request_exchange' book.id %}" class="btn btn-secondary btn-sm">Sol·licitar intercanvi</a>
+                            <p></p>
                             <form method="post" class="wishlist-form d-inline">
                                 {% csrf_token %}
                                 <button type="button" 
