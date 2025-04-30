@@ -1,0 +1,217 @@
+
+
+.container {
+    padding: 1.25rem; /* 20px */
+}
+
+/* Tarjetas de libros y tarjetas generales */
+.book-card,
+.card {
+    background-color: #FFFFFF !important; /* Fondo blanco */
+    color: #000000 !important; /* Texto negro */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 15px; /* Espaciado interno */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    border: 2px solid #ddd; /* Borde gris claro */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 400px; /* Altura más grande para las tarjetas */
+    overflow: auto; /* Habilitar desplazamiento interno si hay overflow */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease; /* Transición suave para la sombra y el borde */
+}
+
+.book-card:hover,
+.card:hover {
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
+    border-color: #111D4A; /* Cambiar el color del borde al hacer hover */
+}
+
+.book-card img {
+    border-radius: 10px; /* Bordes redondeados */
+    width: 100%; /* Imagen ocupa todo el ancho */
+    height: 200px; /* Altura fija para las imágenes */
+    object-fit: cover; /* Ajustar imagen sin distorsión */
+    margin-bottom: 10px; /* Espaciado inferior */
+}
+
+.book-card h4,
+.book-card p,
+.card h5,
+.card p,
+.card li,
+.card span,
+.card strong {
+    color: #000000 !important; /* Texto negro */
+}
+
+.book-card h4 {
+    font-size: 1.25rem; /* Tamaño del título */
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.book-card p {
+    font-size: 1rem; /* Tamaño del texto */
+    margin-bottom: 10px;
+}
+
+/* Botones principales */
+.book-card .btn-primary,
+.card .btn {
+    background-color: #111D4A; /* Azul oscuro */
+    color: #ffffff; /* Texto blanco */
+    border: none;
+    padding: 10px 15px;
+    font-size: 0.875rem; /* Tamaño del texto */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s ease;
+}
+
+.book-card .btn-primary:hover,
+.card .btn:hover {
+    background-color: #0a0f36; /* Azul más oscuro al pasar el ratón */
+}
+
+/* Botones secundarios */
+.book-card .btn-secondary {
+    background-color: #FFCF99; /* Amarillo claro */
+    color: #1E1E24; /* Texto oscuro */
+    border: none;
+    padding: 10px 15px;
+    font-size: 0.875rem; /* Tamaño del texto */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s ease;
+}
+
+.book-card .btn-secondary:hover {
+    background-color: #ffc07a; /* Amarillo más oscuro al pasar el ratón */
+}
+
+/* Filtros */
+.filters {
+    background-color: #FFFFFF; /* Fondo blanco */
+    color: #000000; /* Texto negro */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 15px; /* Espaciado interno */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    border: 2px solid #ddd; /* Borde gris claro */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrar los filtros verticalmente */
+    align-items: center; /* Centrar los filtros horizontalmente */
+    height: 520px; /* Altura igual a las dos tarjetas más el espacio entre ellas */
+    overflow: auto; /* Habilitar desplazamiento interno si hay overflow */
+    position: sticky; /* Fijo dentro de su contenedor */
+    top: 20px; /* Distancia desde la parte superior */
+    z-index: 1000; /* Asegurar que esté encima de otros elementos */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease; /* Transición suave para la sombra y el borde */
+}
+
+.filters:hover {
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
+    border-color: #111D4A; /* Cambiar el color del borde al hacer hover */
+}
+
+.filters h5 {
+    font-size: 1.25rem; /* Tamaño del título */
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #111D4A; /* Azul oscuro */
+}
+
+.filters .form-label {
+    font-size: 0.875rem; /* Tamaño del texto */
+    font-weight: bold;
+    color: #333; /* Texto más oscuro */
+}
+
+.filters .form-control,
+.filters .form-select {
+    background-color: #ffffff; /* Fondo blanco */
+    border: 1px solid #ccc; /* Borde gris claro */
+    border-radius: 5px; /* Bordes redondeados */
+    color: #000000; /* Texto oscuro */
+}
+
+.filters .btn {
+    width: 100%; /* Botones ocupan todo el ancho */
+    margin-top: 10px; /* Espaciado superior */
+}
+
+.filters .btn-primary {
+    background-color: #111D4A; /* Botón azul oscuro */
+    color: #ffffff; /* Texto blanco */
+    border: none;
+}
+
+.filters .btn-primary:hover {
+    background-color: #0a0f36; /* Azul más oscuro al pasar el ratón */
+}
+
+.filters .btn-danger {
+    background-color: #FFCF99; /* Botón secundario */
+    color: #1E1E24; /* Texto oscuro */
+    border: none;
+}
+
+.filters .btn-danger:hover {
+    background-color: #ffc07a; /* Amarillo más oscuro al pasar el ratón */
+}
+
+/* Listas */
+.list-group-item {
+    background-color: #ffffff !important; /* Fondo blanco */
+    color: #000000 !important; /* Texto negro */
+}
+
+.list-group-item .badge {
+    background-color: #FFC099; /* Color sunset */
+    color: #1E1E24; /* Texto oscuro */
+}
+
+/* Barra de navegación inferior */
+.navbar-bottom {
+    background-color: #FFFFFF; /* Fondo blanco */
+    color: #000000; /* Texto negro */
+    border-top: 2px solid #ddd; /* Borde superior gris claro */
+    padding: 10px 15px; /* Espaciado interno */
+    position: fixed; /* Fijar la barra en la parte inferior */
+    bottom: 0; /* Asegurar que esté en la parte inferior */
+    width: 100%; /* Ocupa todo el ancho */
+    z-index: 1000; /* Asegurar que esté encima de otros elementos */
+}
+
+.navbar-bottom a {
+    color: #111D4A; /* Azul oscuro para los enlaces */
+    text-decoration: none; /* Sin subrayado */
+    font-weight: bold;
+}
+
+.navbar-bottom a:hover {
+    color: #0a0f36; /* Azul más oscuro al pasar el ratón */
+}
+
+/* Tarjetas de novedades */
+.novetats-card {
+    background-color: #FFFFFF !important; /* Fondo blanco */
+    color: #000000 !important; /* Texto negro */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 15px; /* Espaciado interno */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    border: 2px solid #ddd; /* Borde gris claro */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 250px; /* Altura más pequeña para estas tarjetas */
+    overflow: auto; /* Habilitar desplazamiento interno si hay overflow */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease; /* Transición suave para la sombra y el borde */
+}
+
+.novetats-card:hover {
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
+    border-color: #111D4A; /* Cambiar el color del borde al hacer hover */
+}
