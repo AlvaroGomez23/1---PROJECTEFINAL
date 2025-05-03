@@ -268,7 +268,7 @@ def private_chat(request, user_id):
         send_user_notification(other_user, request.user, f"{request.user.username} ha començat una conversa amb tu", "Probablement tinguis missatges nous, revisa-ho!", None)
 
     # Redirigir al puerto 8000 para el chat
-    chat_url = f"http://127.0.0.1:8000/users/chat/{conversation.id}/"
+    chat_url = f"/users/chat/{conversation.id}/"
     return HttpResponseRedirect(chat_url)
 
 
