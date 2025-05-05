@@ -42,7 +42,67 @@
             background-color: #FFCF99;
             color: #1E1E24;
         }
+
+        /* Estilos adicionales para los resultados */
+        #city-results {
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const citySearchInput = document.getElementById('city-search');
+            const resultsContainer = document.getElementById('city-results');
+            const cityHiddenInput = document.getElementById('id_city');  // Campo oculto del form
+
+            citySearchInput.addEventListener('input', async function () {
+                const query = citySearchInput.value.trim();
+
+                if (query.length > 1) {
+                    try {
+                        const response = await fetch("{% url 'city_autocomplete' %}?term=" + encodeURIComponent(query));
+                        if (!response.ok) throw new Error('Error al buscar ciudades');
+                        const data = await response.json();
+
+                        resultsContainer.innerHTML = '';  // Limpiar resultados anteriores
+
+                        if (data.length > 0) {
+                            resultsContainer.style.display = 'block';  // Mostrar resultados
+
+                            data.forEach(city => {
+                                const listItem = document.createElement('li');
+                                listItem.classList.add('list-group-item');
+                                listItem.textContent = city.name;
+                                listItem.dataset.id = city.id;
+                                resultsContainer.appendChild(listItem);
+                            });
+                        } else {
+                            resultsContainer.innerHTML = '<li class="list-group-item">No se encontraron resultados</li>';
+                            resultsContainer.style.display = 'block';  // Mostrar el mensaje
+                        }
+                    } catch (error) {
+                        console.error(error);
+                    }
+                } else {
+                    resultsContainer.innerHTML = '';  // Limpiar los resultados si no hay texto
+                    resultsContainer.style.display = 'none';  // Ocultar el desplegable
+                }
+            });
+
+            resultsContainer.addEventListener('click', function (event) {
+                if (event.target && event.target.nodeName === 'LI') {
+                    const cityName = event.target.textContent;
+                    const cityId = event.target.dataset.id;
+                    citySearchInput.value = cityName;  // Mostrar el nombre de la ciudad seleccionada en el input
+                    cityHiddenInput.value = cityId;  // Guardar el ID de la ciudad en el campo oculto
+                    resultsContainer.innerHTML = '';  // Limpiar resultados
+                    resultsContainer.style.display = 'none';  // Ocultar el desplegable
+                    console.log(`Ciudad seleccionada: ${cityName} (ID: ${cityId})`);
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="container mt-4">
@@ -67,10 +127,17 @@
                         {{ profile_form.phone_number }}
                     </div>
 
-                    <!-- Localitat (ocupa toda la fila) -->
+                    <!-- Campo oculto para la ciudad -->
                     <div class="col-12 mt-3">
                         {{ profile_form.city.label_tag }}
                         {{ profile_form.city }}
+                    </div>
+
+                    <!-- Campo visible de búsqueda de ciudad -->
+                    <div class="col-12 mt-3">
+                        <label for="city-search">Buscar ciutat: (S'ha de clicar al resultat per escollir-la)</label>
+                        <input type="text" id="city-search" class="form-control" placeholder="Escriu el nom de la ciutat">
+                        <ul id="city-results" class="list-group mt-2"></ul>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Guardar canvis</button>

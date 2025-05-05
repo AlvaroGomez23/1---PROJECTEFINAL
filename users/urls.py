@@ -19,5 +19,5 @@ urlpatterns = [
     path('inbox/', views.inbox, name='inbox'),
     path('mymap/', views.view_map, name='mymap'),  # Mapa del usuario actual
     path('mymap/<int:user_id>/', views.view_map, name='user_map'),  # Mapa de otro usuario
-    path('city-autocomplete/', autocomplete.CityAutocomplete.as_view(), name='city-autocomplete'),
+    path('city-autocomplete/', views.city_autocomplete, name='city_autocomplete'),
 ]

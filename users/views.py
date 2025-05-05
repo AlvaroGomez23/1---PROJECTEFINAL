@@ -12,6 +12,7 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.db.models import Avg
 from users.utils import send_user_notification
+from cities_light.models import City
 
 # Create your views here.
 
@@ -323,3 +324,10 @@ def view_map(request, user_id=None):
     }
     return render(request, 'map_view.html', context)
 
+
+def city_autocomplete(request):
+    term = request.GET.get('term', '')
+    if term:
+        cities = City.objects.filter(name__icontains=term).values('id', 'name')[:10]
+        return JsonResponse(list(cities), safe=False)
+    return JsonResponse([], safe=False)

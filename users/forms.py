@@ -27,13 +27,15 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['city', 'phone_number', 'movement_radius_km']  # Añadir el campo de radio de movimiento
+        fields = ['city', 'phone_number', 'movement_radius_km']
         labels = {
             'city': 'Selecciona el teu poble',
             'phone_number': 'Número de telèfon',
             'movement_radius_km': 'Radi de moviment (km)',
         }
-
+        widgets = {
+            'city': forms.HiddenInput()
+        }
 
 class EditProfile(forms.Form):
     first_name = forms.CharField(label="Nom", max_length=100)
