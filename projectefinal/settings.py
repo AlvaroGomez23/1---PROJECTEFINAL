@@ -69,6 +69,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'projectefinal.urls'
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://one-projectefinal.onrender.com"
+]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
