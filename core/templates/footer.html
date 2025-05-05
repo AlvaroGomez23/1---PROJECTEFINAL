@@ -1,0 +1,49 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+</head>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row justify-content-between"> <!-- Aseguramos que las columnas estén distribuidas adecuadamente -->
+
+            <!-- Sección de enlaces principales -->
+            <div class="col-md-4 footer-column mb-4">
+                <h5 class="footer-title">Enllaços</h5>
+                <ul class="footer-list">
+                    <li><a href="{% url 'dashboard' %}" class="footer-link">Dashboard</a></li>
+                    <li><a href="{% url 'books' %}" class="footer-link">Buscar llibres</a></li>
+                    <li><a href="{% url 'wishlist' %}" class="footer-link">Wishlist</a></li>
+                    <li><a href="{% url 'inbox' %}" class="footer-link">Missatges</a></li>
+                </ul>
+            </div>
+
+            <!-- Sección de contacto -->
+            <div class="col-md-4 footer-column mb-4">
+                <h5 class="footer-title">Contacte</h5>
+                <ul class="footer-list">
+                    <li><i class="fas fa-envelope"></i> <a href="mailto:a.gomez9@sapalomera.cat" class="footer-link">a.gomez9@sapalomera.cat</a></li>
+                    <li><i class="fas fa-phone"></i> +34 111 111 111  </li>
+                    <li><i class="fas fa-map-marker-alt"></i> Blanes, Catalunya</li>
+                </ul>
+            </div>
+
+            <!-- Sección de redes sociales -->
+            <div class="col-md-4 footer-column mb-4">
+                <h5 class="footer-title">Web feta per:</h5>
+                <ul class="footer-social">
+                    <p>Álvaro Gómez Moreno</p>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Línea divisoria -->
+        <hr class="footer-divider">
+
+        <!-- Copyright -->
+        <div class="text-center">
+            <p class="mb-0">&copy; 2025 Projecte Final.</p>
+        </div>
+    </div>
+</footer>
