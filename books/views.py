@@ -4,7 +4,7 @@ from .models import Book, Exchange, Category, Review
 from users.models import Wishlist, Notification
 from .forms import createBook, ExchangeForm
 from django.contrib.auth.decorators import login_required
-from users.utils import send_user_notification
+from users.utils import send_user_notification, send_user_email
 from django.db.models import Avg
 from django.contrib import messages
 
@@ -77,11 +77,12 @@ def check_isbn_in_wishlists(isbn):
     for wishlist in wishlists:
         # Si se encuentra el ISBN en la wishlist de algún usuario, enviar una notificación
         user = wishlist.user
-        title = f"¡Un libro que deseas está disponible!"
-        message = f"El libro con ISBN {isbn} que tenías en tu wishlist ahora está disponible."
+        title = f"Un llibre desitjat està disponible!"
+        message = f"El llibre amb ISBN {isbn} que desitjes, ara està disponible."
         
         # Enviar la notificación
-        send_user_notification(user, None, title, message, None)
+    send_user_notification(user, None, title, message, None)
+    send_user_email(user, title, message)
 
 
 @login_required
@@ -182,6 +183,7 @@ def request_exchange(request, book_id):
             message = f"{request.user.first_name} vol intercanviar {exchange.book_from.title} pel teu llibre {book.title}"
 
             send_user_notification(user, user_from, title, message, exchange)
+            send_user_email(user, title, message)
             
             return redirect('book_details', book_id=book.pk)
     else:
@@ -222,6 +224,7 @@ def accept_exchange(request, exchange_id):
     message = f"{request.user.username} ha acceptat intercanvi {exchange.book_from.title} per {exchange.book_for.title}"
     
     send_user_notification(user, user_from, title, message, None)
+    send_user_email(user, title, message)
 
     return redirect('notifications')
 
@@ -238,6 +241,7 @@ def decline_exchange(request, exchange_id):
     message = f"{request.user.username} no vol intercanviar {exchange.book_from.title} per {exchange.book_for.title}"
 
     send_user_notification(user, user_from, title, message, None)
+    send_user_email(user, title, message)
 
     return redirect('notifications')
 

@@ -11,9 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.db.models import Avg
-from users.utils import send_user_notification
+from users.utils import send_user_notification, send_user_email
 from cities_light.models import City
-
 # Create your views here.
 
 def login(request):
@@ -266,7 +265,20 @@ def private_chat(request, user_id):
     if not conversation:
         conversation = Conversation.objects.create()
         conversation.participants.add(request.user, other_user)
-        send_user_notification(other_user, request.user, f"{request.user.username} ha començat una conversa amb tu", "Probablement tinguis missatges nous, revisa-ho!", None)
+        send_user_notification(
+            other_user, 
+            request.user, 
+            f"{request.user.username} ha començat una conversa amb tu", 
+            "Probablement tinguis missatges nous, revisa-ho!", 
+            None
+            )
+
+        send_user_email(
+            other_user,
+            f"{request.user.username} ha començat una conversa amb tu",
+            "Probablement tinguis missatges nous, revisa-ho!",
+        )
+
 
     # Redirigir al puerto 8000 para el chat
     chat_url = f"/users/chat/{conversation.id}/"

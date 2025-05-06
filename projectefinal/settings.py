@@ -158,4 +158,13 @@ LOGIN_URL = '/users/login/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# VENV per enviar mail 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'a.gomez9@sapalomera.cat'
+EMAIL_HOST_PASSWORD = 'lepk fgby elkd unif'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 
