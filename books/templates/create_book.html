@@ -1,7 +1,6 @@
 {% extends 'usernav.html' %}
 {% load static %}
 {% block content %}
-<!-- Bootstrap y estilos -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
@@ -55,8 +54,7 @@
         color: #aaa;
         text-align: center;
         width: 100%;
-        height: 300px; /* Ajustar la altura para pantallas pequeñas */
-        max-height: none;
+        height: 90vh;
         max-width: none;
     }
 
@@ -66,121 +64,121 @@
         object-fit: contain;
     }
 
-    @media (max-width: 768px) {
-        .image-preview {
-            height: 200px; /* Reducir la altura en pantallas pequeñas */
-        }
-
-        .form-container {
-            padding: 1.5rem; /* Reducir el padding en pantallas pequeñas */
-        }
+    .image-preview label {
+        cursor: pointer;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
     }
 
     .form-group {
         margin-bottom: 1rem;
     }
+
+    @media (max-width: 767.98px) {
+        .image-preview {
+            height: auto;
+            min-height: 200px;
+            padding: 1rem;
+        }
+
+        .image-preview span {
+            font-size: 14px;
+        }
+
+        .form-container {
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .form-container button {
+            font-size: 14px;
+            padding: 0.5rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+        }
+    }
 </style>
 
-<div class="container mt-5">
+<div class="container mt-5 px-3 px-md-5">
     <h1 class="text-center mb-4">Afegir llibres</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="row">
-            <!-- Columna de Imagen -->
-            <div class="col-md-5 order-1 order-md-1">
+        <div class="row gy-4">
+            <!-- Imagen -->
+            <div class="col-12 col-md-5">
                 <div class="image-preview mb-4">
                     {% if form.image.value %}
                         <img src="{{ form.image.value.url }}" alt="Previsualització" class="img-fluid">
                     {% endif %}
-                    <label for="id_image" class="w-100 h-100 d-flex align-items-center justify-content-center flex-column">
+                    <label for="id_image">
                         <span>Puja una imatge per veure-la</span>
                     </label>
                 </div>
             </div>
 
-            <!-- Columna del formulario -->
-            <div class="col-md-7 order-2 order-md-2">
+            <!-- Formulario -->
+            <div class="col-12 col-md-7">
                 <div class="form-container">
                     {{ form.non_field_errors }}
 
                     <div class="row g-3">
-                        <!-- Campo ISBN -->
-                        <div class="col-12">
-                            <div class="form-group">
-                                {{ form.isbn.label_tag }}
-                                {{ form.isbn }}
-                            </div>
+                        <div class="col-12 form-group">
+                            {{ form.isbn.label_tag }}
+                            {{ form.isbn }}
                         </div>
 
-                        <div class="col-12">
-                            <div class="form-group">
-                                {{ form.title.label_tag }}
-                                {{ form.title }}
-                            </div>
+                        <div class="col-12 form-group">
+                            {{ form.title.label_tag }}
+                            {{ form.title }}
                         </div>
 
-                        <!-- Fila 1: Descripción y Autor -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                {{ form.description.label_tag }}
-                                {{ form.description }}
-                            </div>
+                        <div class="col-md-6 form-group">
+                            {{ form.description.label_tag }}
+                            {{ form.description }}
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                {{ form.author.label_tag }}
-                                {{ form.author }}
-                            </div>
+                        <div class="col-md-6 form-group">
+                            {{ form.author.label_tag }}
+                            {{ form.author }}
                         </div>
 
-                        <!-- Fila 2: Precio y Estado -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                {{ form.price.label_tag }}
-                                {{ form.price }}
-                            </div>
+                        <div class="col-md-6 form-group">
+                            {{ form.price.label_tag }}
+                            {{ form.price }}
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                {{ form.state.label_tag }}
-                                {{ form.state }}
-                            </div>
+                        <div class="col-md-6 form-group">
+                            {{ form.state.label_tag }}
+                            {{ form.state }}
                         </div>
 
-                        <!-- Fila 3: Categoría y Enlace -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                {{ form.category.label_tag }}
-                                {{ form.category }}
-                            </div>
+                        <div class="col-md-6 form-group">
+                            {{ form.category.label_tag }}
+                            {{ form.category }}
                         </div>
 
-                        <!-- Campos full-width -->
-                        <div class="col-6">
-                            <div class="form-group">
-                                {{ form.rating.label_tag }}
-                                {{ form.rating }}
-                            </div>
+                        <div class="col-6 form-group">
+                            {{ form.rating.label_tag }}
+                            {{ form.rating }}
                         </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                {{ form.status.label_tag }}
-                                {{ form.status }}
-                            </div>
+                        <div class="col-6 form-group">
+                            {{ form.status.label_tag }}
+                            {{ form.status }}
                         </div>
 
-                        <div class="col-12">
-                            <div class="form-group">
-                                {{ form.visible.label_tag }}
-                                {{ form.visible }}
-                            </div>
+                        <div class="col-12 form-group">
+                            {{ form.visible.label_tag }}
+                            {{ form.visible }}
                         </div>
 
-                        <div class="col-12">
-                            <div class="form-group">
-                                {{ form.image.label_tag }}
-                                {{ form.image }}
-                            </div>
+                        <div class="col-12 form-group">
+                            {{ form.image.label_tag }}
+                            {{ form.image }}
                         </div>
                     </div>
 
@@ -198,7 +196,6 @@
     </form>
 </div>
 
-<!-- JavaScript para previsualizar la imagen -->
 <script>
     document.getElementById('id_image').addEventListener('change', function(event) {
         var preview = document.querySelector('.image-preview');
@@ -215,5 +212,4 @@
         }
     });
 </script>
-
 {% endblock %}
