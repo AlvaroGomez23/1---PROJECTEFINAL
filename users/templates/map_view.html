@@ -5,35 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa de {{ user.first_name }}</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <style>
-        #map {
-            height: 100vh;
-        }
-
-        /* Estilo para el botón flotante */
-        .floating-button {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #111D4A;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            z-index: 1000; /* Asegurar que esté encima del mapa */
-            text-decoration: none;
-        }
-
-        .floating-button:hover {
-            background-color: #0a0f36;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/map.css' %}">
 </head>
 <body>
     <div id="map"></div>

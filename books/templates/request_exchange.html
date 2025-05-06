@@ -9,142 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sol·licitud d'intercanvi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 40px;
-            margin-top: 40px;
-            padding: 20px;
-        }
-
-        .book-box {
-            background-color: #0b1547;
-            width: 160px;
-            height: 240px;
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .form-box {
-            background-color: #0b1547;
-            padding: 20px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 180px;
-        }
-
-        label {
-            color: white;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        select {
-            padding: 5px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            width: 100%;
-            color: black; /* Cambiar el color del texto a negro */
-            background-color: white; /* Asegurar que el fondo sea blanco */
-        }
-
-        option {
-            color: black; /* Asegurar que las opciones también tengan texto negro */
-        }
-
-        button {
-            padding: 10px 15px;
-            background-color: #f1f1f1;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .error {
-            color: red;
-            text-align: center;
-        }
-
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .book-label {
-            text-align: center;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .preview-title {
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .book-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .book-card {
-            background-color: #111D4A;
-            border-radius: 1rem; /* Bordes más redondeados */
-            padding: 1.5rem; /* Más espacio interno */
-            text-align: center;
-            box-shadow: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
-            color: white;
-            height: 35rem; /* Incrementar la altura de las tarjetas */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .book-card img {
-            border-radius: 0.75rem; /* Bordes redondeados para la imagen */
-            width: 100%;
-            height: 15rem; /* Incrementar la altura de la imagen */
-            object-fit: cover;
-            margin-bottom: 1rem; /* Más espacio debajo de la imagen */
-        }
-
-        .book-card h4 {
-            font-size: 1.25rem; /* Incrementar el tamaño del título */
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            flex-grow: 1;
-        }
-
-        .book-card p {
-            font-size: 1rem; /* Incrementar el tamaño del texto */
-            margin-bottom: 1rem;
-            color: #ccc;
-        }
-
-        .book-card .btn {
-            margin-top: auto;
-            padding: 0.75rem 1.5rem; /* Botones más grandes */
-            font-size: 1rem; /* Incrementar el tamaño del texto del botón */
-            border-radius: 0.5rem;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/exchange.css' %}">
 </head>
 <body>
     <h1>Sol·licitud d'intercanvi</h1>
@@ -160,7 +25,7 @@
             <div class="preview-title">{{ book.title }}</div>
             <div class="book-box">
                 {% if book.image %}
-                    <img src="{{ book.image.url }}" alt="{{ book.title }}" style="width: 100%; height: auto; border-radius: 10px;">
+                    <img src="{{ book.image.url }}" alt="{{ book.title }}">
                 {% else %}
                     <p style="color:white; text-align:center;">Sense imatge</p>
                 {% endif %}

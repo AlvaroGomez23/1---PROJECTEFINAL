@@ -1,0 +1,49 @@
+.notifications-wrapper {
+    border-left: 5px solid #111D4A;
+    background-color: #FFF8F0;
+    padding: 20px; /* Espaciado interno */
+    margin: 0 auto; /* Centra el contenedor */
+    width: 90%; /* Ancho máximo */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.notification {
+    border-left: 5px solid #111D4A;
+    background-color: #FFF8F0;
+    margin-bottom: 20px; /* Espaciado entre notificaciones */
+    padding: 15px; /* Espaciado interno */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+.notification__title {
+    color: #111D4A;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.notification__message {
+    color: #1E1E24;
+    margin-bottom: 0.75rem;
+}
+
+.btn-secondary {
+    background-color: #FFCF99;
+    border: none;
+    color: #1E1E24;
+    font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background-color: #ffc07a;
+}
+
+.btn-success {
+    background-color: #198754;
+    border: none;
+}
+
+.btn-danger {
+    background-color: #92140C;
+    border: none;
+}
