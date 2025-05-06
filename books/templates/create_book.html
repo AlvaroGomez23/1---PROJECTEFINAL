@@ -54,18 +54,27 @@
         justify-content: center;
         color: #aaa;
         text-align: center;
-        width: 100%; /* Asegurarse de que ocupe todo el ancho disponible */
-        height: 100%; /* Asegurarse de que ocupe toda la altura disponible */
-        max-height: none; /* Eliminar cualquier límite de altura */
-        max-width: none; /* Eliminar cualquier límite de ancho */
+        width: 100%;
+        height: 300px; /* Ajustar la altura para pantallas pequeñas */
+        max-height: none;
+        max-width: none;
     }
 
     .image-preview img {
-        max-width: 100%; /* La imagen no debe exceder el ancho del contenedor */
-        max-height: 100%; /* La imagen no debe exceder la altura del contenedor */
-        object-fit: contain; /* Ajustar la imagen sin distorsionarla */
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
     }
 
+    @media (max-width: 768px) {
+        .image-preview {
+            height: 200px; /* Reducir la altura en pantallas pequeñas */
+        }
+
+        .form-container {
+            padding: 1.5rem; /* Reducir el padding en pantallas pequeñas */
+        }
+    }
 
     .form-group {
         margin-bottom: 1rem;
@@ -78,20 +87,19 @@
         {% csrf_token %}
         <div class="row">
             <!-- Columna de Imagen -->
-            <div class="col-md-5">
+            <div class="col-md-5 order-1 order-md-1">
                 <div class="image-preview mb-4">
                     {% if form.image.value %}
                         <img src="{{ form.image.value.url }}" alt="Previsualització" class="img-fluid">
                     {% endif %}
                     <label for="id_image" class="w-100 h-100 d-flex align-items-center justify-content-center flex-column">
                         <span>Puja una imatge per veure-la</span>
-                        
                     </label>
                 </div>
             </div>
 
             <!-- Columna del formulario -->
-            <div class="col-md-7">
+            <div class="col-md-7 order-2 order-md-2">
                 <div class="form-container">
                     {{ form.non_field_errors }}
 
@@ -146,7 +154,6 @@
                                 {{ form.category }}
                             </div>
                         </div>
-                        
 
                         <!-- Campos full-width -->
                         <div class="col-6">
@@ -171,12 +178,10 @@
 
                         <div class="col-12">
                             <div class="form-group">
-                            {{ form.image.label_tag}}
-                            {{ form.image }}
+                                {{ form.image.label_tag }}
+                                {{ form.image }}
                             </div>
                         </div>
-
-                        
                     </div>
 
                     <button type="submit" class="mt-3">Guardar</button>
