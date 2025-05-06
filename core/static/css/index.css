@@ -1,107 +1,162 @@
+/* Estilo general del cuerpo */
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f4f4f9;
+    background-color: #f4f4f9; /* Fondo claro con un tono gris suave */
     color: #333;
+    margin: 0;
+    padding: 0;
 }
 
-/* Estilo del contenedor del carrusel */
+/* Contenedor del carrusel */
 .carousel-container {
-    margin-top: 50px; 
-    max-width: 90%;
+    margin-top: 30px;
+    max-width: 95%;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 30px;
 }
 
 /* Imagen del carrusel */
 .carousel-inner img {
-    height: 250px;
+    height: 300px;
     object-fit: cover;
     width: 100%;
-    border-radius: 10px;
-    transition: transform 0.3s ease-in-out;
+    border-radius: 15px;
+    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+    border: 3px solid #0d6efd; /* Borde azul para mayor contraste */
 }
 
 .carousel-inner img:hover {
-    transform: scale(1.05); /* Efecto de zoom suave */
+    transform: scale(1.1); /* Efecto de zoom más pronunciado */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Sombra más intensa */
 }
 
-/* Estilo del título de categoría */
+/* Título de categoría */
 .category-title {
     text-align: left;
     margin-top: 80px;
-    margin-left: 12%;
-    font-size: 30px;
+    margin-left: 10%;
+    font-size: 28px;
     font-weight: bold;
-    color: #111D4A;
+    color: #FFFFFF; /* Azul moderno */
     text-transform: uppercase;
+    border-left: 6px solid #0d6efd; /* Línea decorativa más gruesa */
+    padding-left: 15px;
+    background: linear-gradient(to right, #0d6efd 10%, transparent 90%); /* Efecto de degradado */
 }
 
 /* Fondo del carrusel */
 .carousel-background {
-    background-color: #111D4A;
-    padding: 40px 0;
-    border-radius: 10px;
+    background-color: #ffffff; /* Fondo blanco para destacar */
+    padding: 30px 0;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Sombra más suave */
 }
 
-/* Estilo de las tarjetas de los libros */
+/* Tarjetas de los libros */
 .book-card {
     background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    margin: 15px 0;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    padding: 20px;
+    margin: 20px 0;
     text-align: center;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
+    height: 22rem; /* Ajustar altura */
+    overflow: hidden;
+    border: 2px solid #e0e0e0; /* Borde gris claro */
 }
 
 .book-card:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Sombra más intensa al hacer hover */
+    transform: translateY(-10px); /* Efecto de elevación */
+    border-color: #0d6efd; /* Cambiar el borde a azul al hacer hover */
 }
 
 .book-card img {
     border-radius: 10px;
     margin-bottom: 15px;
-    transition: transform 0.3s ease;
-    max-height: 200px; /* Asegura que las imágenes no se desborden */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-height: 180px; /* Limitar la altura de las imágenes */
+    object-fit: cover;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
 }
 
 .book-card img:hover {
     transform: scale(1.05); /* Efecto de zoom */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más intensa */
 }
 
 .book-card h3 {
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 22px; /* Tamaño más grande para el título */
+    font-weight: 700;
     margin-bottom: 10px;
-    color: #333;
+    color: #0d6efd; /* Azul moderno */
 }
 
 .book-card p {
-    font-size: 14px;
-    color: #777;
+    font-size: 15px;
+    color: #555; /* Texto más suave */
     margin-bottom: 0;
 }
 
-/* Estilo para los controles del carrusel */
+/* Controles del carrusel */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    background-color: #fff;
+    background-color: #0d6efd; /* Azul moderno */
     border-radius: 50%;
-    padding: 12px;
+    padding: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-/* Estilo para los indicadores del carrusel */
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+    background-color: #084298; /* Azul más oscuro al hacer hover */
+    transform: scale(1.1); /* Efecto de zoom */
+}
+
+/* Indicadores del carrusel */
+.carousel-indicators {
+    position: absolute;
+    bottom: -25px; /* Mueve las bolitas más abajo */
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Espaciado entre las bolitas */
+}
+
 .carousel-indicators [data-bs-target] {
-    background-color: #fff;
-    border: 1px solid #111D4A;
+    background-color: #0d6efd;
+    border: 2px solid #ffffff;
     width: 12px;
     height: 12px;
     border-radius: 50%;
     margin: 5px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .carousel-indicators .active {
-    background-color: #111D4A;
+    background-color: #084298; /* Azul más oscuro para el indicador activo */
+    transform: scale(1.3); /* Indicador activo más grande */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .carousel-inner img {
+        height: 220px; /* Reducir la altura de las imágenes en pantallas pequeñas */
+    }
+
+    .category-title {
+        font-size: 24px; /* Reducir el tamaño del título */
+        margin-left: 5%;
+    }
+
+    .book-card {
+        height: auto; /* Ajustar la altura automáticamente */
+    }
+
+    .book-card img {
+        max-height: 150px; /* Reducir la altura de las imágenes */
+    }
 }
