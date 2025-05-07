@@ -213,3 +213,25 @@
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
     border-color: #111D4A; /* Cambiar el color del borde al hacer hover */
 }
+
+@media (max-width: 768px) {
+    /* Estilos para iPads en orientación vertical y dispositivos móviles */
+    .header {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .nav-list {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .book-card {
+        height: auto;
+    }
+
+    .filters {
+        height: auto;
+        padding: 1rem;
+    }
+}
