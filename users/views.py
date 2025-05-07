@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import Login, Register, UserForm, UserProfileForm, LocationForm
 from django.contrib.auth import authenticate, login as _login, logout as _logout
 from django.contrib.auth.models import User
-from .models import UserProfile, Notification, Wishlist, Conversation
+from .models import UserProfile, Notification, Wishlist, Conversation, Review
 from books.models import Book
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
@@ -13,6 +13,7 @@ from channels.layers import get_channel_layer
 from django.db.models import Avg
 from users.utils import send_user_notification, send_user_email
 from cities_light.models import City
+from django.contrib import messages
 # Create your views here.
 
 def login(request):
@@ -343,3 +344,53 @@ def city_autocomplete(request):
         cities = City.objects.filter(name__icontains=term).values('id', 'name')[:10]
         return JsonResponse(list(cities), safe=False)
     return JsonResponse([], safe=False)
+
+
+@login_required
+def add_review_user(request, user_id):
+    user_to_review = get_object_or_404(User, id=user_id)
+    existing_review = Review.objects.filter(reviewer=request.user, reviewed_user=user_to_review).first()
+
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment', '').strip()
+
+        if not rating:
+            messages.error(request, "La puntuació és obligatòria.")
+            return redirect('add_review_user', user_id=user_to_review.id)
+
+        if existing_review:
+            # Actualizar la valoración existente
+            existing_review.rating = rating
+            existing_review.comment = comment
+            existing_review.save()
+            messages.success(request, "La teva valoració s'ha actualitzat correctament.")
+        else:
+            # Crear una nueva valoración
+            Review.objects.create(
+                reviewer=request.user,
+                reviewed_user=user_to_review,
+                rating=rating,
+                comment=comment
+            )
+            messages.success(request, "La teva valoració s'ha afegit correctament.")
+
+        return redirect('view_profile', user_id=user_to_review.id)
+
+    context = {
+        'user_to_review': user_to_review,
+        'existing_review': existing_review,
+    }
+    return render(request, 'add_review_user.html', context)
+
+
+@login_required
+def delete_review_user(request, review_id):
+    review = get_object_or_404(Review, id=review_id, reviewer=request.user)
+
+
+    if request.method == "POST":
+        review.delete()
+        messages.success(request, "La valoració s'ha eliminat correctament.")
+
+    return redirect('view_profile', user_id=review.reviewed_user.id)

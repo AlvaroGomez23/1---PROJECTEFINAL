@@ -20,4 +20,6 @@ urlpatterns = [
     path('mymap/', views.view_map, name='mymap'),  # Mapa del usuario actual
     path('mymap/<int:user_id>/', views.view_map, name='user_map'),  # Mapa de otro usuario
     path('city-autocomplete/', views.city_autocomplete, name='city_autocomplete'),
+    path('add_review_user/<int:user_id>', views.add_review_user, name='add_review_user'),
+    path('delete_review_user/<int:review_id>', views.delete_review_user, name='delete_review_user'),
 ]

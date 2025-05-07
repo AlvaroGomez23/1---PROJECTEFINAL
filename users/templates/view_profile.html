@@ -13,6 +13,16 @@
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 </head>
 <body>
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
     <div class="container mt-4">
         <div class="profile-container">
             <h1>Perfil de {{ user.first_name }}</h1>
@@ -37,7 +47,8 @@
                 {% if user == request.user %}
                     <a href="{% url 'edit_profile' %}" class="btn btn-edit">Editar perfil</a>
                 {% else %}
-                <a href="{% url 'private_chat' user_id=other_user.id %}" class="btn">Iniciar chat</a>
+                    <a href="{% url 'private_chat' user_id=other_user.id %}" class="btn">Iniciar chat</a>
+                    <a href="{% url 'add_review_user' user.id %}" class="btn btn-primary">Valorar usuari</a>
                 {% endif %}
                 {% if profile_info.city %}
                     <a href="{% url 'user_map' user_id=profile_info.user.id %}" class="btn btn-primary">Veure mapa</a>
@@ -45,26 +56,75 @@
                     <p class="text-muted">Ubicació no configurada</p>
                 {% endif %}
                 <a href="{% url 'dashboard' %}" class="btn btn-back">Tornar a l'inici</a>
-                
             </div>
-            <div class="reviews-container">
-                <h3>Valoracions</h3>
-                {% if reviews %}
+        </div>
+        <div class="reviews-container">
+            <h3>Valoracions</h3>
+            {% if reviews %}
                 <p>Valoració mitjana: {{ average_rating }} ★</p>
+                <div class="reviews-scroll">
                     {% for review in reviews %}
                     <div class="review-card">
+                        <p id="rev_id" hidden>{{ review.id }}</p>
                         <h5>{{ review.reviewer.first_name }}</h5>
                         <p class="review-rating">{{ review.rating }}★</p>
                         <p class="review-comment">{{ review.comment }}</p>
                         <p class="review-date">Publicat el {{ review.date_created|date:"d M Y" }}</p>
+                        {% if review.reviewer == request.user %}
+                        <button type="button" class="btn btn-danger btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#deleteReviewModal" data-review-id="{{ review.id }}">
+                            Eliminar
+                        </button>
+                        {% endif %}
                     </div>
                     {% endfor %}
-                {% else %}
-                    <p>No hi ha valoracions per aquest usuari :P.</p>
-                {% endif %}
+                </div>
+            {% else %}
+                <p>No hi ha valoracions per aquest usuari :P.</p>
+            {% endif %}
+        </div>
+
+        <!-- Modal de confirmación -->
+        <div class="modal fade" id="deleteReviewModal" tabindex="-1" aria-labelledby="deleteReviewModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteReviewModalLabel">Confirmar eliminació</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Estàs segur que vols eliminar aquesta valoració?</p>
+                        <p>ID de la valoració: <strong id="modalReviewId"></strong></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel·lar</button>
+                        <form method="post" action="{% url 'delete_review_user' 0 %}" id="deleteReviewForm">
+
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    
+    <script>
+        const deleteReviewModal = document.getElementById('deleteReviewModal');
+        deleteReviewModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget; // Botón que abrió el modal
+            const reviewId = button.getAttribute('data-review-id'); // Obtener el ID de la valoración
+
+            // Actualizar el contenido del modal con el ID de la valoración
+            const modalReviewId = document.getElementById('modalReviewId');
+            modalReviewId.textContent = reviewId;
+
+            // Actualizar la acción del formulario con el ID de la valoración
+            const deleteReviewForm = document.getElementById('deleteReviewForm');
+            const originalAction = deleteReviewForm.getAttribute('action'); // Obtener la acción original
+            const newAction = `/users/delete_review_user/${reviewId}`; // Reemplazar el ID dinámicamente
+            deleteReviewForm.setAttribute('action', newAction); // Establecer la nueva acción
+        });
+    </script>
 </body>
 </html>
 {% endblock %}
