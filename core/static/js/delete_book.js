@@ -18,4 +18,15 @@ document.addEventListener("DOMContentLoaded", function () {
             deleteForm.action = deleteForm.action.replace(/\/\d+\/$/, `/${bookId}/`);
         });
     }
+
+    const toggleFiltersBtn = document.getElementById('toggleFiltersBtn');
+    const filtersPanel = document.getElementById('filtersPanel');
+
+    filtersPanel.addEventListener('show.bs.collapse', () => {
+        toggleFiltersBtn.innerHTML = 'Amagar Filtres'; // Cambiar el texto cuando el panel se muestra
+    });
+
+    filtersPanel.addEventListener('hide.bs.collapse', () => {
+        toggleFiltersBtn.innerHTML = 'Mostrar Filtres'; // Cambiar el texto cuando el panel se oculta
+    });
 });

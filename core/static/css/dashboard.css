@@ -1,37 +1,36 @@
 .container {
-    padding: 1.25rem; /* 20px */
+    padding: 1.25rem;
 }
 
-/* Tarjetas de libros y tarjetas generales */
 .book-card,
 .card {
-    background-color: var(--fullWhite) !important; /* Fondo blanco */
-    color: #000000 !important; /* Texto negro */
-    border-radius: 0.625rem; /* 10px */
-    padding: 0.9375rem; /* 15px */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    border: 2px solid #ddd; /* Borde gris claro */
+    background-color: var(--fullWhite) !important;
+    color: #000000 !important;
+    border-radius: 0.625rem;
+    padding: 0.9375rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ddd;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 25rem; /* 400px */
-    overflow: auto; /* Habilitar desplazamiento interno si hay overflow */
-    transition: box-shadow 0.3s ease, border-color 0.3s ease; /* Transición suave para la sombra y el borde */
+    height: 25rem;
+    overflow: auto;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .book-card:hover,
 .card:hover {
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
-    border-color: var(--primaryColor); /* Cambiar el color del borde al hacer hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    border-color: var(--primaryColor);
 }
 
 .book-card img {
-    border-radius: 0.625rem; /* 10px */
-    width: 100%; /* Imagen ocupa todo el ancho */
-    height: 12.5rem; /* 200px */
-    object-fit: cover; /* Ajustar imagen sin distorsión */
-    margin-bottom: 0.625rem; /* 10px */
+    border-radius: 0.625rem;
+    width: 100%;
+    height: 12.5rem;
+    object-fit: cover;
+    margin-bottom: 0.625rem;
 }
 
 .book-card h4,
@@ -41,186 +40,190 @@
 .card li,
 .card span,
 .card strong {
-    color: #000000 !important; /* Texto negro */
+    color: #000000 !important;
 }
 
 .book-card h4 {
-    font-size: 1.25rem; /* Tamaño del título */
+    font-size: 1.25rem;
     font-weight: bold;
-    margin-bottom: 0.625rem; /* 10px */
+    margin-bottom: 0.625rem;
 }
 
 .book-card p {
-    font-size: 1rem; /* Tamaño del texto */
-    margin-bottom: 0.625rem; /* 10px */
+    font-size: 1rem;
+    margin-bottom: 0.625rem;
 }
 
 /* Botones principales */
 .book-card .btn-primary,
 .card .btn {
-    background-color: var(--primaryColor); /* Azul oscuro */
-    color: var(--fullWhite); /* Texto blanco */
+    background-color: var(--primaryColor);
+    color: var(--fullWhite);
     border: none;
-    padding: 0.625rem 0.9375rem; /* 10px 15px */
-    font-size: 0.875rem; /* Tamaño del texto */
-    border-radius: 0.3125rem; /* 5px */
+    padding: 0.625rem 0.9375rem;
+    font-size: 0.875rem;
+    border-radius: 0.3125rem;
     transition: background-color 0.3s ease;
 }
 
 .book-card .btn-primary:hover,
 .card .btn:hover {
-    background-color: #0a0f36; /* Azul más oscuro al pasar el ratón */
+    background-color: #0a0f36;
 }
 
 /* Botones secundarios */
 .book-card .btn-secondary {
-    color: #1E1E24; /* Texto oscuro */
+    color: #1E1E24;
     border: none;
-    padding: 0.625rem 0.9375rem; /* 10px 15px */
-    font-size: 0.875rem; /* Tamaño del texto */
-    border-radius: 0.3125rem; /* Bordes redondeados */
+    padding: 0.625rem 0.9375rem;
+    font-size: 0.875rem;
+    border-radius: 0.3125rem;
     transition: background-color 0.3s ease;
 }
 
 .book-card .btn-secondary:hover {
-    background-color: var(--secondaryHoverColor); /* Amarillo más oscuro al pasar el ratón */
+    background-color: var(--secondaryHoverColor);
 }
 
 /* Filtros */
 .filters {
-    background-color: var(--fullWhite); /* Fondo blanco */
-    color: #000000; /* Texto negro */
-    border-radius: 0.625rem; /* 10px */
-    padding: 0.9375rem; /* 15px */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    border: 2px solid #ddd; /* Borde gris claro */
+    background-color: var(--fullWhite);
+    color: #000000;
+    border-radius: 0.625rem;
+    padding: 0.9375rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ddd;
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centrar los filtros verticalmente */
-    align-items: center; /* Centrar los filtros horizontalmente */
-    height: 32.5rem; /* 520px */
-    overflow: auto; /* Habilitar desplazamiento interno si hay overflow */
-    position: sticky; /* Fijo dentro de su contenedor */
-    top: 1.25rem; /* 20px */
-    z-index: 1000; /* Asegurar que esté encima de otros elementos */
-    transition: box-shadow 0.3s ease, border-color 0.3s ease; /* Transición suave para la sombra y el borde */
+    justify-content: center;
+    align-items: center;
+    height: 32.5rem;
+    overflow: auto;
+    position: sticky;
+    top: 1.25rem;
+    z-index: 1000;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .filters:hover {
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
-    border-color: var(--primaryColor); /* Cambiar el color del borde al hacer hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    border-color: var(--primaryColor);
 }
 
 .filters h5 {
-    font-size: 1.25rem; /* Tamaño del título */
+    font-size: 1.25rem;
     font-weight: bold;
-    margin-bottom: 0.9375rem; /* 15px */
-    color: var(--primaryColor); /* Azul oscuro */
+    margin-bottom: 0.9375rem;
+    color: var(--primaryColor);
 }
 
 .filters .form-label {
-    font-size: 0.875rem; /* Tamaño del texto */
+    font-size: 0.875rem;
     font-weight: bold;
-    color: #333; /* Texto más oscuro */
+    color: #333;
 }
 
 .filters .form-control,
 .filters .form-select {
-    background-color: var(--fullWhite); /* Fondo blanco */
-    border: 1px solid #ccc; /* Borde gris claro */
-    border-radius: 0.3125rem; /* Bordes redondeados */
-    color: #000000; /* Texto oscuro */
+    background-color: var(--fullWhite);
+    border: 1px solid #ccc;
+    border-radius: 0.3125rem;
+    color: #000000;
 }
 
 .filters .btn {
-    width: 100%; /* Botones ocupan todo el ancho */
-    margin-top: 0.625rem; /* 10px */
+    width: 100%;
+    margin-top: 0.625rem;
 }
 
 .filters .btn-primary {
-    background-color: var(--primaryColor); /* Botón azul oscuro */
-    color: var(--fullWhite); /* Texto blanco */
+    background-color: var(--primaryColor);
+    color: var(--fullWhite);
     border: none;
 }
 
 .filters .btn-primary:hover {
-    background-color: #0a0f36; /* Azul más oscuro al pasar el ratón */
+    background-color: #0a0f36;
 }
 
 .filters .btn-danger {
-    background-color: var(--secondaryColor); /* Botón secundario */
-    color: #1E1E24; /* Texto oscuro */
+    background-color: var(--secondaryColor);
+    color: #1E1E24;
     border: none;
 }
 
 .filters .btn-danger:hover {
-    background-color: var(--secondaryHoverColor); /* Amarillo más oscuro al pasar el ratón */
+    background-color: var(--secondaryHoverColor);
 }
 
 /* Listas */
 .list-group-item {
-    background-color: var(--fullWhite) !important; /* Fondo blanco */
-    color: #000000 !important; /* Texto negro */
+    background-color: var(--fullWhite) !important;
+    color: #000000 !important;
 }
 
 /* Barra de navegación inferior */
 .navbar-bottom {
-    background-color: var(--fullWhite); /* Fondo blanco */
-    color: #000000; /* Texto negro */
-    border-top: 2px solid #ddd; /* Borde superior gris claro */
-    padding: 0.625rem 0.9375rem; /* 10px 15px */
-    position: fixed; /* Fijar la barra en la parte inferior */
-    bottom: 0; /* Asegurar que esté en la parte inferior */
-    width: 100%; /* Ocupa todo el ancho */
-    z-index: 1000; /* Asegurar que esté encima de otros elementos */
+    background-color: var(--fullWhite);
+    color: #000000;
+    border-top: 2px solid #ddd;
+    padding: 0.625rem 0.9375rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
 .navbar-bottom a {
-    color: var(--primaryColor); /* Azul oscuro para los enlaces */
-    text-decoration: none; /* Sin subrayado */
+    color: var(--primaryColor);
+    text-decoration: none;
     font-weight: bold;
 }
 
 .navbar-bottom a:hover {
-    color: #0a0f36; /* Azul más oscuro al pasar el ratón */
+    color: #0a0f36;
 }
 
 /* Tarjetas de novedades */
 .novetats-card {
-    background-color: var(--fullWhite) !important; /* Fondo blanco */
-    color: #000000 !important; /* Texto negro */
-    border-radius: 0.625rem; /* 10px */
-    padding: 0.9375rem; /* 15px */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    border: 2px solid #ddd; /* Borde gris claro */
+    background-color: var(--fullWhite) !important;
+    color: #000000 !important;
+    border-radius: 0.625rem;
+    padding: 0.9375rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ddd;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 15.625rem; /* 250px */
-    overflow: auto; /* Habilitar desplazamiento interno si hay overflow */
-    transition: box-shadow 0.3s ease, border-color 0.3s ease; /* Transición suave para la sombra y el borde */
+    height: 15.625rem;
+    overflow: auto;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .novetats-card:hover {
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
-    border-color: var(--primaryColor); /* Cambiar el color del borde al hacer hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    border-color: var(--primaryColor);
 }
 
+/* Media Queries */
 @media (min-width: 768px) {
     .book-card {
-        height: 100%; /* evitar overflow fijo en tablets */
+        height: 100%;
     }
 }
 
 @media (min-width: 992px) {
     .container-fluid {
-        max-width: 95%; /* opcional: limita en pantallas grandes si se ve demasiado ancho */
+        max-width: 95%;
     }
 }
 
-/* Para que cards se escalen mejor en pantallas medianas */
-.row-cols-md-3 > .col {
-    flex: 1 1 30%;
+/* Elimina el problema en móviles */
+@media (max-width: 767.98px) {
+    .row-cols-md-3 > .col {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
 }

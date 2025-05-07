@@ -13,4 +13,16 @@ document.addEventListener("DOMContentLoaded", function () {
             deleteReviewForm.setAttribute("action", newAction);
         });
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleFiltersBtn = document.getElementById("toggleFiltersBtn");
+        const filtersPanel = document.getElementById("filtersPanel");
+    
+        if (toggleFiltersBtn && filtersPanel) {
+            toggleFiltersBtn.addEventListener("click", function () {
+                const isHidden = filtersPanel.classList.toggle("d-none");
+                toggleFiltersBtn.textContent = isHidden ? "Mostrar Filtres" : "Amagar Filtres";
+            });
+        }
+    });
 });
