@@ -16,7 +16,7 @@ h1 {
     width: 90%;
     max-width: 600px;
     height: 400px;
-    background-color: #ffffff;
+    background-color: var(--fullWhite);
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 10px;
@@ -43,7 +43,7 @@ h1 {
 
 .message.received {
     align-self: flex-start;
-    background-color: #ffffff; /* Blanco */
+    background-color: var(--fullWhite); /* Blanco */
     border: 1px solid #ddd;
     color: #000;
 }

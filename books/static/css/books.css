@@ -6,7 +6,7 @@
 
 /* Tarjetas de libros */
 .book-card {
-    background-color: #ffffff; /* Fondo blanco */
+    background-color: var(--fullWhite); /* Fondo blanco */
     border-radius: 10px; /* Bordes redondeados */
     padding: 15px; /* Espaciado interno */
     text-align: center; /* Centrar contenido */
@@ -21,7 +21,7 @@
 
 .book-card:hover {
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
-    border-color: #111D4A; /* Cambiar el color del borde al hacer hover */
+    border-color: var(--primaryColor); /* Cambiar el color del borde al hacer hover */
     transform: none; /* Evitar transformaciones */
 }
 
@@ -47,8 +47,8 @@
 
 /* Botones principales */
 .book-card .btn-primary {
-    background-color: #111D4A; /* Azul oscuro */
-    color: #ffffff;
+    background-color: var(--primaryColor); /* Azul oscuro */
+    color: var(--fullWhite);
     border: none;
     padding: 10px 15px;
     font-size: 0.875rem;
@@ -62,7 +62,7 @@
 
 /* Botones secundarios */
 .book-card .btn-secondary {
-    background-color: #FFCF99; /* Amarillo claro */
+    background-color: var(--secondaryColor); /* Amarillo claro */
     color: #1E1E24;
     border: none;
     font-size: 0.875rem;
@@ -71,12 +71,12 @@
 }
 
 .book-card .btn-secondary:hover {
-    background-color: #ffc07a; /* Amarillo más oscuro al pasar el ratón */
+    background-color: var(--secondaryHoverColor); /* Amarillo más oscuro al pasar el ratón */
 }
 
 /* Filtros */
 .filters {
-    background-color: #ffffff; /* Fondo blanco */
+    background-color: var(--fullWhite); /* Fondo blanco */
     border-radius: 10px; /* Bordes redondeados */
     padding: 15px; /* Espaciado interno */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
@@ -92,7 +92,7 @@
 
 .filters:hover {
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
-    border-color: #111D4A; /* Cambiar el color del borde al hacer hover */
+    border-color: var(--primaryColor); /* Cambiar el color del borde al hacer hover */
 }
 
 .filters h5 {
@@ -126,8 +126,8 @@ a:hover {
 
     .filters-toggle {
         display: block; /* Mostrar el botón de filtros */
-        background-color: #111D4A;
-        color: #ffffff;
+        background-color: var(--primaryColor);
+        color: var(--fullWhite);
         border: none;
         padding: 10px 15px;
         font-size: 1rem;

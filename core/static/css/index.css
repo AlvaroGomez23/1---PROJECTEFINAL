@@ -38,7 +38,7 @@ body {
     margin-left: 10%;
     font-size: 1.75rem; /* 28px */
     font-weight: bold;
-    color: #FFFFFF; /* Azul moderno */
+    color: var(--fullWhite); /* Azul moderno */
     text-transform: uppercase;
     border-left: 0.375rem solid #0d6efd; /* 6px */
     padding-left: 0.9375rem; /* 15px */
@@ -47,7 +47,7 @@ body {
 
 /* Fondo del carrusel */
 .carousel-background {
-    background-color: #ffffff; /* Fondo blanco para destacar */
+    background-color: var(--fullWhite); /* Fondo blanco para destacar */
     padding: 1.875rem 0; /* 30px */
     border-radius: 0.9375rem; /* 15px */
     box-shadow: 0 0.375rem 0.9375rem rgba(0, 0, 0, 0.1); /* 6px 15px */
@@ -55,7 +55,7 @@ body {
 
 /* Tarjetas de los libros */
 .book-card {
-    background-color: #ffffff;
+    background-color: var(--fullWhite);
     border-radius: 0.9375rem; /* 15px */
     box-shadow: 0 0.375rem 0.75rem rgba(0, 0, 0, 0.1); /* 6px 12px */
     padding: 1.25rem; /* 20px */
@@ -128,7 +128,7 @@ body {
 
 .carousel-indicators [data-bs-target] {
     background-color: #0d6efd;
-    border: 0.125rem solid #ffffff; /* 2px */
+    border: 0.125rem solid var(--fullWhite); /* 2px */
     width: 0.75rem; /* 12px */
     height: 0.75rem; /* 12px */
     border-radius: 50%;

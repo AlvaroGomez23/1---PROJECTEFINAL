@@ -1,5 +1,5 @@
 .review-container {
-    background-color: #ffffff;
+    background-color: var(--fullWhite);
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -31,23 +31,23 @@
 .review-container button {
     margin-top: 15px;
     padding: 10px 20px;
-    background-color: #111D4A;
-    color: #ffffff;
+    background-color: var(--primaryColor);
+    color: var(--fullWhite);
     border: none;
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
 .review-container button:hover {
-    background-color: #FFCF99;
+    background-color: var(--secondaryColor);
     color: #1E1E24;
 }
 
 .review-container .btn-back {
-    background-color: #FFCF99;
+    background-color: var(--secondaryColor);
     color: #1E1E24;
 }
 
 .review-container .btn-back:hover {
-    background-color: #ffc07a;
+    background-color: var(--secondaryHoverColor);
 }

@@ -1,5 +1,5 @@
 .form-container {
-    background-color: #111D4A;
+    background-color: var(--primaryColor);
     color: white;
     border-radius: 1rem;
     padding: 2rem;
@@ -24,7 +24,7 @@
 }
 
 .form-container button {
-    background-color: #FFCF99;
+    background-color: var(--secondaryColor);
     border: none;
     color: #1E1E24;
     padding: 0.6rem 1.2rem;
@@ -35,11 +35,11 @@
 }
 
 .form-container button:hover {
-    background-color: #ffc07a;
+    background-color: var(--secondaryHoverColor);
 }
 
 .image-preview {
-    border: 4px solid #111D4A;
+    border: 4px solid var(--primaryColor);
     border-radius: 1rem;
     background-color: white;
     display: flex;

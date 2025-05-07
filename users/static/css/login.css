@@ -12,7 +12,7 @@ html, body {
 }
 
 .login-container {
-    background-color: #FFF8F0;
+    background-color: var(--bgColor);
     padding: 40px;
     border-radius: 10px;
     max-width: 550px;
@@ -20,7 +20,7 @@ html, body {
 }
 
 .form-container {
-    background-color: #FFF8F0;
+    background-color: var(--bgColor);
     padding: 2rem;
     border-radius: 10px;
 }
@@ -48,7 +48,7 @@ form .btn {
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #111D4A;
+    background-color: var(--primaryColor);
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -76,5 +76,5 @@ form .btn:hover {
 }
 
 .orange-background {
-    background-color: #FFCF99;
+    background-color: var(--secondaryColor);
 }
