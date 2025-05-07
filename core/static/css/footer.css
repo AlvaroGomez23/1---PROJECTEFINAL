@@ -2,44 +2,43 @@
 .footer {
     background-color: #1a1a2e; /* Fondo oscuro moderno */
     color: #eaeaea; /* Texto claro */
-    padding: 3rem 0;
+    padding: 3rem 0; /* 48px */
     font-family: 'Roboto', sans-serif;
 }
 
-
 /* Nuevo CSS para columnas */
 .footer-column {
-    padding: 0 15px; /* Espaciado interno consistente con Bootstrap */
-    margin-bottom: 1rem;
+    padding: 0 0.9375rem; /* 15px */
+    margin-bottom: 1rem; /* 16px */
 }
 
 /* Añadir esto para alinear verticalmente los títulos */
 .footer-title {
-    margin: 2rem;
-    font-size: 1.5rem;
+    margin: 2rem; /* 32px */
+    font-size: 1.5rem; /* 24px */
     font-weight: 700;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem; /* 24px */
     color: #f9a826;
     text-align: left; /* Alineación consistente */
 }
 
 /* Lista de enlaces */
 .footer-list {
-    margin: 2.5rem !important;
+    margin: 2.5rem !important; /* 40px */
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .footer-list li {
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.8rem; /* 12.8px */
 }
 
 .footer-link {
     color: #eaeaea;
     text-decoration: none;
     font-weight: 400;
-    font-size: 1rem;
+    font-size: 1rem; /* 16px */
     transition: color 0.3s ease;
 }
 
@@ -53,13 +52,13 @@
     padding: 0;
     margin: 0;
     display: flex;
-    gap: 1.5rem;
+    gap: 1.5rem; /* 24px */
     justify-content: center; /* Asegura que los íconos estén centrados */
 }
 
 .footer-social-link {
     color: #eaeaea;
-    font-size: 1.8rem;
+    font-size: 1.8rem; /* 28.8px */
     transition: transform 0.3s ease, color 0.3s ease;
 }
 
@@ -71,14 +70,14 @@
 /* Línea divisoria */
 .footer-divider {
     border-color: rgba(255, 255, 255, 0.1);
-    margin: 2rem 0;
+    margin: 2rem 0; /* 32px */
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .footer-column {
         flex: 100%; /* Las columnas ocupan todo el ancho */
-        margin-bottom: 2rem;
+        margin-bottom: 2rem; /* 32px */
     }
 
     .footer-social {
