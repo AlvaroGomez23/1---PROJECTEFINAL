@@ -104,22 +104,8 @@
     </form>
 </div>
 
-<script>
-    document.getElementById('id_image').addEventListener('change', function(event) {
-        var preview = document.querySelector('.image-preview');
-        var file = event.target.files[0];
 
-        if (file) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                preview.innerHTML = '<img src="' + e.target.result + '" alt="Previsualització" class="img-fluid">';
-            };
-            reader.readAsDataURL(file);
-        } else {
-            preview.innerHTML = '<span>No s\'ha seleccionat cap imatge</span>';
-        }
-    });
-</script>
+<script src="{% static 'js/preview_img.js' %}"></script>
 </body>
 </html>
 {% endblock %}

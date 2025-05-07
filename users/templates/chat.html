@@ -9,95 +9,6 @@
     <link rel="stylesheet" href="{% static 'css/chat.css' %}">
     <title>Chat</title>
     
-    <script>
-        const conversationId = "{{ conversation_id }}";
-        const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
-        const ws = new WebSocket(`${wsProtocol}://${window.location.host}/ws/chat/${conversationId}/`);
-
-        ws.onmessage = function(event) {
-            const data = JSON.parse(event.data);
-
-            // Si se reciben todos los mensajes
-            if (data.messages) {
-                const chatContainer = document.getElementById('chat-container');
-                chatContainer.innerHTML = ''; // Limpiar el contenedor
-
-                // Procesar cada mensaje
-                data.messages.forEach(msg => {
-                    const messageDiv = document.createElement('div');
-
-                    // Verificar si el mensaje fue enviado por el usuario actual
-                    if (msg.sender === "{{ request.user.username }}") {
-                        messageDiv.classList.add('message', 'sent'); // Mensajes enviados
-                        messageDiv.textContent = `${msg.content}`;
-                    } else {
-                        messageDiv.classList.add('message', 'received'); // Mensajes recibidos
-                        messageDiv.textContent = `${msg.content}`;
-                    }
-
-                    chatContainer.appendChild(messageDiv);
-                });
-
-                // Desplazar hacia abajo automáticamente
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }
-
-            // Si se recibe un mensaje nuevo
-            if (data.message) {
-                const data = JSON.parse(event.data);
-    const chatContainer = document.getElementById('chat-container');
-
-    // Si el mensaje proviene del propio usuario, no lo agregamos de nuevo
-    if (data.sender === "{{ request.user.username }}") {
-        return;
-    }
-
-    // Mostrar el mensaje como recibido
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('message', 'received'); // Mensajes recibidos
-    messageDiv.textContent = data.message;
-    chatContainer.appendChild(messageDiv);
-
-    // Desplazar hacia abajo automáticamente
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-            }
-        };
-
-        ws.onclose = function() {
-            console.warn("⚠️ WebSocket cerrado.");
-        };
-
-        function sendMessage() {
-            const messageInput = document.getElementById('message-input');
-            const message = messageInput.value;
-
-            if (message.trim() === "") return;
-
-            // Generar un identificador único para el mensaje
-            const messageId = Date.now(); // Usar un timestamp como identificador único
-
-            // Enviar el mensaje al servidor
-            ws.send(JSON.stringify({
-                'message': message,
-                'sender': "{{ request.user.username }}",
-                'id': messageId // Incluir el identificador único
-            }));
-
-            // Mostrar el mensaje en el chat como enviado
-            const chatContainer = document.getElementById('chat-container');
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', 'sent'); // Mensajes enviados
-            messageDiv.textContent = message;
-            messageDiv.dataset.id = messageId; // Guardar el identificador único en el DOM
-            chatContainer.appendChild(messageDiv);
-
-            // Desplazar hacia abajo automáticamente
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-
-            // Limpiar el campo de entrada
-            messageInput.value = '';
-        }
-    </script>
 </head>
 <body>
     <h1>Xat amb {{ other_user.first_name }}</h1> <!-- Mostrar el nombre del remitente -->
@@ -109,5 +20,12 @@
         <button onclick="sendMessage()">Enviar</button>
         <a href="{% url 'inbox' %}">Tornar al inbox</a>
     </div>
+    <script>
+        window.chatConfig = {
+            conversationId: "{{ conversation_id }}",
+            username: "{{ request.user.username }}"
+        };
+    </script>
+    <script src="{% static 'js/chat.js' %}"></script>
 </body>
 </html>

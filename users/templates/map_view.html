@@ -10,41 +10,19 @@
     <link rel="stylesheet" href="{% static 'css/map.css' %}">
 </head>
 <body>
-    <div id="map"></div>
+    <p id="user" hidden>{{ user.first_name }}</p>
+    <div id="map"
+     data-lat="{{ lat|default:'0' }}"
+     data-lng="{{ lng|default:'0' }}"
+     data-radius="{{ radius|default:'0' }}"
+     data-username="{{ user.first_name }}">
+    </div>
 
-    <!-- Botón flotante para volver al perfil -->
     <a href="{% url 'view_profile' user.id %}" class="floating-button">
         Tornar al perfil
     </a>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-        // Usar valores predeterminados si las variables no están definidas
-        const lat = parseFloat("{{ lat|default:'0' }}");
-        const lng = parseFloat("{{ lng|default:'0' }}");
-        const radiusKm = parseFloat("{{ radius|default:'0' }}");
-        const radius = radiusKm * 1000;
-
-        // Verificar si las coordenadas son válidas
-        if (!isNaN(lat) && !isNaN(lng) && radius > 0) {
-            const map = L.map('map').setView([lat, lng], 13);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
-
-            L.marker([lat, lng]).addTo(map).bindPopup("Radi de moviment de {{ user.first_name }}");
-
-            L.circle([lat, lng], {
-                color: 'green',
-                fillColor: '#0f0',
-                fillOpacity: 0.3,
-                radius: radius
-            }).addTo(map).bindPopup(`Radio de movimiento: ${radiusKm} km`);
-        } else {
-            // Mostrar un mensaje de error si las coordenadas no son válidas
-            document.getElementById('map').innerHTML = '<p style="text-align: center; color: red;">No s\' ha pogut carregar el mapa.</p>';
-        }
-    </script>
+    <script src="{% static 'js/map.js' %}"></script>
 </body>
 </html>

@@ -108,23 +108,8 @@
         </div>
     </div>
     
-    <script>
-        const deleteReviewModal = document.getElementById('deleteReviewModal');
-        deleteReviewModal.addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget; // Botón que abrió el modal
-            const reviewId = button.getAttribute('data-review-id'); // Obtener el ID de la valoración
+    <script src="{% static 'js/del_user_review.js' %}"></script>
 
-            // Actualizar el contenido del modal con el ID de la valoración
-            const modalReviewId = document.getElementById('modalReviewId');
-            modalReviewId.textContent = reviewId;
-
-            // Actualizar la acción del formulario con el ID de la valoración
-            const deleteReviewForm = document.getElementById('deleteReviewForm');
-            const originalAction = deleteReviewForm.getAttribute('action'); // Obtener la acción original
-            const newAction = `/users/delete_review_user/${reviewId}`; // Reemplazar el ID dinámicamente
-            deleteReviewForm.setAttribute('action', newAction); // Establecer la nueva acción
-        });
-    </script>
 </body>
 </html>
 {% endblock %}
