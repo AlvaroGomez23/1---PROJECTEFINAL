@@ -214,24 +214,19 @@
     border-color: #111D4A; /* Cambiar el color del borde al hacer hover */
 }
 
-@media (max-width: 800px) {
-    /* Estilos para iPads en orientación vertical y dispositivos móviles */
-    .header {
-        flex-direction: column;
-        padding: 1rem;
-    }
-
-    .nav-list {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
+@media (min-width: 768px) {
     .book-card {
-        height: auto;
+        height: 100%; /* evitar overflow fijo en tablets */
     }
+}
 
-    .filters {
-        height: auto;
-        padding: 1rem;
+@media (min-width: 992px) {
+    .container-fluid {
+        max-width: 95%; /* opcional: limita en pantallas grandes si se ve demasiado ancho */
     }
+}
+
+/* Para que cards se escalen mejor en pantallas medianas */
+.row-cols-md-3 > .col {
+    flex: 1 1 30%;
 }
