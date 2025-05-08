@@ -14,17 +14,39 @@
 </head>
 <body>
     {% if messages %}
-    <div class="container mt-3">
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="container mt-3">
+            {% for message in messages %}
+    {% if 'error' in message.tags %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        {% endfor %}
+    {% elif 'success' in message.tags %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% elif 'warning' in message.tags %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Aquest usuari ha estat vetat. No es poden fer valoracions ara mateix.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% else %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    {% endfor %}
     </div>
     {% endif %}
     <div class="container mt-4">
         <div class="profile-container">
+            {% if veto %}
+                <div class="alert alert-danger" role="alert">
+                    Aquest usuari ha estat vetat. Vés amb compte!
+                </div>
+            {% endif %}
             <h1>Perfil de {{ user.first_name }}</h1>
             <p><strong>Nom complet:</strong> {{ user.first_name }} {{ user.last_name }}</p>
             <p><strong>Localitat:</strong> 
@@ -93,7 +115,7 @@
                     </div>
                     <div class="modal-body">
                         <p>Estàs segur que vols eliminar aquesta valoració?</p>
-                        <p>ID de la valoració: <strong id="modalReviewId"></strong></p>
+                        <p hidden><strong id="modalReviewId"></strong></p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel·lar</button>

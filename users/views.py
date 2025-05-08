@@ -106,6 +106,10 @@ def view_profile(request, user_id):
     user = User.objects.filter(pk=user_id).first()
     profile_info = UserProfile.objects.filter(user=user).first()
     
+    if profile_info.veto:
+        veto = True
+    else:
+        veto = False
     # Si no troba un usuari, mostra les dades del usuari logat
     if user_id is None or user_id == request.user.id:
         user_to_view = request.user
@@ -122,6 +126,7 @@ def view_profile(request, user_id):
         'other_user': user_to_view,
         'reviews': reviews,
         'average_rating': average_rating,
+        'veto': veto,
         
     })
 
@@ -339,13 +344,23 @@ def add_review_user(request, user_id):
     user_to_review = get_object_or_404(User, id=user_id)
     existing_review = Review.objects.filter(reviewer=request.user, reviewed_user=user_to_review).first()
 
+    user_profile = request.user.userprofile
+    if user_profile.veto:
+        messages.error(request, "No pots fer valoracions amb el teu perfil actual ja que has sigut vetat.")
+        return redirect('view_profile', user_id=user_to_review.id,)
+
+    user_reviewed = user_to_review.userprofile
+    if user_reviewed.veto:
+        messages.warning(request, "No pots fer valoracions a aquest usuari ja que ha sigut vetat.")
+        return redirect('view_profile', user_id=user_to_review.id,)
+
     if request.method == 'POST':
         rating = request.POST.get('rating')
         comment = request.POST.get('comment', '').strip()
 
         if not rating:
             messages.error(request, "La puntuació és obligatòria.")
-            return redirect('add_review_user', user_id=user_to_review.id)
+            return redirect('add_review_user', user_id=user_to_review.id,)
 
         if existing_review:
             # Actualizar la valoración existente

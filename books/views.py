@@ -148,18 +148,17 @@ def request_exchange(request, book_id):
 
     user_profile = request.user.userprofile
     if user_profile.veto:
-        # Usar el framework de mensajes para mostrar el error
+        
         messages.error(request, "Has sigut vetat degut a un comportament inadequat. No pots intercanviar llibres.")
-        return redirect('books')  # Redirige a la vista 'books'
+        return redirect('books') 
     
     owner_profile = book.owner.userprofile
     if owner_profile.veto:
-        # Usar el framework de mensajes para mostrar el error
         messages.error(request, "El propietari del llibre ha sigut vetat degut a un comportament inadequat. No pots intercanviar llibres amb ell.")
         return redirect('books')
     
     if book.owner == request.user:
-        return redirect('books')  # No puedes solicitar un intercambio con tu propio libro
+        return redirect('books')  
     
     # Verificar si ya existe un intercambio pendiente entre estos usuarios y libros
     existing_exchange = Exchange.objects.filter(
@@ -281,6 +280,10 @@ def add_review_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     
     existing_review = book.book_reviews_recieved.filter(reviewer_id=request.user).first()
+    userprofile = request.user.userprofile
+    if userprofile.veto:
+        messages.error(request, "Has sigut vetat degut a un comportament inadequat. No pots valorar llibres.")
+        return redirect('book_details', book_id=book.pk)
 
     if request.method == 'POST':
         rating = request.POST.get('rating')
@@ -292,10 +295,12 @@ def add_review_book(request, book_id):
             existing_review.rating = rating
             existing_review.comment = comment
             existing_review.save()
+            messages.success(request, "La valoració s'ha actualitzat correctament.")
             
         else:
             # Crea una nueva reseña
             book.book_reviews_recieved.create(reviewer_id=request.user.id, rating=rating, comment=comment)
+            messages.success(request, "La valoració s'ha afegit correctament.")
             
         
         return redirect('book_details', book_id=book.pk)
