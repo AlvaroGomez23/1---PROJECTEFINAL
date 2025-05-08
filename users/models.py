@@ -47,6 +47,7 @@ class UserProfile(models.Model):
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
     movement_radius_km = models.PositiveIntegerField(default=3)
+    veto = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Perfil de {self.user.username}"

@@ -145,6 +145,12 @@ def new_books(request):
 @login_required
 def request_exchange(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
+
+    user_profile = request.user.userprofile
+    if user_profile.veto:
+        # Usar el framework de mensajes para mostrar el error
+        messages.error(request, "Has sigut vetat degut a un comportament inadequat. No pots intercanviar llibres.")
+        return redirect('books')  # Redirige a la vista 'books'
     
     if book.owner == request.user:
         return redirect('books')  # No puedes solicitar un intercambio con tu propio libro
@@ -192,8 +198,6 @@ def request_exchange(request, book_id):
             send_user_notification(user, user_from, title, message, exchange)
             send_user_email(user, title, mail_msg)
 
-            
-            
             return redirect('book_details', book_id=book.pk)
     else:
         form = ExchangeForm(user=request.user)
