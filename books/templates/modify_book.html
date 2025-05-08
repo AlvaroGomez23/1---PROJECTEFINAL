@@ -27,7 +27,9 @@
                         <img src="{{ form.image.value.url }}" alt="Previsualització" class="img-fluid">
                     {% endif %}
                     <label for="id_image" class="w-100 h-100 d-flex align-items-center justify-content-center flex-column">
+                        {% if not form.image.value %}
                         <span>Puja una imatge per veure-la</span>
+                        {% endif %}
                     </label>
                 </div>
             </div>
