@@ -16,6 +16,25 @@ body {
     margin-bottom: 1.875rem; /* 30px */
 }
 
+.bigImg {
+    width: 40rem;
+    height: 40rem;
+    border-radius: 0.9375rem; /* 15px */
+    box-shadow: 0 0.375rem 0.9375rem rgba(0, 0, 0, 0.1); /* 6px 15px */
+}
+
+.portada {
+    background-image: url('../img/portada.jpg'); /* Cambia la ruta según tu estructura de carpetas */
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 0.375rem 0.9375rem rgba(0, 0, 0, 0.1); /* 6px 15px */
+    display: flex; /* Habilita el modelo de caja flexible */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 100vh; /* Asegura que ocupe toda la altura de la ventana */
+    background-color: #001A35; /* Fondo de color */
+}
+
 /* Imagen del carrusel */
 .carousel-inner img {
     height: 18.75rem; /* 300px */
@@ -143,6 +162,11 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+
+    .portada {
+        margin-top: 10%
+    }
+    
     .carousel-inner img {
         height: 13.75rem; /* 220px */
     }

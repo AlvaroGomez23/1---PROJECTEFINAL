@@ -7,18 +7,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+    <link rel="stylesheet" href="{% static 'css/variables.css' %}">
     <title>Chat</title>
     
 </head>
-<body>
+<body class="container mt-4">
     <h1>Xat amb {{ other_user.first_name }}</h1> <!-- Mostrar el nombre del remitente -->
-    <div id="chat-container">
+    <div id="chat-container" class="col-md-12 col-sm-12 col-lg-12">
         <!-- Aquí se agregarán los mensajes dinámicamente -->
     </div>
-    <div id="message-input-container">
+    <div id="message-input-container" class="col-md-12 col-sm-12 col-lg-12">
         <input id="message-input" type="text" placeholder="Escribe un mensaje..." />
         <button onclick="sendMessage()">Enviar</button>
-        <a href="{% url 'inbox' %}">Tornar a missatges</a>
+        <a class="return" href="{% url 'inbox' %}">Tornar a missatges</a>
     </div>
     <script>
         window.chatConfig = {

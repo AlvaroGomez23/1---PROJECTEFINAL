@@ -37,7 +37,7 @@ h1 {
 
 .message.sent {
     align-self: flex-end;
-    background-color: #dcf8c6; /* Verde claro */
+    background-color: var(--secondaryColor); /* Verde claro */
     color: #000;
 }
 
@@ -64,9 +64,22 @@ h1 {
     font-size: 14px;
 }
 
+.return {
+    text-decoration: none;
+    color: var(--primaryColor); /* Azul oscuro */
+    display: block;
+    background-color: var(--secondaryColor); /* Amarillo claro */
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    
+    font-size: 16px;
+    font-weight: bold;
+}
+
 button {
     padding: 10px 20px;
-    background-color: #25d366; /* Verde WhatsApp */
+    background-color: var(--primaryColor); /* Verde WhatsApp */
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -75,5 +88,5 @@ button {
 }
 
 button:hover {
-    background-color: #1da851;
+    background-color: var(--primaryHoverColor); /* Verde más oscuro */
 }

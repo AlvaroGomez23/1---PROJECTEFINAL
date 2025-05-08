@@ -106,8 +106,53 @@
     font-weight: bold;
 }
 
-.filters .btn {
+.btn {
     width: 100%; /* Botones ocupan todo el ancho */
+    
+}
+
+.btn-filter {
+    display: block;
+    width: 100%; /* Asegura que el botón ocupe todo el ancho del contenedor */
+    background-color: var(--primaryColor) !important; /* Azul oscuro */
+    color: var(--fullWhite);
+    stroke: none !important; /* Eliminar borde */
+    outline: none !important; /* Eliminar contorno */
+    box-shadow: none !important; /* Eliminar la sombra de enfoque */
+    border: none;
+    padding: 0.625rem 0.9375rem; /* Espaciado interno */
+    font-size: 0.875rem; /* Tamaño del texto */
+    border-radius: 0.3125rem; /* Bordes redondeados */
+    transition: background-color 0.3s ease; /* Transición suave */
+    text-align: center; /* Centrar el texto */
+    text-decoration: none; /* Eliminar subrayado */
+}
+
+.btn-search {
+    display: block; /* Asegura que el botón se comporte como un bloque */
+    color: var(--fullWhite);
+    background-color: var(--primaryColor);
+    border: none;
+    padding: 0.625rem 0.9375rem;
+    font-size: 0.875rem;
+    border-radius: 0.3125rem;
+    transition: background-color 0.3s ease;
+    text-align: center; /* Centrar el texto */
+    text-decoration: none; /* Eliminar subrayado */
+}
+
+.btn-reset {
+    display: block; /* Asegura que el botón se comporte como un bloque */
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    background-color: var(--secondaryColor);
+    border: none;
+    padding: 0.625rem 0.9375rem;
+    font-size: 0.875rem;
+    border-radius: 0.3125rem;
+    transition: background-color 0.3s ease;
+    text-align: center; /* Centrar el texto */
+    text-decoration: none;
+    color: black
 }
 
 /* Enlaces */

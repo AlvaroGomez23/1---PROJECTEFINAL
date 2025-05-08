@@ -10,7 +10,7 @@
     font-size: 36px;
     font-weight: bold;
     margin-bottom: 30px;
-    border-bottom: 2px solid var(--secondaryColor);
+    border-bottom: 2px solid var(--primaryColor);
     padding-bottom: 10px;
 }
 
@@ -35,7 +35,7 @@
     justify-content: space-between;
     align-items: center;
     transition: background-color 0.3s ease;
-    border: 1px solid var(--secondaryColor);
+    border: 1px solid var(--primaryColor);
 }
 
 .message-item.unread {

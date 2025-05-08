@@ -124,7 +124,7 @@ body {
     flex-grow: 0; /* Evita que los elementos de la derecha ocupen más espacio */
 }
 
-.dropdown-menu {
+.dropdown-men:focus-within {
     display: none;
     position: absolute;
     right: 0; /* Posiciona desde el lado derecho del contenedor */

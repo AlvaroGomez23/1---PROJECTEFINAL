@@ -13,18 +13,21 @@
 
 {% block content %}
 
-
+<div class="portada col-md-12 col-sm-12 col-lg-12">
+    <img class="bigImg mt-4" src="{% static 'img/portadaf.webp' %}" alt="Portada">
+</div>
 
 {% for category, books in categories.items %}
 <br>
-    <!-- Título de la categoría -->
+
+
+    
     <h2 class="category-title">{{ category }}</h2>
 
-    <!-- Carrusel de libros -->
+
     <div class="carousel-background">
         <div class="carousel-container">
             <div id="carousel-{{ forloop.counter }}" class="carousel slide" data-bs-ride="carousel">
-                <!-- Indicadores del carrusel: Se agrupan por 5 libros -->
                 <div class="carousel-indicators">
                     {% with total=books|length %}
                         {% for i in ""|center:total %}
@@ -51,7 +54,7 @@
                                             {% if book.image %}
                                                 <img src="{{ book.image.url }}" alt="{{ book.title }}" class="d-block w-100">
                                             {% else %}
-                                                <!-- Si no hay imagen, muestra el logo por defecto -->
+                                                
                                                 <img src="{% static 'img/logo.png' %}" alt="{{ book.title }}" class="d-block w-100">
                                             {% endif %}
                                             <div class="book-info">
@@ -67,7 +70,7 @@
                     {% endfor %}
                 </div>
 
-                <!-- Controles del carrusel -->
+      
                 <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ forloop.counter }}" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon"></span>
                 </button>
