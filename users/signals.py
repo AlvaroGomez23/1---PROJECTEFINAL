@@ -5,16 +5,17 @@ from .models import Wishlist, Notification
 from users.utils import send_user_email
 
 @receiver(post_save, sender=Book)
+# Envia notificacions i emails als usuaris quan un llibre amb un isbn que tenen a la seva llista de desitjos és afegit o actualitzat.
 def notify_users_on_new_book(sender, instance, created, **kwargs):
-    if created:  # Solo actuar cuando se crea un nuevo libro
+    if created:  
         isbn = instance.isbn
-        wishlists = Wishlist.objects.filter(desired_isbns__icontains=isbn)  # Buscar listas que contengan el ISBN
+        wishlists = Wishlist.objects.filter(desired_isbns__icontains=isbn)
         for wishlist in wishlists:
             user = wishlist.user
-            if instance.visible:  # Verificar si el libro es visible
+            if instance.visible:  
                 Notification.objects.create(
                     user=user,
-                    user_from=None,  # Opcional: puedes dejarlo vacío o asignar un usuario específico
+                    user_from=None, 
                     title="Nou llibre disponible!",
                     message=f"El llibre amb ISBN {isbn} que desitjaves ja està disponible: {instance.title}",
                 )
@@ -23,7 +24,7 @@ def notify_users_on_new_book(sender, instance, created, **kwargs):
                     title="Nou llibre disponible!",
                     message=f"El llibre amb ISBN {isbn} que desitjaves ja està disponible: {instance.title}",
                 )
-            else:  # Si el libro no es visible
+            else:  
                 Notification.objects.create(
                     user=user,
                     user_from=None,
@@ -39,12 +40,12 @@ def notify_users_on_new_book(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Book)
+# Envia notificacions i emails als usuaris quan un llibre amb un isbn que tenen a la seva llista de desitjos és actualitzat.
 def notify_users_on_book_visibility_change(sender, instance, created, **kwargs):
-    if not created:  # Solo actuar cuando se actualiza un libro existente
-        # Verificar si el libro se ha hecho visible
-        if instance.visible and instance.previous_visible is False:  # Si antes no era visible y ahora sí
+    if not created: 
+        if instance.visible and instance.previous_visible is False:  
             isbn = instance.isbn
-            wishlists = Wishlist.objects.filter(desired_isbns__icontains=isbn)  # Buscar listas que contengan el ISBN
+            wishlists = Wishlist.objects.filter(desired_isbns__icontains=isbn) 
             for wishlist in wishlists:
                 user = wishlist.user
                 Notification.objects.create(

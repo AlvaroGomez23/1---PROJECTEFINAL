@@ -52,13 +52,12 @@
 
                     
 
-                    <!-- Campo oculto para la ciudad -->
                     <div class="col-12 mt-3">
                         {{ profile_form.city.label_tag }}
                         {{ profile_form.city }}
                     </div>
 
-                    <!-- Campo visible de búsqueda de ciudad -->
+
                     <div class="col-12 mt-3">
                         <label for="city-search">Buscar ciutat: (S'ha de clicar al resultat per escollir-la)</label>
                         <input type="text" id="city-search" class="form-control" placeholder="Escriu el nom de la ciutat" data-autocomplete-url="{% url 'city_autocomplete' %}">

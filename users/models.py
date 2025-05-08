@@ -59,59 +59,12 @@ class UserProfile(models.Model):
 
 class Conversation(models.Model):
     participants = models.ManyToManyField(User, related_name='conversations')
-    messages = models.TextField(default="", blank=True)  # Almacenar mensajes como texto plano
+    messages = models.TextField(default="", blank=True) 
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Conversation {self.id} between {', '.join([user.username for user in self.participants.all()])}"
 
-    def add_message(self, sender, content):
-        """Agrega un mensaje a la conversación."""
-        new_message = f"{sender.id}|False|{timezone.now().isoformat()}|{content}"
-        if self.messages:
-            self.messages += f"\n{new_message}"
-        else:
-            self.messages = new_message
-        self.save()
-
-    def get_messages(self):
-        """Obtiene todos los mensajes de la conversación como una lista de diccionarios."""
-        messages = []
-        if self.messages:
-            for line in self.messages.split("\n"):
-                parts = line.split("|", 3)  # Dividir en 4 partes: sender_id, is_read, timestamp, content
-                if len(parts) == 4:
-                    messages.append({
-                        "sender_id": int(parts[0]),
-                        "is_read": parts[1] == "True",
-                        "timestamp": parts[2],
-                        "content": parts[3],
-                    })
-        return messages
-
-    def mark_messages_as_read(self, user):
-        """Marca los mensajes como leídos para un usuario."""
-        updated_messages = []
-        if self.messages:
-            for line in self.messages.split("\n"):
-                parts = line.split("|", 3)
-                if len(parts) == 4:
-                    if parts[0] != str(user.id):  # Si el mensaje no fue enviado por el usuario actual
-                        parts[1] = "True"  # Marcar como leído
-                    updated_messages.append("|".join(parts))
-            self.messages = "\n".join(updated_messages)
-            self.save()
-
-    def count_unread_messages(self, user):
-        unread_count = 0
-        if self.messages:
-            for line in self.messages.strip().split("\n"):
-                parts = [p.strip() for p in line.split("|", 3)]
-                if len(parts) == 4:
-                    sender_id, is_read, timestamp, content = parts
-                    if sender_id != str(user.id) and is_read == "False":
-                        unread_count += 1
-        return unread_count
     
 
 class Review(models.Model):

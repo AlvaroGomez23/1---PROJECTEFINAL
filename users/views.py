@@ -289,33 +289,21 @@ def private_chat(request, user_id):
 @login_required
 def inbox(request):
     conversations = Conversation.objects.filter(participants=request.user)
-    unread_conversations = []
-    read_conversations = []
+    conversation_items = []
 
     for conversation in conversations:
         other_user = conversation.participants.exclude(id=request.user.id).first()
-        unread_count = conversation.count_unread_messages(request.user)
-
-        print("Conversation ID:", conversation.id)
-        print("Unread count for conversation:", unread_count)
 
         item = {
             "conversation": conversation,
-            "unread_count": unread_count,
             "other_user_id": other_user.id if other_user else None,
             "other_user_name": other_user.username if other_user else "Desconegut",
         }
 
-        if unread_count > 0:
-            unread_conversations.append(item)
-        else:
-            read_conversations.append(item)
-
-    print("Unread conversations:", unread_conversations)
+        conversation_items.append(item)
 
     return render(request, 'inbox.html', {
-        'unread_conversations': unread_conversations,
-        'read_conversations': read_conversations,
+        'conversations': conversation_items,
     })
 
 # views.py

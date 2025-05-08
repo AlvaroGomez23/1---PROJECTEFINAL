@@ -4,8 +4,8 @@ from .models import Wishlist, Notification, UserProfile, Review, Conversation
 # Register your models here.
 
 class WishlistAdmin(admin.ModelAdmin):
-    list_display = ('user',)  # Muestra el usuario de la wishlist
-    filter_horizontal = ('books',)  # Habilita una interfaz amigable para la relación ManyToMany
+    list_display = ('user',)
+    filter_horizontal = ('books',)
 
 
 admin.site.register(Wishlist, WishlistAdmin)
