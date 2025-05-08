@@ -152,6 +152,12 @@ def request_exchange(request, book_id):
         messages.error(request, "Has sigut vetat degut a un comportament inadequat. No pots intercanviar llibres.")
         return redirect('books')  # Redirige a la vista 'books'
     
+    owner_profile = book.owner.userprofile
+    if owner_profile.veto:
+        # Usar el framework de mensajes para mostrar el error
+        messages.error(request, "El propietari del llibre ha sigut vetat degut a un comportament inadequat. No pots intercanviar llibres amb ell.")
+        return redirect('books')
+    
     if book.owner == request.user:
         return redirect('books')  # No puedes solicitar un intercambio con tu propio libro
     
