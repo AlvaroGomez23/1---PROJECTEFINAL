@@ -28,7 +28,7 @@
                 {% if book.image %}
                     <img src="{{ book.image.url }}" alt="{{ book.title }}">
                 {% else %}
-                    <p style="color:white; text-align:center;">Sense imatge</p>
+                    <p class="no-img">Sense imatge</p>
                 {% endif %}
             </div>
         </div>
@@ -38,7 +38,7 @@
             <div class="book-label">Llibre per intercanviar:</div>
             <div class="preview-title" id="user-book-title">Selecciona un llibre</div>
             <div class="book-box" id="user-book-preview">
-                <p style="color:white; text-align:center;">Sense imatge</p>
+                <p class="no-img">Sense imatge</p>
             </div>
         </div>
 
@@ -57,7 +57,7 @@
                         {% endif %}
                     {% endfor %}
                 </select>
-                <button type="submit">Sol·licitar intercanvi</button>
+                <button class="send-btn" type="submit">Sol·licitar intercanvi</button>
             </form>
         </div>
     </div>

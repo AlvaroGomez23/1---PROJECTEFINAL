@@ -15,10 +15,21 @@ h1 {
     padding: 20px;
 }
 
+.send-btn {
+    background-color: var(--primaryColor) !important;
+    color: var(--fullWhite);
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
 .book-section, .form-box {
     flex: 1 1 300px; /* Asegura que los paneles sean del mismo tamaño */
     max-width: 400px; /* Limita el ancho máximo */
-    background-color: #0b1547;
+    background-color: var(--fullWhite);
+    outline: var(--primaryColor) solid 0.25rem;
     border-radius: 10px;
     padding: 20px;
     display: flex;
@@ -39,11 +50,15 @@ h1 {
     text-align: center;
     font-weight: bold;
     margin-bottom: 10px;
-    color: white;
+    color: black;
+}
+
+.no-img {
+    color: black
 }
 
 .form-box label {
-    color: white;
+    color: black;
     margin-bottom: 10px;
     font-weight: bold;
 }

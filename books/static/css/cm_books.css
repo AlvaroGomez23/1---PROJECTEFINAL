@@ -1,9 +1,10 @@
 .form-container {
-    background-color: var(--primaryColor);
-    color: white;
+    background-color: var(--fullWhite);
+    color: black;
     border-radius: 1rem;
     padding: 2rem;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    outline: 0.25rem solid var(--primaryColor);
 }
 
 .form-container label {
@@ -21,12 +22,13 @@
     padding: 0.5rem;
     width: 100%;
     color: #1E1E24;
+    outline: 1px solid #dee2e6;
 }
 
 .form-container button {
-    background-color: var(--secondaryColor);
+    background-color: var(--primaryColor);
     border: none;
-    color: #1E1E24;
+    color: var(--fullWhite);
     padding: 0.6rem 1.2rem;
     font-weight: bold;
     border-radius: 0.5rem;
@@ -35,7 +37,7 @@
 }
 
 .form-container button:hover {
-    background-color: var(--secondaryHoverColor);
+    background-color: var(--primaryHoverColor);
 }
 
 .image-preview {

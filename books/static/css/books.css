@@ -169,6 +169,11 @@ a:hover {
         margin-bottom: 15px; /* Espaciado debajo del botón */
     }
 
+    .book-card {
+        max-height: 2rem;
+        overflow: auto;
+    }
+
     .filters-toggle {
         display: block; /* Mostrar el botón de filtros */
         background-color: var(--primaryColor);
