@@ -18,7 +18,7 @@
                 <div class="d-flex justify-content-between align-items-start">
                     <div class="notification__content">
                         <h3 class="notification__title text-primary-emphasis">{{ notification.title }}</h3>
-                        <p class="notification__message">{{ notification.message }}</p>
+                        <p class="notification__message">{{ notification.message|safe }}</p>
                     </div>
                     <div class="notification__actions text-end ms-3">
                         {% if not notification.is_read %}

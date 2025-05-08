@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import Login, Register, UserForm, UserProfileForm, LocationForm
+from .forms import Login, Register, UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login as _login, logout as _logout
 from django.contrib.auth.models import User
 from .models import UserProfile, Notification, Wishlist, Conversation, Review

@@ -45,6 +45,7 @@
                 <p><strong>Creat el:</strong> {{ book.created_at|date:"d M Y" }}</p>
                 <p><strong>Preu:</strong> {{ book.price }}€</p>
                 <p><strong>Estat del llibre:</strong> {{ book.state }}</p>
+                <p><strong>Propietari: <a href="{% url 'view_profile' book.owner.id %}">{{ book.owner.first_name }}</a></strong></p>
                 <p><strong>Visibilitat:</strong> 
                     {% if book.visible %}
                         Publicat

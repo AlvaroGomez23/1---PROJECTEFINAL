@@ -19,7 +19,7 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name']
         labels = {
-            'first_name': 'Nom',
+            'first_name': 'Nom *',
             'last_name': 'Cognom',
         }
 
@@ -31,7 +31,7 @@ class UserProfileForm(forms.ModelForm):
         labels = {
             'city': 'Selecciona el teu poble',
             'phone_number': 'Número de telèfon',
-            'movement_radius_km': 'Radi de moviment (km)',
+            'movement_radius_km': 'Radi de moviment (km) *',
         }
         widgets = {
             'city': forms.HiddenInput()
@@ -44,11 +44,3 @@ class EditProfile(forms.Form):
     phone_number = forms.CharField(label="Número de telèfon", max_length=100)
 
 
-class LocationForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ['city', 'movement_radius_km']
-        labels = {
-            'city': 'Selecciona el teu poble',
-            'movement_radius_km': 'Radi de moviment (km)',
-        }

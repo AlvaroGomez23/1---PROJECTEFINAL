@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views, autocomplete
+from . import views
 from .consumers import ChatConsumer  # Importa ChatConsumer desde consumers.py
 
 

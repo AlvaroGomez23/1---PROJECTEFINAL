@@ -38,7 +38,7 @@
 
                     <div class="row g-3">
                         <div class="col-12 form-group">
-                            {{ form.isbn.label_tag }}
+                            {{ form.isbn.label_tag }} <p>( Afegir-ho sense guions, només numeros )</p>
                             {{ form.isbn }}
                         </div>
 
@@ -71,16 +71,12 @@
                         </div>
 
                         <div class="col-6 form-group">
-                            {{ form.rating.label_tag }}
-                            {{ form.rating }}
-                        </div>
-                        <div class="col-6 form-group">
                             {{ form.status.label_tag }}
                             {{ form.status }}
                         </div>
 
                         <div class="col-12 form-group">
-                            {{ form.visible.label_tag }}
+                            {{ form.visible.label_tag }} <p>( Si no es marca com a visible, no es pot intercanviar )</p>
                             {{ form.visible }}
                         </div>
 

@@ -41,7 +41,7 @@
                         <!-- Campo ISBN -->
                         <div class="col-12">
                             <div class="form-group">
-                                {{ form.isbn.label_tag }}
+                                {{ form.isbn.label_tag }} <p>( Afegir-ho sense guions, només numeros )</p>
                                 {{ form.isbn }}
                             </div>
                         </div>
@@ -89,13 +89,6 @@
                             </div>
                         </div>
 
-                        <!-- Campos full-width -->
-                        <div class="col-6">
-                            <div class="form-group">
-                                {{ form.rating.label_tag }}
-                                {{ form.rating }}
-                            </div>
-                        </div>
                         <div class="col-6">
                             <div class="form-group">
                                 {{ form.status.label_tag }}
@@ -105,7 +98,7 @@
 
                         <div class="col-12">
                             <div class="form-group">
-                                {{ form.visible.label_tag }}
+                                {{ form.visible.label_tag }} <p>( Si no es marca com a visible, no es pot intercanviar )</p>
                                 {{ form.visible }}
                             </div>
                         </div>

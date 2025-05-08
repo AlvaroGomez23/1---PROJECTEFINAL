@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from users.utils import send_user_notification, send_user_email
 from django.db.models import Avg
 from django.contrib import messages
+from django.urls import reverse
 
 
 # Create your views here.
@@ -180,10 +181,18 @@ def request_exchange(request, book_id):
             user = book.owner
             user_from = request.user
             title = f"Sol·licitud d'intercanvi per {book.title}"
-            message = f"{request.user.first_name} vol intercanviar {exchange.book_from.title} pel teu llibre {book.title}"
+            book_from_url = reverse('book_details', args=[exchange.book_from.id])
+            message = (
+                f"{request.user.first_name} vol intercanviar "
+                f"<a href='{book_from_url}'>{exchange.book_from.title}</a> pel teu llibre {book.title}"
+            )
+
+            mail_msg = f"{request.user.first_name} vol intercanviar {exchange.book_from.title} pel teu llibre {book.title}"
 
             send_user_notification(user, user_from, title, message, exchange)
-            send_user_email(user, title, message)
+            send_user_email(user, title, mail_msg)
+
+            
             
             return redirect('book_details', book_id=book.pk)
     else:

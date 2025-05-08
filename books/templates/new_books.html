@@ -26,9 +26,13 @@
             <div class="col">
                 <div class="book-card">
                     {% if book.image %}
-                        <img src="{{ book.image.url }}" alt="{{ book.title }}">
+                    <a href="{% url 'book_details' book.id %}">
+                        <img src="{{ book.image.url }}" alt="{{ book.title }}" class="img-fluid">
+                    </a>
                     {% else %}
-                        <img src="{% static 'img/default-book.png' %}" alt="{{ book.title }}">
+                    <a href="{% url 'book_details' book.id %}">
+                        <img src="{% static 'img/default-book.png' %}" alt="{{ book.title }}" class="img-fluid">
+                    </a>
                     {% endif %}
                     <h4>{{ book.title }}</h4>
                     <p>{{ book.author }}</p>
