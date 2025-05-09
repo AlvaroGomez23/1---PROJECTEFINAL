@@ -19,14 +19,28 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    const toggleFiltersBtn = document.getElementById('toggleFiltersBtn');
+    const toggleBtn = document.getElementById('toggleFiltersBtn');
     const filtersPanel = document.getElementById('filtersPanel');
 
-    filtersPanel.addEventListener('show.bs.collapse', () => {
-        toggleFiltersBtn.innerHTML = 'Amagar Filtres'; // Cambiar el texto cuando el panel se muestra
+    // Ocultar els filtres si esta en mòbil
+    if (window.innerWidth < 768) {
+        filtersPanel.classList.add('d-none');
+        toggleBtn.textContent = 'Mostrar Filtres';
+    }
+
+    toggleBtn.addEventListener('click', function () {
+        filtersPanel.classList.toggle('d-none');
+        toggleBtn.textContent = filtersPanel.classList.contains('d-none') ? 'Mostrar Filtres' : 'Amagar Filtres';
     });
 
-    filtersPanel.addEventListener('hide.bs.collapse', () => {
-        toggleFiltersBtn.innerHTML = 'Mostrar Filtres'; // Cambiar el texto cuando el panel se oculta
+    // Ajustar si cambia el tamany
+    window.addEventListener('resize', function () {
+        if (window.innerWidth >= 768) {
+            filtersPanel.classList.remove('d-none');
+            toggleBtn.textContent = 'Amagar Filtres';
+        } else {
+            filtersPanel.classList.add('d-none');
+            toggleBtn.textContent = 'Mostrar Filtres';
+        }
     });
 });

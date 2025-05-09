@@ -73,7 +73,7 @@
                     <a href="{% url 'add_review_user' user.id %}" class="btn btn-primary">Valorar usuari</a>
                 {% endif %}
                 {% if profile_info.city %}
-                    <a href="{% url 'user_map' user_id=profile_info.user.id %}" class="btn btn-primary">Veure mapa</a>
+                    <a href="{% url 'user_map' user_id=profile_info.user.id %}" class="btn-map btn btn-primary">Veure mapa</a>
                 {% else %}
                     <p class="text-muted">Ubicació no configurada</p>
                 {% endif %}

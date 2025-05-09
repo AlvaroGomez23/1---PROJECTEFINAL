@@ -155,6 +155,17 @@
     color: black
 }
 
+.btn:focus {
+    background-color: var(--primaryColor) !important;
+    color: var(--fullWhite) !important;
+    outline: 4px solid var(--secondaryColor) !important;
+}
+
+.btn-filter:focus {
+    background-color: #0a0f36;
+    outline: 4px solid var(--secondaryColor) !important;
+}
+
 
 a {
     text-decoration: none;
@@ -170,7 +181,7 @@ a:hover {
     }
 
     .book-card {
-        max-height: 2rem;
+        
         overflow: auto;
     }
 

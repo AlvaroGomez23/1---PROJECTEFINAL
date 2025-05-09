@@ -28,7 +28,7 @@
                 {% if book.image %}
                     <img src="{{ book.image.url }}" alt="{{ book.title }}">
                 {% else %}
-                    <p class="no-img">Sense imatge</p>
+                    <img src="{% static 'img/logo.png' %}" alt="Imatge predeterminada">
                 {% endif %}
             </div>
         </div>
@@ -53,7 +53,7 @@
                         {% if user_book.image %}
                         <option value="{{ user_book.id }}" data-img="{{ user_book.image.url }}" data-title="{{ user_book.title }}">{{ user_book.title }}</option>
                         {% else %}
-                        <option value="{{ user_book.id }}" data-img="{% static 'img/default-book.png' %}" data-title="{{ user_book.title }}">{{ user_book.title }}</option>
+                        <option value="{{ user_book.id }}" data-img="{% static 'img/logo.png' %}" data-title="{{ user_book.title }}">{{ user_book.title }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>

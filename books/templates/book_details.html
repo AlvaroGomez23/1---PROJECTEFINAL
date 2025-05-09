@@ -43,7 +43,7 @@
                 {% if book.image %}
                     <img src="{{ book.image.url }}" alt="Portada de {{ book.title }}" class="book-image">
                 {% else %}
-                    <img src="../../media/img/logo.png" alt="Imatge predeterminada" class="book-image">
+                    <img src="{% static 'img/logo.png' %}" alt="Imatge predeterminada" class="book-image">
                 {% endif %}
             </div>
 

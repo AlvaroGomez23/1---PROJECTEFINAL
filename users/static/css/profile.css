@@ -64,6 +64,17 @@
     padding-right: 10px;
 }
 
+.btn-map {
+    outline: none !important;
+}
+
+.btn:focus {
+    background-color: var(--primaryColor) !important;
+    color: var(--fullWhite) !important;
+    outline: 4px solid var(--secondaryColor) !important;
+
+}
+
 
 .reviews-scroll::-webkit-scrollbar {
     width: 8px;
