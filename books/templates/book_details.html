@@ -64,10 +64,14 @@
                         Amagat
                     {% endif %}
                 </p>
-                <a href="{% url 'add_review_book' book.id %}" class="btn btn-primary">+ Afegir valoració</a>
+                <a href="{% url 'add_review_book' book.id %}" class="btn">+ Afegir valoració</a>
                 <a href="{% url 'books' %}" class="btn">Tornar a la llista de llibres</a>
                 {% if book.owner == request.user %}
                     <a href="{% url 'modify_book' book.id %}" class="btn btn-edit">Editar</a>
+                {% else %}
+                {% if book.visible %}
+                    <a class="btn" href="{% url 'request_exchange' book.id %}">Intercanviar</a>
+                {% endif %}
                 {% endif %}
             </div>
         </div>

@@ -9,6 +9,33 @@
     <link rel="stylesheet" href="{% static 'css/notifications.css' %}">
 
 <div class="container-fluid mt-4">
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+    {% if 'error' in message.tags %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% elif 'success' in message.tags %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% elif 'warning' in message.tags %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Aquest usuari ha estat vetat. No es poden fer valoracions ara mateix.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% else %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    {% endfor %}
+    </div>
+    {% endif %}
     <div class="notifications-wrapper mx-auto px-4 py-2" style="max-width: 800px;">
         <h1 class="mb-4 text-center">Bústia</h1>
 

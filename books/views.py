@@ -219,6 +219,12 @@ def request_exchange(request, book_id):
 @login_required
 def accept_exchange(request, exchange_id):
     exchange = get_object_or_404(Exchange, pk=exchange_id, to_user=request.user)
+
+    # Verificar que el libro que se intercambia está en posesión del usuario que acepta
+    if exchange.book_for.owner != request.user:
+        messages.error(request, "No pots acceptar aquest intercanvi perquè el llibre no està en la teva possessió.")
+        return redirect('notifications')
+
     exchange.accepted = True
     exchange.completed = True
     exchange.save()
@@ -244,6 +250,7 @@ def accept_exchange(request, exchange_id):
     send_user_notification(user, user_from, title, message, None)
     send_user_email(user, title, message)
 
+    messages.success(request, "L'intercanvi s'ha efectuat correctament.")
     return redirect('notifications')
 
 @login_required
