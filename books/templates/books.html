@@ -39,7 +39,7 @@
                 </div>
 
                 <!-- Contenedor de filtros -->
-                <div class="filters d-md-block" id="filtersPanel">
+                <div class="filters d-md-block" id="filtersPanel" autocomplete="off">
                     <h5>Filtres</h5>
                     <form method="get" action="{% url 'books' %}">
                         <div class="mb-3">
@@ -69,7 +69,7 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <button class="btn-filter btn-primary mb-2">Filtrar</button>
+                        <button type="submit" class="btn-filter btn-primary mb-2">Filtrar</button>
                         <a href="{% url 'books' %}" class="btn-reset btn-danger w-100">Restablir filtres</a>
                     </form>
                 </div>
