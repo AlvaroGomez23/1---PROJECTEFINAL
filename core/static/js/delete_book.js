@@ -43,23 +43,5 @@ document.addEventListener("DOMContentLoaded", function () {
             toggleBtn.textContent = 'Mostrar Filtres';
         }
     });
-
-    const form = document.getElementById('filtersForm'); 
-    const submitBtn = document.getElementById('submitFilters');
-
-    let allowSubmit = false;
-
     
-    submitBtn.addEventListener('click', function (e) {
-        allowSubmit = true;
-    });
-
-    
-    form.addEventListener('submit', function (e) {
-        if (!allowSubmit) {
-            e.preventDefault(); 
-            console.warn("Bloqueado envío automático no deseado");
-        }
-        allowSubmit = false; 
-    });
 });
