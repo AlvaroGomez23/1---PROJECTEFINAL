@@ -85,7 +85,7 @@
                         <div class="book-card">
                             {% if book.image %}
                             <a href="{% url 'book_details' book.id %}">
-                                <img src="{{ book.image.url }}" alt="{{ book.title }}" class="img-fluid">
+                                <img src="{% static 'media/books/covers/book.image.url' %}" alt="{{ book.title }}" class="img-fluid">
                             </a>
                             {% else %}
                             <a href="{% url 'book_details' book.id %}">
