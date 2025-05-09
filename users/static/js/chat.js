@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     ws.onclose = function () {
-        console.warn("⚠️ WebSocket cerrado.");
+        console.warn("Web socket tancat.");
     };
 
     window.sendMessage = function () {

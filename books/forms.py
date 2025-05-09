@@ -30,6 +30,6 @@ class ExchangeForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
-        super(ExchangeForm, self).__init__(*args, **kwargs)
+        super(ExchangeForm, self).__init__(*args, **kwargs) # Crida al constructor de la classe pare
         if user:
-            self.fields['book_to_exchange'].queryset = Book.objects.filter(owner=user)
+            self.fields['book_to_exchange'].queryset = Book.objects.filter(owner=user) # Omplena el desplegable amb els llibres de l'usuari

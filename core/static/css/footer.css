@@ -1,86 +1,86 @@
-/* Footer general */
+
 .footer {
-    background-color: #1a1a2e; /* Fondo oscuro moderno */
-    color: #eaeaea; /* Texto claro */
-    padding: 3rem 0; /* 48px */
+    background-color: #1a1a2e;
+    color: #eaeaea;
+    padding: 3rem 0;
     font-family: 'Roboto', sans-serif;
 }
 
-/* Nuevo CSS para columnas */
+
 .footer-column {
-    padding: 0 0.9375rem; /* 15px */
-    margin-bottom: 1rem; /* 16px */
+    padding: 0 0.9375rem;
+    margin-bottom: 1rem;
 }
 
-/* Añadir esto para alinear verticalmente los títulos */
+
 .footer-title {
-    margin: 2rem; /* 32px */
-    font-size: 1.5rem; /* 24px */
+    margin: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: 1.5rem; /* 24px */
+    margin-bottom: 1.5rem;
     color: #f9a826;
-    text-align: left; /* Alineación consistente */
+    text-align: left;
 }
 
-/* Lista de enlaces */
+
 .footer-list {
-    margin: 2.5rem !important; /* 40px */
+    margin: 2.5rem !important;
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .footer-list li {
-    margin-bottom: 0.8rem; /* 12.8px */
+    margin-bottom: 0.8rem;
 }
 
 .footer-link {
     color: #eaeaea;
     text-decoration: none;
     font-weight: 400;
-    font-size: 1rem; /* 16px */
+    font-size: 1rem;
     transition: color 0.3s ease;
 }
 
 .footer-link:hover {
-    color: #f9a826; /* Color amarillo al pasar el ratón */
+    color: #f9a826;
 }
 
-/* Redes sociales */
+
 .footer-social {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
-    gap: 1.5rem; /* 24px */
-    justify-content: center; /* Asegura que los íconos estén centrados */
+    gap: 1.5rem;
+    justify-content: center;
 }
 
 .footer-social-link {
     color: #eaeaea;
-    font-size: 1.8rem; /* 28.8px */
+    font-size: 1.8rem;
     transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .footer-social-link:hover {
-    color: #f9a826; /* Color amarillo al pasar el ratón */
-    transform: scale(1.2); /* Efecto de zoom */
+    color: #f9a826;
+    transform: scale(1.2);
 }
 
-/* Línea divisoria */
+
 .footer-divider {
     border-color: rgba(255, 255, 255, 0.1);
-    margin: 2rem 0; /* 32px */
+    margin: 2rem 0;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .footer-column {
-        flex: 100%; /* Las columnas ocupan todo el ancho */
-        margin-bottom: 2rem; /* 32px */
+        flex: 100%;
+        margin-bottom: 2rem;
     }
 
     .footer-social {
-        justify-content: center; /* Asegura que los íconos estén centrados en dispositivos pequeños */
+        justify-content: center;
     }
 }

@@ -46,6 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error("Geolocalització no suportada pel navegador.");
         }
     } else {
-        document.getElementById('map').innerHTML = '<p style="text-align: center; color: red;">No s\' ha pogut carregar el mapa.</p>';
+        document.getElementById('map').innerHTML = '<p class="error";">No s\' ha pogut carregar el mapa.</p>';
     }
 });

@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const toggleBtn = document.getElementById('toggleFiltersBtn');
     const filtersPanel = document.getElementById('filtersPanel');
 
-    // Ocultar filtros inicialmente en pantallas pequeñas
+    // Ocultar els filtres si esta en mòbil
     if (window.innerWidth < 768) {
         filtersPanel.classList.add('d-none');
         toggleBtn.textContent = 'Mostrar Filtres';
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleBtn.textContent = filtersPanel.classList.contains('d-none') ? 'Mostrar Filtres' : 'Amagar Filtres';
     });
 
-    // Ajustar si cambia el tamaño de pantalla
+    // Ajustar si cambia el tamany
     window.addEventListener('resize', function () {
         if (window.innerWidth >= 768) {
             filtersPanel.classList.remove('d-none');

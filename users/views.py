@@ -14,6 +14,9 @@ from django.db.models import Avg
 from users.utils import send_user_notification, send_user_email
 from cities_light.models import City
 from django.contrib import messages
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+
 # Create your views here.
 
 def login(request):
@@ -69,7 +72,6 @@ def register(request):
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
 
-
         # Verificacions per enregistrar-lo
         if password != password2:
             return render(request, 'register.html', {
@@ -77,14 +79,22 @@ def register(request):
                 'errors': "Les contrasenyes no coincideixen"
             })
 
-        
+        # Validar la seguretat de la contrasenya
+        try:
+            validate_password(password)
+        except ValidationError as e:
+            return render(request, 'register.html', {
+                'form': form,
+                'errors': e.messages  # Mostrar els errors de validació
+            })
+
         if User.objects.filter(email=email).exists():
             return render(request, 'register.html', {
                 'form': form,
                 'errors': "Aquest correu electrònic ja està registrat"
             })
 
-        # Crar l'usuari
+        # Crear l'usuari
         user = User.objects.create_user(username=email, email=email, password=password)
         user.first_name = name
         user.save()

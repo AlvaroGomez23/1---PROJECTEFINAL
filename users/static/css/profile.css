@@ -52,19 +52,19 @@
     background-color: var(--secondaryHoverColor);
 }
 
-/* Reutilización de estilos de valoraciones */
+
 .reviews-container {
     margin-top: 30px;
 }
 
-/* Contenedor con scroll para las tarjetas */
+
 .reviews-scroll {
-    max-height: 300px; /* Altura máxima del contenedor */
-    overflow-y: auto; /* Habilitar scroll vertical */
-    padding-right: 10px; /* Espacio para evitar que el scroll tape contenido */
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
 }
 
-/* Estilo para ocultar la barra de scroll en navegadores modernos */
+
 .reviews-scroll::-webkit-scrollbar {
     width: 8px;
 }
@@ -82,7 +82,7 @@
     background-color: #f1f1f1;
 }
 
-/* Tarjetas de reseñas */
+
 .review-card {
     background-color: var(--fullWhite);
     border: 1px solid #ddd;

@@ -13,32 +13,28 @@ from django.urls import reverse
 # Create your views here.
 
 def books(request):
-    # Filtrar solo libros visibles
+    # Només llibres que estiguin visibles
     books = Book.objects.filter(visible=True).exclude(owner=request.user)
     categories = Category.objects.all()
     user_wishlist = Wishlist.objects.filter(user=request.user).first()
-    # Obtener parámetros de consulta
-    title_or_isbn = request.GET.get('title', '')  # Usar el mismo campo para título e ISBN
+    title_or_isbn = request.GET.get('title', '')  # Filtres per trobar llibres
     author = request.GET.get('author', '')
     min_price = request.GET.get('min_price', None)
     max_price = request.GET.get('max_price', None)
     category = request.GET.get('category', '')
 
-    # Filtrar por título o ISBN
+    
     if title_or_isbn:
         books = books.filter(title__icontains=title_or_isbn) | books.filter(isbn__icontains=title_or_isbn)
 
-    # Filtrar por autor
     if author:
         books = books.filter(author__icontains=author)
 
-    # Filtrar por rango de precios
     if min_price:
         books = books.filter(price__gte=min_price)
     if max_price:
         books = books.filter(price__lte=max_price)
 
-    # Filtrar por categoría
     if category:
         books = books.filter(category__name=category)
 
@@ -76,12 +72,10 @@ def book_details(request, book_id):
 def check_isbn_in_wishlists(isbn):
     wishlists = Wishlist.objects.filter(desired_isbns__contains=isbn)
     for wishlist in wishlists:
-        # Si se encuentra el ISBN en la wishlist de algún usuario, enviar una notificación
         user = wishlist.user
         title = f"Un llibre desitjat està disponible!"
         message = f"El llibre amb ISBN {isbn} que desitjes, ara està disponible."
-        
-        # Enviar la notificación
+
     send_user_notification(user, None, title, message, None)
     send_user_email(user, title, message)
 
@@ -93,9 +87,7 @@ def create_book(request):
         return render(request, 'create_book.html', {'form': form})
     
     else:
-        form = createBook(request.POST, request.FILES)  # Asegúrate de incluir request.FILES
-        print(request.POST)
-        print(request.FILES)
+        form = createBook(request.POST, request.FILES)  
         if form.is_valid():
             book = form.save(commit=False)
             book.owner = request.user
@@ -112,9 +104,9 @@ def create_book(request):
 def modify_book(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     
-    # Verifica si el usuario actual es el propietario del libro
+    # Verificar si l'usuari es el propietari del llibre
     if book.owner != request.user:
-        return redirect('books')  # Redirige a la lista de libros si no es el propietario
+        return redirect('books') 
 
     if request.method == 'GET':
         form = createBook(instance=book)
@@ -160,7 +152,7 @@ def request_exchange(request, book_id):
     if book.owner == request.user:
         return redirect('books')  
     
-    # Verificar si ya existe un intercambio pendiente entre estos usuarios y libros
+    # Comprovar que ja hi ha un intercanvi pendent
     existing_exchange = Exchange.objects.filter(
         book_for=book,
         book_from__in=Book.objects.filter(owner=request.user),
@@ -172,7 +164,6 @@ def request_exchange(request, book_id):
     ).exists()
 
     if existing_exchange:
-        # Redirigir o mostrar un mensaje de error si ya existe un intercambio pendiente
         return render(request, 'request_exchange.html', {
             'book': book,
             'form': None,
@@ -220,7 +211,7 @@ def request_exchange(request, book_id):
 def accept_exchange(request, exchange_id):
     exchange = get_object_or_404(Exchange, pk=exchange_id, to_user=request.user)
 
-    # Verificar que el libro que se intercambia está en posesión del usuario que acepta
+    # Verificar que l'usuari encara és propietari del llibre
     if exchange.book_for.owner != request.user:
         messages.error(request, "No pots acceptar aquest intercanvi perquè el llibre no està en la teva possessió.")
         return redirect('notifications')
@@ -229,19 +220,18 @@ def accept_exchange(request, exchange_id):
     exchange.completed = True
     exchange.save()
 
-    # Transferir la propiedad de los libros
+    # Invertir els propietaris dels llibres
     exchange.book_from.owner = exchange.to_user
     exchange.book_for.owner = exchange.from_user
     exchange.book_from.save()
     exchange.book_for.save()
 
-    # Incrementar el contador de intercambios solo si el intercambio es aceptado
     exchange.book_from.exchange_count += 1
     exchange.book_for.exchange_count += 1
     exchange.book_from.save()
     exchange.book_for.save()
 
-    # Enviar notificación al usuario que solicitó el intercambio
+    # Enviar notificació i correu electrònic a l'usuari que ha fet la sol·licitud
     user = exchange.from_user
     user_from = request.user
     title = f"Intercanvi acceptat de {exchange.book_for.title}"
@@ -298,14 +288,14 @@ def add_review_book(request, book_id):
         
         
         if existing_review:
-            # Actualiza la reseña existente
+            # Actualitzar la review existent per evitar un review bombing negatiu o positiu
             existing_review.rating = rating
             existing_review.comment = comment
             existing_review.save()
             messages.success(request, "La valoració s'ha actualitzat correctament.")
             
         else:
-            # Crea una nueva reseña
+            # Crear la nova review
             book.book_reviews_recieved.create(reviewer_id=request.user.id, rating=rating, comment=comment)
             messages.success(request, "La valoració s'ha afegit correctament.")
             

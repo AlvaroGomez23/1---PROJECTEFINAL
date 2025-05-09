@@ -26,8 +26,8 @@ h1 {
 }
 
 .book-section, .form-box {
-    flex: 1 1 300px; /* Asegura que los paneles sean del mismo tamaño */
-    max-width: 400px; /* Limita el ancho máximo */
+    flex: 1 1 300px;
+    max-width: 400px;
     background-color: var(--fullWhite);
     outline: var(--primaryColor) solid 0.25rem;
     border-radius: 10px;
@@ -42,7 +42,7 @@ h1 {
     border-radius: 10px;
     width: 100%;
     height: auto;
-    max-height: 250px; /* Limita la altura máxima de las imágenes */
+    max-height: 250px;
     object-fit: cover;
 }
 
@@ -100,7 +100,7 @@ h1 {
     }
 
     .book-section, .form-box {
-        width: 100%; /* Asegura que los paneles ocupen todo el ancho en pantallas pequeñas */
-        max-width: 100%; /* Ocupa todo el ancho de la pantalla */
+        width: 100%;
+        max-width: 100%;
     }
 }

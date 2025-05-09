@@ -1,19 +1,19 @@
 .notifications-wrapper {
     border-left: 5px solid var(--primaryColor);
     background-color: var(--bgColor);
-    padding: 20px; /* Espaciado interno */
-    margin: 0 auto; /* Centra el contenedor */
-    width: 90%; /* Ancho máximo */
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    padding: 20px;
+    margin: 0 auto;
+    width: 90%;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .notification {
     border-left: 5px solid var(--primaryColor);
     background-color: var(--bgColor);
-    margin-bottom: 20px; /* Espaciado entre notificaciones */
-    padding: 15px; /* Espaciado interno */
-    border-radius: 10px; /* Bordes redondeados */
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 10px;
 }
 
 .notification__title {

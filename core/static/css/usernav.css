@@ -1,6 +1,6 @@
 body {
-    background-color: var(--bgColor) !important; /* Fondo claro */
-    color: #1E1E24 !important; /* Texto oscuro */
+    background-color: var(--bgColor) !important;
+    color: #1E1E24 !important;
     font-family: Arial, sans-serif !important;
 }
 
@@ -13,18 +13,18 @@ body {
 .header {
     background-color: var(--fullWhite);
     color: #ecf0f1;
-    padding: 0.625rem 1.25rem; /* 10px 20px */
+    padding: 0.625rem 1.25rem;
     display: flex;
-    justify-content: space-between; /* Distribuye los elementos uniformemente */
+    justify-content: space-between;
     align-items: center;
-    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1); /* 4px 6px */
+    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
 }
 
 .logo {
-    font-size: 1.5rem; /* 24px */
+    font-size: 1.5rem;
     font-weight: bold;
     color: var(--primaryColor);
     text-decoration: none;
@@ -33,25 +33,25 @@ body {
 .nav-container {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Asegura que los elementos estén distribuidos */
-    width: 100%; /* Ocupa todo el ancho */
+    justify-content: space-between;
+    width: 100%;
 }
 
 .nav-list,
 .nav-list-right {
     display: flex;
     align-items: center;
-    gap: 0.625rem; /* 10px */
+    gap: 0.625rem;
     flex-grow: 1;
-    justify-content: flex-end; /* Mantiene el botón de cuenta a la derecha */
+    justify-content: flex-end;
 }
 
 .nav-link {
     text-decoration: none;
     color: #ecf0f1 !important;
-    font-size: 1rem; /* 16px */
-    padding: 0.625rem 0.9375rem; /* 10px 15px */
-    border-radius: 0.625rem; /* 10px */
+    font-size: 1rem;
+    padding: 0.625rem 0.9375rem;
+    border-radius: 0.625rem;
     background-color: #1a2b48;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -62,99 +62,99 @@ body {
 }
 
 .nav-icon {
-    width: 1.875rem; /* 30px */
-    height: 1.875rem; /* 30px */
+    width: 1.875rem;
+    height: 1.875rem;
 }
 
 .dropdown {
     position: relative;
     display: inline-block;
     background-color: var(--primaryColor);
-    border-radius: 0.625rem; /* 10px */
+    border-radius: 0.625rem;
 }
 
 .dropdown-menu {
     display: none;
     position: absolute;
     background-color: var(--fullWhite);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); /* 8px 16px */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
     z-index: 1;
     list-style: none;
     padding: 0;
     margin: 0;
-    border-radius: 0.3125rem; /* 5px */
+    border-radius: 0.3125rem;
     overflow: hidden;
-    min-width: 9.375rem; /* 150px */
+    min-width: 9.375rem;
 }
 
 .dropdown:hover .dropdown-menu {
     display: block;
 }
 
-/* Contenedor de la burbuja */
+
 .nav-group {
     display: flex;
-    gap: 0.625rem; /* 10px */
-    padding: 0.625rem 1.25rem; /* 10px 20px */
-    background-color: #1a2b48; /* Fondo azul oscuro */
-    border-radius: 1.25rem; /* 20px */
+    gap: 0.625rem;
+    padding: 0.625rem 1.25rem;
+    background-color: #1a2b48;
+    border-radius: 1.25rem;
     align-items: center;
     justify-content: center;
-    margin: auto; /* Centra la burbuja */
+    margin: auto;
 }
 
-/* Enlaces dentro de la burbuja */
+
 .nav-group .nav-link {
-    background-color: transparent; /* Fondo transparente para los enlaces */
-    padding: 0.3125rem 0.625rem; /* 5px 10px */
-    border-radius: 0.625rem; /* 10px */
+    background-color: transparent;
+    padding: 0.3125rem 0.625rem;
+    border-radius: 0.625rem;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .nav-group .nav-link:hover {
-    background-color: var(--secondaryColor); /* Fondo al pasar el ratón */
-    color: var(--primaryColor); /* Texto al pasar el ratón */
+    background-color: var(--secondaryColor);
+    color: var(--primaryColor);
 }
 
-/* Lista de navegación derecha */
+
 .nav-list-right {
     display: flex;
     align-items: center;
-    gap: 0.625rem; /* 10px */
-    flex-grow: 0; /* Evita que los elementos de la derecha ocupen más espacio */
+    gap: 0.625rem;
+    flex-grow: 0;
 }
 
 .dropdown-men:focus-within {
     display: none;
     position: absolute;
-    right: 0; /* Posiciona desde el lado derecho del contenedor */
-    top: 100%; /* Justo debajo del botón */
+    right: 0;
+    top: 100%;
     background-color: var(--fullWhite);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); /* 8px 16px */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
     z-index: 1;
     list-style: none;
     padding: 0;
     margin: 0;
-    border-radius: 0.3125rem; /* 5px */
+    border-radius: 0.3125rem;
     overflow: hidden;
-    min-width: 9.375rem; /* 150px */
+    min-width: 9.375rem;
 
-    /* Animación */
+   
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-0.625rem); /* -10px */
+    transform: translateY(-0.625rem);
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .dropdown:hover .dropdown-menu {
-    display: block; /* Este podría omitirse si usas visibility y opacity bien */
+    display: block;
     opacity: 1;
     visibility: visible;
-    transform: translateY(0); /* Baja al hacer hover */
+    transform: translateY(0);
 }
 
 .dropdown-menu li {
-    padding: 0.625rem; /* 10px */
+    padding: 0.625rem;
     text-align: left;
 }
 
@@ -162,7 +162,7 @@ body {
     text-decoration: none;
     color: var(--primaryColor);
     display: block;
-    padding: 0.625rem; /* 10px */
+    padding: 0.625rem;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 

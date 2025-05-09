@@ -35,7 +35,7 @@ ALLOWED_HOSTS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),  # Asegúrate de tener esta carpeta en tu proyecto
+    os.path.join(BASE_DIR, "static"), 
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Application definition
@@ -84,7 +84,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'users.notifications_processor.unread_notifications',  # Añadir el contexto de notificaciones
+                'users.notifications_processor.unread_notifications',  
             ],
         },
     },
@@ -107,7 +107,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
         'OPTIONS': {
-            'timeout': 20,  # Espera hasta 20 segundos si la BD está bloqueada
+            'timeout': 20,
         }
     }
 }

@@ -69,7 +69,7 @@
     margin-bottom: 0.625rem;
 }
 
-/* Botones principales */
+
 .book-card .btn-primary,
 .card .btn {
     background-color: var(--primaryColor);
@@ -128,7 +128,7 @@
     background-color: #0a0f36;
 }
 
-/* Botones secundarios */
+
 .book-card .btn-secondary {
     color: #1E1E24;
     border: none;
@@ -153,18 +153,18 @@
 }
 
 .page-item.active .page-link {
-    background-color: var(--secondaryColor); /* Cambia el fondo */
-    color: black; /* Cambia el color del texto */
-    border-color: var(--secondaryColor); /* Cambia el color del borde */
-    font-weight: bold; /* Opcional: texto en negrita */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Opcional: sombra */
+    background-color: var(--secondaryColor);
+    color: black;
+    border-color: var(--secondaryColor);
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .book-card .btn-secondary:hover {
     background-color: var(--secondaryHoverColor);
 }
 
-/* Filtros */
+
 .filters {
     background-color: var(--fullWhite);
     color: #000000;
@@ -236,13 +236,13 @@
     background-color: var(--secondaryHoverColor);
 }
 
-/* Listas */
+
 .list-group-item {
     background-color: var(--fullWhite) !important;
     color: #000000 !important;
 }
 
-/* Barra de navegación inferior */
+
 .navbar-bottom {
     background-color: var(--fullWhite);
     color: #000000;
@@ -264,7 +264,7 @@
     color: #0a0f36;
 }
 
-/* Tarjetas de novedades */
+
 .novetats-card {
     background-color: var(--fullWhite) !important;
     color: #000000 !important;
@@ -286,7 +286,7 @@
     border-color: var(--primaryColor);
 }
 
-/* Media Queries */
+
 @media (min-width: 768px) {
     .book-card {
         height: 100%;
@@ -299,7 +299,7 @@
     }
 }
 
-/* Elimina el problema en móviles */
+
 @media (max-width: 767.98px) {
     .row-cols-md-3 > .col {
         flex: 0 0 100%;

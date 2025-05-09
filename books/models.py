@@ -14,19 +14,19 @@ class Book(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="books")
     visible = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now) 
-    exchange_count = models.PositiveIntegerField(default=0)  # Contador de intercambios
+    exchange_count = models.PositiveIntegerField(default=0) 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.previous_visible = self.visible  # Almacenar el valor inicial de 'visible'
+        self.previous_visible = self.visible  # Guardar el valor per enviar notificacions una vegada estigui visible
 
     def save(self, *args, **kwargs):
-        # Actualizar el valor previo de 'visible' antes de guardar
-        if self.pk:  # Solo si el objeto ya existe en la base de datos
+        if self.pk:
             old_instance = Book.objects.get(pk=self.pk)
             self.previous_visible = old_instance.visible
         super().save(*args, **kwargs)
 
+    # Funció per calcular la mitjana de les valoracions
     def average_rating(self):
         reviews = self.reviews.all()
         if reviews.exists():
@@ -54,7 +54,7 @@ class State(models.Model):
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True, blank=True, related_name="book_reviews_recieved")
     reviewer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="book_reviews_given")
-    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])  # 1 a 5 estrellas
+    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
     comment = models.TextField(blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
 

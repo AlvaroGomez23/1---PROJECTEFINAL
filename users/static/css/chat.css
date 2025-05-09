@@ -37,13 +37,13 @@ h1 {
 
 .message.sent {
     align-self: flex-end;
-    background-color: var(--secondaryColor); /* Verde claro */
+    background-color: var(--secondaryColor);
     color: #000;
 }
 
 .message.received {
     align-self: flex-start;
-    background-color: var(--fullWhite); /* Blanco */
+    background-color: var(--fullWhite);
     border: 1px solid #ddd;
     color: #000;
 }
@@ -66,9 +66,9 @@ h1 {
 
 .return {
     text-decoration: none;
-    color: var(--primaryColor); /* Azul oscuro */
+    color: var(--primaryColor);
     display: block;
-    background-color: var(--secondaryColor); /* Amarillo claro */
+    background-color: var(--secondaryColor);
     border-radius: 5px;
     padding: 10px;
     text-align: center;
@@ -79,7 +79,7 @@ h1 {
 
 button {
     padding: 10px 20px;
-    background-color: var(--primaryColor); /* Verde WhatsApp */
+    background-color: var(--primaryColor);
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -88,5 +88,11 @@ button {
 }
 
 button:hover {
-    background-color: var(--primaryHoverColor); /* Verde más oscuro */
+    background-color: var(--primaryHoverColor);
+}
+
+.error {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
 }

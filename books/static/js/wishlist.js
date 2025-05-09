@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
     const wishlistButtons = document.querySelectorAll(".wishlist-btn");
 
-    // Obtener el token CSRF del input oculto
+    
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    // Función para actualizar el texto del botón según el estado
+    
     function updateButtonState(button, inWishlist) {
         if (inWishlist === "true") {
             button.textContent = "Eliminar de la llista de desitjats";
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
         button.setAttribute("data-in-wishlist", inWishlist);
     }
 
-    // Inicializar los botones con su estado correcto
+    
     wishlistButtons.forEach((button) => {
         const inWishlist = button.getAttribute("data-in-wishlist");
         updateButtonState(button, inWishlist);

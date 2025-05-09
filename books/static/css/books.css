@@ -1,53 +1,53 @@
 
-/* Contenedor principal */
+
 .container {
     margin-top: 20px;
 }
 
-/* Tarjetas de libros */
+
 .book-card {
-    background-color: var(--fullWhite); /* Fondo blanco */
-    border-radius: 10px; /* Bordes redondeados */
-    padding: 15px; /* Espaciado interno */
-    text-align: center; /* Centrar contenido */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    border: 2px solid #ddd; /* Borde gris claro */
-    height: 100%; /* Asegurar altura completa */
+    background-color: var(--fullWhite);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ddd;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease; /* Transición suave para la sombra y el borde */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .book-card:hover {
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
-    border-color: var(--primaryColor); /* Cambiar el color del borde al hacer hover */
-    transform: none; /* Evitar transformaciones */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    border-color: var(--primaryColor);
+    transform: none;
 }
 
 .book-card img {
-    border-radius: 10px; /* Bordes redondeados para la imagen */
-    width: 100%; /* Imagen ocupa todo el ancho */
-    height: 200px; /* Altura fija */
-    object-fit: cover; /* Ajustar la imagen sin distorsionarla */
-    margin-bottom: 10px; /* Espaciado debajo de la imagen */
+    border-radius: 10px;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 10px;
 }
 
 .book-card h4 {
-    font-size: 1.25rem; /* Tamaño del título */
+    font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
 .book-card p {
-    font-size: 1rem; /* Tamaño del texto */
+    font-size: 1rem;
     margin-bottom: 10px;
-    color: #555; /* Texto gris */
+    color: #555;
 }
 
-/* Botones principales */
+
 .book-card .btn-primary {
-    background-color: var(--primaryColor); /* Azul oscuro */
+    background-color: var(--primaryColor);
     color: var(--fullWhite);
     border: none;
     padding: 10px 15px;
@@ -57,12 +57,12 @@
 }
 
 .book-card .btn-primary:hover {
-    background-color: #0a0f36; /* Azul más oscuro al pasar el ratón */
+    background-color: #0a0f36;
 }
 
-/* Botones secundarios */
+
 .book-card .btn-secondary {
-    background-color: var(--secondaryColor); /* Amarillo claro */
+    background-color: var(--secondaryColor);
     color: #1E1E24;
     border: none;
     font-size: 0.875rem;
@@ -71,65 +71,65 @@
 }
 
 .book-card .btn-secondary:hover {
-    background-color: var(--secondaryHoverColor); /* Amarillo más oscuro al pasar el ratón */
+    background-color: var(--secondaryHoverColor);
 }
 
-/* Filtros */
+
 .filters {
-    background-color: var(--fullWhite); /* Fondo blanco */
-    border-radius: 10px; /* Bordes redondeados */
-    padding: 15px; /* Espaciado interno */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    border: 2px solid #ddd; /* Borde gris claro */
-    position: sticky; /* Fijo dentro de su contenedor */
-    top: 6rem; /* Distancia desde la parte superior */
-    z-index: 1000; /* Asegurar que esté encima de otros elementos */
-    width: 100%; /* Asegurar que ocupe el ancho de su columna */
-    height: 36.6rem; /* Altura fija para la tarjeta */
-    overflow: auto; /* Habilitar desplazamiento interno si el contenido excede la altura */
-    transition: box-shadow 0.3s ease, border-color 0.3s ease; /* Transición suave para la sombra y el borde */
+    background-color: var(--fullWhite);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ddd;
+    position: sticky;
+    top: 6rem;
+    z-index: 1000;
+    width: 100%;
+    height: 36.6rem;
+    overflow: auto;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .filters:hover {
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
-    border-color: var(--primaryColor); /* Cambiar el color del borde al hacer hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    border-color: var(--primaryColor);
 }
 
 .filters h5 {
-    font-size: 1.25rem; /* Tamaño del título */
+    font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 15px;
 }
 
 .filters .form-label {
-    font-size: 0.875rem; /* Tamaño del texto */
+    font-size: 0.875rem;
     font-weight: bold;
 }
 
 .btn {
-    width: 100%; /* Botones ocupan todo el ancho */
+    width: 100%;
     
 }
 
 .btn-filter {
     display: block;
-    width: 100%; /* Asegura que el botón ocupe todo el ancho del contenedor */
-    background-color: var(--primaryColor) !important; /* Azul oscuro */
+    width: 100%;
+    background-color: var(--primaryColor) !important;
     color: var(--fullWhite);
-    stroke: none !important; /* Eliminar borde */
-    outline: none !important; /* Eliminar contorno */
-    box-shadow: none !important; /* Eliminar la sombra de enfoque */
+    stroke: none !important;
+    outline: none !important;
+    box-shadow: none !important;
     border: none;
-    padding: 0.625rem 0.9375rem; /* Espaciado interno */
-    font-size: 0.875rem; /* Tamaño del texto */
-    border-radius: 0.3125rem; /* Bordes redondeados */
-    transition: background-color 0.3s ease; /* Transición suave */
-    text-align: center; /* Centrar el texto */
-    text-decoration: none; /* Eliminar subrayado */
+    padding: 0.625rem 0.9375rem;
+    font-size: 0.875rem;
+    border-radius: 0.3125rem;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    text-decoration: none;
 }
 
 .btn-search {
-    display: block; /* Asegura que el botón se comporte como un bloque */
+    display: block;
     color: var(--fullWhite);
     background-color: var(--primaryColor);
     border: none;
@@ -137,36 +137,36 @@
     font-size: 0.875rem;
     border-radius: 0.3125rem;
     transition: background-color 0.3s ease;
-    text-align: center; /* Centrar el texto */
-    text-decoration: none; /* Eliminar subrayado */
+    text-align: center;
+    text-decoration: none;
 }
 
 .btn-reset {
-    display: block; /* Asegura que el botón se comporte como un bloque */
-    width: 100%; /* Ocupa todo el ancho del contenedor */
+    display: block;
+    width: 100%;
     background-color: var(--secondaryColor);
     border: none;
     padding: 0.625rem 0.9375rem;
     font-size: 0.875rem;
     border-radius: 0.3125rem;
     transition: background-color 0.3s ease;
-    text-align: center; /* Centrar el texto */
+    text-align: center;
     text-decoration: none;
     color: black
 }
 
-/* Enlaces */
+
 a {
-    text-decoration: none; /* Eliminar el subrayado de todos los enlaces */
+    text-decoration: none;
 }
 
 a:hover {
-    text-decoration: none; /* Asegurar que tampoco se subraye al pasar el ratón */
+    text-decoration: none;
 }
 
 @media (max-width: 768px) {
     .btn-primary {
-        margin-bottom: 15px; /* Espaciado debajo del botón */
+        margin-bottom: 15px;
     }
 
     .book-card {
@@ -175,7 +175,7 @@ a:hover {
     }
 
     .filters-toggle {
-        display: block; /* Mostrar el botón de filtros */
+        display: block;
         background-color: var(--primaryColor);
         color: var(--fullWhite);
         border: none;

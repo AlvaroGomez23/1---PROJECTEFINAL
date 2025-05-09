@@ -1,4 +1,4 @@
-/* Contenedor principal */
+
 .book-details-container {
     background-color: var(--fullWhite);
     border-radius: 10px;
@@ -8,18 +8,18 @@
     margin: 20px auto;
 }
 
-/* Imagen del libro */
+
 .book-image {
     max-width: 100%;
-    border: 2px solid #ddd; /* Borde para distinguir imágenes con fondo blanco */
+    border: 2px solid #ddd;
     border-radius: 10px;
     padding: 5px;
-    background-color: #f8f8f8; /* Fondo gris claro */
+    background-color: #f8f8f8;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
-/* Información del libro */
+
 .book-details-container h2 {
     font-size: 1.75rem;
     font-weight: bold;
@@ -54,19 +54,19 @@
     background-color: #28a745;
 }
 
-/* Contenedor principal de valoraciones */
+
 .reviews-container {
     margin-top: 30px;
 }
 
-/* Contenedor con scroll para las tarjetas */
+
 .reviews-scroll {
-    max-height: 300px; /* Altura máxima del contenedor */
-    overflow-y: auto; /* Habilitar scroll vertical */
-    padding-right: 10px; /* Espacio para evitar que el scroll tape contenido */
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
 }
 
-/* Estilo para ocultar la barra de scroll en navegadores modernos */
+
 .reviews-scroll::-webkit-scrollbar {
     width: 8px;
 }
@@ -84,7 +84,7 @@
     background-color: #f1f1f1;
 }
 
-/* Tarjetas de reseñas */
+
 .review-card {
     background-color: var(--fullWhite);
     border: 1px solid #ddd;
