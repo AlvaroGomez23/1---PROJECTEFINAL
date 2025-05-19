@@ -20,6 +20,35 @@
 
     <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center orange-background">
 
+        {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+    {% if 'error' in message.tags %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% elif 'success' in message.tags %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% elif 'warning' in message.tags %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Aquest usuari ha estat vetat. No es poden fer valoracions ara mateix.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% else %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    {% endfor %}
+    </div>
+    {% endif %}
+
+
         <h1 class="text-center mb-4">Iniciar Sessió</h1>
         
         <div class="login-container">
@@ -34,6 +63,7 @@
 
                     <button type="submit" class="btn w-100 mt-3">Iniciar sessió</button>
                     <p class="mt-3 text-center">No tens compte? <a href="{% url 'register' %}">Clica aquí</a></p>
+                    <p class="mt-3 text-center">Contrasenya oblidada? <a href="{% url 'recovery_password' %}">Clica aquí</a></p>
                 </form>
             </div>
         </div>

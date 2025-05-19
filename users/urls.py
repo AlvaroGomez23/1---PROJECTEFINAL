@@ -22,4 +22,6 @@ urlpatterns = [
     path('city-autocomplete/', views.city_autocomplete, name='city_autocomplete'),
     path('add_review_user/<int:user_id>', views.add_review_user, name='add_review_user'),
     path('delete_review_user/<int:review_id>', views.delete_review_user, name='delete_review_user'),
+    path('recovery_password/', views.recovery_password, name='recovery_password'),
+    path('change_recovery_password/<str:token>/', views.change_recovery_password, name='change_recovery_password'),
 ]

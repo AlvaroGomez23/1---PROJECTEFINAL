@@ -104,14 +104,19 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ddb253507',
+        'USER': 'ddb253507',
+        'PASSWORD': 'BljW/nuinj.h3(',
+        'HOST': 'bbdd.alvarogomez.cat',
+        'PORT': '3306',
         'OPTIONS': {
-            'timeout': 20,
-        }
+            'charset': 'utf8mb4',
+            'init_command': "SET NAMES 'utf8mb4'",
+        },
+        'CONN_MAX_AGE': 0,  # ✅ CORRECTO AQUÍ
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
