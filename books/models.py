@@ -162,6 +162,10 @@ class Exchange(models.Model):
         return f"{self.book_from.title} <--- {self.from_user.username} ------- {self.to_user.username} ---> {self.book_for.title}"
     
     @classmethod
+    def get_exchange(cls, exchange_id):
+        return get_object_or_404(cls, id=exchange_id)
+    
+    @classmethod
     def create_exchange(cls, book_for, book_from, from_user, to_user):
         exchange = cls(
             book_for=book_for,

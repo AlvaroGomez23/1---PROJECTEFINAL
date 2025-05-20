@@ -142,7 +142,7 @@ def request_exchange(request, book_id):
 
 @login_required
 def accept_exchange(request, exchange_id):
-    exchange = get_object_or_404(Exchange, pk=exchange_id, to_user=request.user)
+    exchange = Exchange.get_exchange(exchange_id)
 
     # Verificar que l'usuari encara és propietari del llibre
     if exchange.book_for.owner != request.user:
