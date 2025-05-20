@@ -28,7 +28,7 @@ def login(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        profile = UserProfile.get_user_by_email(email)
+        profile = UserProfile.get_user_profile_by_email(email)
 
         if not profile:
             messages.error(request, "L'usuari no existeix")
@@ -119,7 +119,7 @@ def mark_as_read(request, notification_id):
 # Funció per mostrar la llista de llibres desitjats de l'usuari 
 @login_required
 def wishlist(request):
-    wishlist = Wishlist.get_wishlist(request.user)
+    wishlist = Wishlist.get_or_create_for_user(request.user)
 
     search_query = request.GET.get('search', '').strip()
 
@@ -276,7 +276,7 @@ def recovery_password(request):
         form = RecoveryPassword(request.POST)  # <-- aquí defines form
         if form.is_valid():
             email = form.cleaned_data['email'].strip()
-            user = UserProfile.get_user_by_email(email)
+            user = UserProfile.get_user(email)
 
             if user:
                 recovery_token = uuid.uuid4()

@@ -17,12 +17,10 @@ class Wishlist(models.Model):
     def __str__(self):
         return f"Wishlist de {self.user.username}"
     
+    
     @classmethod
-    def get_wishlist(cls, user):
-        wishlist = cls.objects.filter(user=user).first()
-        if not wishlist:
-            wishlist = cls.objects.create(user=user)
-        return wishlist
+    def get_wishlists_with_isbn(cls, isbn):
+        return cls.objects.filter(desired_isbns__icontains=isbn)
     
     @classmethod
     def get_or_create_for_user(cls, user):
@@ -119,8 +117,11 @@ class UserProfile(models.Model):
     def email_exists(email):
         return User.objects.filter(email=email).exists()
     
+    def get_user(email):
+        return User.objects.filter(email=email).first()
+    
     @classmethod
-    def get_user_by_email(cls, email):
+    def get_user_profile_by_email(cls, email):
         return cls.objects.filter(user__email=email).first()
 
     @classmethod

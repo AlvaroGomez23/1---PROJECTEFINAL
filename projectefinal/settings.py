@@ -64,6 +64,10 @@ INSTALLED_APPS = [
 ]
 
 LOGIN_REDIRECT_URL = '/core/dashboard/'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_AUTO_SIGNUP = False
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -1,6 +1,7 @@
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 class Book(models.Model):
     title = models.CharField(max_length=255)
@@ -13,12 +14,12 @@ class Book(models.Model):
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="books")
     visible = models.BooleanField(default=False)
-    created_at = models.DateTimeField(default=timezone.now) 
-    exchange_count = models.PositiveIntegerField(default=0) 
+    created_at = models.DateTimeField(default=timezone.now)
+    exchange_count = models.PositiveIntegerField(default=0)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.previous_visible = self.visible  # Guardar el valor per enviar notificacions una vegada estigui visible
+        self.previous_visible = self.visible
 
     def save(self, *args, **kwargs):
         if self.pk:
@@ -26,15 +27,98 @@ class Book(models.Model):
             self.previous_visible = old_instance.visible
         super().save(*args, **kwargs)
 
-    # Funció per calcular la mitjana de les valoracions
+    def __str__(self):
+        return self.title
+
     def average_rating(self):
         reviews = self.reviews.all()
         if reviews.exists():
             return round(reviews.aggregate(models.Avg('rating'))['rating__avg'], 2)
         return 0
 
-    def __str__(self):
-        return self.title
+    def is_exchangeable_by(self, user):
+        """Verifica si el usuario puede solicitar un intercambio por este libro"""
+        if user.userprofile.veto:
+            return False, "Has sigut vetat degut a un comportament inadequat. No pots intercanviar llibres."
+        if self.owner.userprofile.veto:
+            return False, "El propietari del llibre ha sigut vetat degut a un comportament inadequat."
+        if self.owner == user:
+            return False, "No pots intercanviar llibres amb tu mateix."
+        return True, None
+
+    def has_pending_exchange_with(self, user):
+        """Comprueba si ya existe un intercambio pendiente con este libro"""
+        return Exchange.objects.filter(
+            book_for=self,
+            book_from__in=Book.objects.filter(owner=user),
+            from_user=user,
+            to_user=self.owner,
+            completed=False,
+            declined=False,
+            accepted=False
+        ).exists()
+
+    @classmethod
+    def create_book(cls, form, user):
+        """Crea un libro a partir de un formulario y usuario"""
+        book = form.save(commit=False)
+        book.owner = user
+        book.save()
+        return book
+
+    @classmethod
+    def update_book(cls, form):
+        """Actualiza un libro desde un formulario ya vinculado a la instancia"""
+        updated_book = form.save(commit=False)
+        updated_book.save()
+        return updated_book
+
+    @classmethod
+    def get_book(cls, book_id):
+        return get_object_or_404(cls, id=book_id)
+
+    @classmethod
+    def get_9_books(cls):
+        return cls.objects.filter(visible=True).order_by('-created_at')[:9]
+
+    @classmethod
+    def get_visible_books_for_user(cls, user):
+        return cls.objects.filter(visible=True).exclude(owner=user)
+
+    @classmethod
+    def filter_books(cls, books, params):
+        """Aplica filtros dinámicos según los parámetros recibidos"""
+        title_or_isbn = params.get('title', '')
+        author = params.get('author', '')
+        min_price = params.get('min_price')
+        max_price = params.get('max_price')
+        category = params.get('category', '')
+
+        if title_or_isbn:
+            books = books.filter(Q(title__icontains=title_or_isbn) | Q(isbn__icontains=title_or_isbn))
+        if author:
+            books = books.filter(author__icontains=author)
+        if min_price:
+            books = books.filter(price__gte=min_price)
+        if max_price:
+            books = books.filter(price__lte=max_price)
+        if category:
+            books = books.filter(category__name=category)
+
+        return books
+
+    @classmethod
+    def get_exchanges_pending_map(cls, books, user):
+        """Devuelve un diccionario que indica si cada libro tiene un intercambio pendiente para el usuario"""
+        return {
+            book.id: Exchange.objects.filter(
+                book_for=book,
+                from_user=user,
+                completed=False,
+                declined=False
+            ).exists()
+            for book in books
+        }
 
 
 

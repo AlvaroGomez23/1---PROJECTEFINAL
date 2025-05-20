@@ -62,9 +62,16 @@
                     {% endif %}
                     {% load socialaccount %}
                     <button type="submit" class="btn w-100 mt-3">Iniciar sessió</button>
+                    <a href='{% provider_login_url "github" %}'>Github</a>
+                    <a href='{% provider_login_url "google" %}'>Google</a>
                     <p class="mt-3 text-center">No tens compte? <a href="{% url 'register' %}">Clica aquí</a></p>
                     <p class="mt-3 text-center">Contrasenya oblidada? <a href="{% url 'recovery_password' %}">Clica aquí</a></p>
                 </form>
+                <script src="//accounts.google.com/gsi/client" async></script>
+<div id="g_id_onload"
+     data-client_id="123-secret.apps.googleusercontent.com"
+     data-login_uri="{% url 'google_login_by_token' %}">
+</div>
             </div>
         </div>
     </div>
