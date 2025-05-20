@@ -222,7 +222,7 @@ def city_autocomplete(request):
 @login_required
 def add_review_user(request, user_id):
     user_to_review = get_object_or_404(User, id=user_id)
-    veto_response = check_veto(request.user, user_to_review)
+    veto_response = check_veto(request, user_to_review)
     if veto_response:
         return veto_response
 

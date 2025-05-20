@@ -25,15 +25,13 @@ def send_user_email(user, title, message):
     email.content_subtype = "html" 
     email.send(fail_silently=False)
 
-def check_veto(request_user, target_user):
-    if request_user.userprofile.veto:
-        messages.error(request_user, "No pots fer valoracions amb el teu perfil actual ja que has sigut vetat.")
-        return redirect('view_profile', user_id=target_user.id)
-
+def check_veto(request, target_user):
+    if request.user.userprofile.veto:
+        messages.error(request, "No pots fer valoracions amb el teu perfil actual ja que has sigut vetat.")
+        return redirect('books')  # o la ruta que corresponda
     if target_user.userprofile.veto:
-        messages.warning(request_user, "No pots fer valoracions a aquest usuari ja que ha sigut vetat.")
-        return redirect('view_profile', user_id=target_user.id)
-
+        messages.error(request, "Aquest usuari ha estat vetat. No pots valorar-lo.")
+        return redirect('books')  # o otra página segura
     return None
 
 def search_cities(term, limit=10):

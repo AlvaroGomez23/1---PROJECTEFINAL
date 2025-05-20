@@ -8,20 +8,28 @@ from users.utils import send_user_notification, send_user_email
 from django.db.models import Avg
 from django.contrib import messages
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 
 # Create your views here.
 
+
 def books(request):
-    books = Book.get_visible_books_for_user(request.user)
-    books = Book.filter_books(books, request.GET)
-    exchanges_pending = Book.get_exchanges_pending_map(books, request.user)
+    all_books = Book.get_visible_books_for_user(request.user)
+    filtered_books = Book.filter_books(all_books, request.GET)
+
+    paginator = Paginator(filtered_books, 2)  # 9 libros por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    exchanges_pending = Book.get_exchanges_pending_map(page_obj.object_list, request.user)
 
     context = {
-        'books': books,
+        'books': page_obj.object_list,
         'exchanges_pending': exchanges_pending,
         'user_wishlist': Wishlist.objects.filter(user=request.user).first(),
-        'categories': Category.objects.all()
+        'categories': Category.objects.all(),
+        'page_obj': page_obj,  # útil para los controles de paginación
     }
     return render(request, 'books.html', context)
 

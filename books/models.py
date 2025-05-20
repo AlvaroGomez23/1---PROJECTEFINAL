@@ -1,5 +1,6 @@
 from django.utils import timezone
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
@@ -159,3 +160,14 @@ class Exchange(models.Model):
 
     def __str__(self):
         return f"{self.book_from.title} <--- {self.from_user.username} ------- {self.to_user.username} ---> {self.book_for.title}"
+    
+    @classmethod
+    def create_exchange(cls, book_for, book_from, from_user, to_user):
+        exchange = cls(
+            book_for=book_for,
+            book_from=book_from,
+            from_user=from_user,
+            to_user=to_user
+        )
+        exchange.save()
+        return exchange

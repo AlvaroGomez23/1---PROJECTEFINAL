@@ -120,6 +120,23 @@
                     </div>
                     {% endfor %}
                 </div>
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}">« primera</a>
+                            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}">← anterior</a>
+                        {% endif %}
+
+                        <span class="current">
+                            Pàgina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                        </span>
+
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}">següent →</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}">última »</a>
+                        {% endif %}
+                    </span>
+                </div>
                 {% else %}
                 <p class="text-center">No hi ha llibres disponibles.</p>
                 {% endif %}
