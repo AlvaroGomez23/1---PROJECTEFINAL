@@ -120,6 +120,11 @@ class Book(models.Model):
             ).exists()
             for book in books
         }
+    
+    def delete_book(self):
+        if self.image:
+            self.image.delete(save=False)
+        self.delete()
 
 
 
@@ -146,6 +151,32 @@ class Review(models.Model):
     def __str__(self):
         return f"{self.reviewer.username} - {self.rating}★"
 
+    @classmethod
+    def get_review(cls, review_id):
+        return get_object_or_404(cls, id=review_id)
+
+    @classmethod
+    def get_existing_review(cls, book, reviewer):
+        return cls.objects.filter(book=book, reviewer=reviewer).first()
+
+    @classmethod
+    def create_review(cls, book, reviewer, rating, comment):
+        return cls.objects.create(book=book, reviewer=reviewer, rating=rating, comment=comment)
+
+    @classmethod
+    def delete_review(cls, review_id, reviewer):
+        review = cls.objects.filter(id=review_id, reviewer=reviewer).first()
+        if review:
+            book_id = review.book.id
+            review.delete()
+            return True, book_id
+        return False, None
+
+    def update_review(self, rating, comment):
+        self.rating = rating
+        self.comment = comment
+        self.save()
+
 
 
 class Exchange(models.Model):
@@ -160,7 +191,7 @@ class Exchange(models.Model):
 
     def __str__(self):
         return f"{self.book_from.title} <--- {self.from_user.username} ------- {self.to_user.username} ---> {self.book_for.title}"
-    
+
     @classmethod
     def get_exchange(cls, exchange_id):
         return get_object_or_404(cls, id=exchange_id)
@@ -175,3 +206,29 @@ class Exchange(models.Model):
         )
         exchange.save()
         return exchange
+
+    def perform_accept_exchange(self, current_user):
+        if self.book_for.owner != current_user:
+            raise PermissionError("Este usuario no puede aceptar el intercambio.")
+
+        self.accepted = True
+        self.completed = True
+        self.save()
+
+        # Intercambio de propietarios
+        self.book_from.owner = self.to_user
+        self.book_for.owner = self.from_user
+
+        self.book_from.exchange_count += 1
+        self.book_for.exchange_count += 1
+
+        self.book_from.save()
+        self.book_for.save()
+
+    def perform_decline_exchange(self, current_user):
+        if self.to_user != current_user:
+            raise PermissionError("Este usuario no puede rechazar este intercambio.")
+
+        self.declined = True
+        self.completed = True
+        self.save()
