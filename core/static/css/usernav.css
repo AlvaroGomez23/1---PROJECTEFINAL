@@ -170,3 +170,28 @@ body {
     background-color: var(--secondaryColor);
     color: var(--primaryColor);
 }
+
+.skip-to-main {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 1000;
+  background: #ffd600;
+  color: #001a35;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  transition: left 0.2s;
+}
+.skip-to-main:focus {
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  outline: 2px solid #001a35;
+  z-index: 2000;
+}
+

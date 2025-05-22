@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{% static 'css/add_review.css' %}">
 </head>
 <body>
-    <div class="container mt-4">
+    <div id="main-content" class="container mt-4">
         <div class="review-container">
             <h1>{% if existing_review %}Actualitzar valoració{% else %}Afegir valoració{% endif %}</h1>
             <p><strong>Llibre:</strong> {{ book.title }}</p>
