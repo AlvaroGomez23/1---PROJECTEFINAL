@@ -126,10 +126,10 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ddb253507',
-        'USER': 'ddb253507',
-        'PASSWORD': 'BljW/nuinj.h3(',
-        'HOST': 'bbdd.alvarogomez.cat',
+        'NAME': 'book4book',
+        'USER': 'alvaro',
+        'PASSWORD': 'RBsSV5PPFjxnYVKFsPUX',
+        'HOST': 'book4book.c7a20yw2q3s5.eu-north-1.rds.amazonaws.com',
         'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4',

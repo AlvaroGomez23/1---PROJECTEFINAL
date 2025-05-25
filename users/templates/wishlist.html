@@ -6,6 +6,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Llista de desitjats</title>
+    <meta name="description" content="Consulta i gestiona la teva llista de llibres desitjats a Book4Book. Afegeix o elimina llibres i troba fàcilment els teus preferits.">
+    <meta name="keywords" content="llista de desitjats, wishlist, llibres, book4book, preferits, comunitat">
+    <meta name="author" content="Book4Book">
+    <link rel="canonical" href="https://one-projectefinal.onrender.com{% url 'wishlist' %}">
     {% load static %}
     <script>
         const toggleWishlistUrl = "{% url 'toggle_wishlist' %}";
@@ -14,13 +19,11 @@
     <script src="{% static 'js/wishlist.js' %}"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/books.css' %}">
-    <title>Llista de desitjats</title>
 </head>
 <body>
-    <div id="main-content" class="container mt-4">
+    <div id="main-content" class="container mt-4" tabindex="-1">
         <h1 class="text-center">Llista de desitjats</h1>
 
-        
         <form method="get" action="{% url 'wishlist' %}" class="mb-4">
             <div class="input-group">
                 <input type="text" name="search" class="form-control" placeholder="Cerca per nom o ISBN" value="{{ search_query }}">
@@ -32,7 +35,7 @@
         <div class="row justify-content-center row-cols-1 row-cols-md-3 g-3">
             {% for book in books %}
             <div class="col">
-                <div class="book-card">
+                <article class="book-card">
                     {% if book.image %}
                     <a href="{% url 'book_details' book.id %}">
                         <img src="{{ book.image.url }}" alt="{{ book.title }}" class="img-fluid">
@@ -59,7 +62,7 @@
                             {% endif %}
                         </button>
                     </form>
-                </div>
+                </article>
             </div>
             {% endfor %}
         </div>
@@ -67,6 +70,6 @@
         <p class="text-center">No tens llibres a la llista de desitjats.</p>
         {% endif %}
     </div>
-{% endblock %}
 </body>
 </html>
+{% endblock %}

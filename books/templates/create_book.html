@@ -6,100 +6,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afegir Llibre</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/variables.css' %}">
     <link rel="stylesheet" href="{% static 'css/cm_books.css' %}">
-    <title>Afegir Llibre</title>
 </head>
 <body>
 
-<div id="main-content" class="container mt-5 px-3 px-md-5">
-    <h1 class="text-center mb-4">Afegir llibres</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="row gy-4">
-            <!-- Imagen -->
-            <div class="col-12 col-md-5">
-                <div class="image-preview mb-4">
-                    {% if form.image.value %}
-                        <img src="{{ form.image.value.url }}" alt="Previsualització" class="img-fluid">
-                    {% endif %}
-                    <label for="id_image">
-                        <span>Puja una imatge per veure-la</span>
-                    </label>
-                </div>
-            </div>
+<main id="main-content" class="container mt-5 px-3 px-md-5">
+    <header class="text-center mb-4">
+        <h1>Afegir llibres</h1>
+    </header>
 
-            <!-- Formulario -->
-            <div class="col-12 col-md-7">
-                <div class="form-container">
-                    {{ form.non_field_errors }}
+    <section aria-label="Formulari per afegir un llibre">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row gy-4">
 
-                    <div class="row g-3">
-                        <div class="col-12 form-group">
-                            {{ form.isbn.label_tag }} <p>( Afegir-ho sense guions, només numeros )</p>
-                            {{ form.isbn }}
-                        </div>
-
-                        <div class="col-12 form-group">
-                            {{ form.title.label_tag }}
-                            {{ form.title }}
-                        </div>
-
-                        <div class="col-md-6 form-group">
-                            {{ form.description.label_tag }}
-                            {{ form.description }}
-                        </div>
-                        <div class="col-md-6 form-group">
-                            {{ form.author.label_tag }}
-                            {{ form.author }}
-                        </div>
-
-                        <div class="col-md-6 form-group">
-                            {{ form.price.label_tag }}
-                            {{ form.price }}
-                        </div>
-                        <div class="col-md-6 form-group">
-                            {{ form.state.label_tag }}
-                            {{ form.state }}
-                        </div>
-
-                        <div class="col-md-6 form-group">
-                            {{ form.category.label_tag }}
-                            {{ form.category }}
-                        </div>
-
-                        <div class="col-6 form-group">
-                            {{ form.status.label_tag }}
-                            {{ form.status }}
-                        </div>
-
-                        <div class="col-12 form-group">
-                            {{ form.visible.label_tag }} <p>( Si no es marca com a visible, no es pot intercanviar )</p>
-                            {{ form.visible }}
-                        </div>
-
-                        <div class="col-12 form-group">
-                            {{ form.image.label_tag }}
-                            {{ form.image }}
-                        </div>
+                <!-- Previsualització d’imatge -->
+                <aside class="col-12 col-md-5">
+                    <div class="image-preview mb-4">
+                        {% if form.image.value %}
+                            <img src="{{ form.image.value.url }}" alt="Previsualització" class="img-fluid">
+                        {% endif %}
+                        <label for="id_image">
+                            <span>Puja una imatge per veure-la</span>
+                        </label>
                     </div>
+                </aside>
 
-                    <button type="submit" class="mt-3">Guardar</button>
+                <!-- Formulari de dades -->
+                <article class="col-12 col-md-7">
+                    <div class="form-container">
+                        {{ form.non_field_errors }}
 
-                    {% if success %}
-                        <p class="text-success mt-3">{{ success }}</p>
-                    {% endif %}
-                    {% if errors %}
-                        <p class="text-danger mt-3">{{ errors }}</p>
-                    {% endif %}
-                </div>
+                        <div class="row g-3">
+
+                            <div class="col-12 form-group">
+                                {{ form.isbn.label_tag }} <p>(Afegir-ho sense guions, només números)</p>
+                                {{ form.isbn }}
+                            </div>
+
+                            <div class="col-12 form-group">
+                                {{ form.title.label_tag }}
+                                {{ form.title }}
+                            </div>
+
+                            <div class="col-md-6 form-group">
+                                {{ form.description.label_tag }}
+                                {{ form.description }}
+                            </div>
+                            <div class="col-md-6 form-group">
+                                {{ form.author.label_tag }}
+                                {{ form.author }}
+                            </div>
+
+                            <div class="col-md-6 form-group">
+                                {{ form.price.label_tag }}
+                                {{ form.price }}
+                            </div>
+                            <div class="col-md-6 form-group">
+                                {{ form.state.label_tag }}
+                                {{ form.state }}
+                            </div>
+
+                            <div class="col-md-6 form-group">
+                                {{ form.category.label_tag }}
+                                {{ form.category }}
+                            </div>
+
+                            <div class="col-6 form-group">
+                                {{ form.status.label_tag }}
+                                {{ form.status }}
+                            </div>
+
+                            <div class="col-12 form-group">
+                                {{ form.visible.label_tag }} <p>(Si no es marca com a visible, no es pot intercanviar)</p>
+                                {{ form.visible }}
+                            </div>
+
+                            <div class="col-12 form-group">
+                                {{ form.image.label_tag }}
+                                {{ form.image }}
+                            </div>
+
+                        </div>
+
+                        <footer class="mt-3">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+
+                            {% if success %}
+                                <p class="text-success mt-3">{{ success }}</p>
+                            {% endif %}
+                            {% if errors %}
+                                <p class="text-danger mt-3">{{ errors }}</p>
+                            {% endif %}
+                        </footer>
+                    </div>
+                </article>
+
             </div>
-        </div>
-    </form>
-</div>
-
+        </form>
+    </section>
+</main>
 
 <script src="{% static 'js/preview_img.js' %}"></script>
 </body>

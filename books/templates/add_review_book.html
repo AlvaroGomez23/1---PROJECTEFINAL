@@ -13,34 +13,43 @@
     <link rel="stylesheet" href="{% static 'css/add_review.css' %}">
 </head>
 <body>
-    <div id="main-content" class="container mt-4">
-        <div class="review-container">
+
+<main id="main-content" class="container mt-4">
+    <section class="review-container">
+        <header>
             <h1>{% if existing_review %}Actualitzar valoració{% else %}Afegir valoració{% endif %}</h1>
             <p><strong>Llibre:</strong> {{ book.title }}</p>
-            <form method="post" action="{% url 'add_review_book' book.id %}">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="rating">Puntuació (1-5):</label>
-                    <select id="rating" name="rating" class="form-select">
-                        <option value="" disabled {% if not existing_review %}selected{% endif %}>Selecciona una puntuació</option>
-                        {% for i in "12345" %}
-                        <option value="{{ i }}" {% if existing_review and existing_review.rating == i|stringformat:"i" %}selected{% endif %}>
-                            {{ i }}★
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="comment">Comentari (opcional):</label>
-                    <textarea id="comment" name="comment" class="form-control" rows="4" placeholder="Escriu un comentari...">{% if existing_review %}{{ existing_review.comment }}{% endif %}</textarea>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <button type="submit" class="btn">{% if existing_review %}Actualitzar{% else %}Enviar{% endif %} valoració</button>
-                    <a href="{% url 'book_details' book.id %}" class="btn btn-back">Cancel·lar</a>
-                </div>
-            </form>
-        </div>
-    </div>
+        </header>
+
+        <form method="post" action="{% url 'add_review_book' book.id %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="rating" class="form-label">Puntuació (1-5):</label>
+                <select id="rating" name="rating" class="form-select">
+                    <option value="" disabled {% if not existing_review %}selected{% endif %}>Selecciona una puntuació</option>
+                    {% for i in "12345" %}
+                    <option value="{{ i }}" {% if existing_review and existing_review.rating == i|stringformat:"i" %}selected{% endif %}>
+                        {{ i }}★
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="comment" class="form-label">Comentari (opcional):</label>
+                <textarea id="comment" name="comment" class="form-control" rows="4" placeholder="Escriu un comentari...">{% if existing_review %}{{ existing_review.comment }}{% endif %}</textarea>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn">
+                    {% if existing_review %}Actualitzar{% else %}Enviar{% endif %} valoració
+                </button>
+                <a href="{% url 'book_details' book.id %}" class="btn btn-back">Cancel·lar</a>
+            </div>
+        </form>
+    </section>
+</main>
+
 </body>
 </html>
 {% endblock %}

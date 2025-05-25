@@ -15,117 +15,130 @@
     <link rel="stylesheet" href="{% static 'css/book_details.css' %}">
 </head>
 <body>
+
     {% if messages %}
-        <div class="container mt-3">
+        <section class="container mt-3" role="alert">
             {% for message in messages %}
-    {% if 'error' in message.tags %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% elif 'success' in message.tags %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% else %}
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endif %}
-    {% endfor %}
+                {% if 'error' in message.tags %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {% elif 'success' in message.tags %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {% else %}
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                {% endif %}
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+            {% endfor %}
+        </section>
     {% endif %}
-    <div id="main-content" class="container mt-4">
-        <div class="book-details-container row">
-            <!-- Columna izquierda: Imagen del libro -->
-            <div class="col-md-4 text-center">
+
+    <main id="main-content" class="container mt-4">
+        <section class="book-details-container row">
+            
+            <!-- Imagen del libro -->
+            <figure class="col-md-4 text-center">
                 {% if book.image %}
                     <img src="{{ book.image.url }}" alt="Portada de {{ book.title }}" class="book-image">
                 {% else %}
                     <img src="{% static 'img/logo.png' %}" alt="Imatge predeterminada" class="book-image">
                 {% endif %}
-            </div>
+            </figure>
 
-            <!-- Columna derecha: Información del libro -->
-            <div class="col-md-8">
-                <h2>{{ book.title }}</h2>
-                <p><strong>Autor:</strong> {{ book.author }}</p>
-                <p><strong>Descripció:</strong> {{ book.description }}</p>
-                <p><strong>ISBN:</strong> {{ book.isbn }}</p>
-                <p><strong>Creat el:</strong> {{ book.created_at|date:"d M Y" }}</p>
-                <p><strong>Preu:</strong> {{ book.price }}€</p>
-                <p><strong>Estat del llibre:</strong> {{ book.state }}</p>
-                <p><strong>Propietari: <a href="{% url 'view_profile' book.owner.id %}">{{ book.owner.first_name }}</a></strong></p>
-                <p><strong>Visibilitat:</strong> 
-                    {% if book.visible %}
-                        Publicat
-                    {% else %}
-                        Amagat
-                    {% endif %}
-                </p>
-                <a href="{% url 'add_review_book' book.id %}" class="btn">+ Afegir valoració</a>
-                <a href="{% url 'books' %}" class="btn">Tornar a la llista de llibres</a>
-                {% if book.owner == request.user %}
-                    <a href="{% url 'modify_book' book.id %}" class="btn btn-edit">Editar</a>
-                {% else %}
-                {% if book.visible %}
-                    <a class="btn" href="{% url 'request_exchange' book.id %}">Intercanviar</a>
-                {% endif %}
-                {% endif %}
-            </div>
-        </div>
+            <!-- Detalles del libro -->
+            <section class="col-md-8">
+                <header>
+                    <h2>{{ book.title }}</h2>
+                </header>
+                <div>
+                    <p><strong>Autor:</strong> {{ book.author }}</p>
+                    <p><strong>Descripció:</strong> {{ book.description }}</p>
+                    <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+                    <p><strong>Creat el:</strong> {{ book.created_at|date:"d M Y" }}</p>
+                    <p><strong>Preu:</strong> {{ book.price }}€</p>
+                    <p><strong>Estat del llibre:</strong> {{ book.state }}</p>
+                    <p><strong>Propietari:</strong> 
+                        <a href="{% url 'view_profile' book.owner.id %}">{{ book.owner.first_name }}</a>
+                    </p>
+                    <p><strong>Visibilitat:</strong> 
+                        {% if book.visible %}
+                            Publicat
+                        {% else %}
+                            Amagat
+                        {% endif %}
+                    </p>
 
-        <!-- Contenedor de valoraciones -->
-        <div class="reviews-container">
-            <h3>Valoracions</h3>
+                    <!-- Acciones -->
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <a href="{% url 'add_review_book' book.id %}" class="btn">+ Afegir valoració</a>
+                        <a href="{% url 'books' %}" class="btn">Tornar a la llista de llibres</a>
+
+                        {% if book.owner == request.user %}
+                            <a href="{% url 'modify_book' book.id %}" class="btn btn-edit">Editar</a>
+                        {% else %}
+                            {% if book.visible %}
+                                <a href="{% url 'request_exchange' book.id %}" class="btn">Intercanviar</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Reseñas -->
+        <section class="reviews-container mt-5">
+            <header>
+                <h3>Valoracions</h3>
+                {% if reviews %}
+                    <p>Valoració mitjana: {{ average_rating }} ★</p>
+                {% endif %}
+            </header>
+
             {% if reviews %}
-                <p>Valoració mitjana: {{ average_rating }} ★</p>
                 <div class="reviews-scroll">
                     {% for review in reviews %}
-                    <div class="review-card">
+                    <article class="review-card">
                         <h5>{{ review.reviewer.first_name }}</h5>
                         <p class="review-rating">{{ review.rating }}★</p>
                         <p class="review-comment">{{ review.comment }}</p>
                         <p class="review-date">Publicat el {{ review.date_created|date:"d M Y" }}</p>
                         {% if review.reviewer == request.user %}
-                        <button type="button" class="btn btn-danger btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#deleteReviewModal" data-review-id="{{ review.id }}">
-                            Eliminar
-                        </button>
+                            <button type="button" class="btn btn-danger btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#deleteReviewModal" data-review-id="{{ review.id }}">
+                                Eliminar
+                            </button>
                         {% endif %}
-                    </div>
+                    </article>
                     {% endfor %}
                 </div>
             {% else %}
                 <p>No hi ha valoracions per a aquest llibre.</p>
             {% endif %}
-        </div>
+        </section>
 
-        <!-- Modal de confirmación -->
+        <!-- Modal per eliminar valoració -->
         <div class="modal fade" id="deleteReviewModal" tabindex="-1" aria-labelledby="deleteReviewModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <header class="modal-header">
                         <h5 class="modal-title" id="deleteReviewModalLabel">Confirmar eliminació</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
+                    </header>
                     <div class="modal-body">
                         <p>Estàs segur que vols eliminar aquesta valoració?</p>
                     </div>
-                    <div class="modal-footer">
+                    <footer class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel·lar</button>
                         <form method="post" action="{% url 'delete_review' 0 %}" id="deleteReviewForm">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger">Eliminar</button>
                         </form>
-                    </div>
+                    </footer>
                 </div>
             </div>
         </div>
+    </main>
 
-    </div>
     <script src="{% static 'js/del_book_review.js' %}"></script>
-
 </body>
 </html>
 {% endblock %}

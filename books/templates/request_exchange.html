@@ -7,62 +7,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sol·licitud d'intercanvi</title>
+    <title>Sol·licitud d'intercanvi | Book4Book</title>
+    <meta name="description" content="Sol·licita un intercanvi de llibres a Book4Book. Tria el llibre que vols i ofereix un dels teus per fer l'intercanvi.">
+    <meta name="keywords" content="intercanvi, llibres, book4book, sol·licitud, llibre, canvi, lectura">
+    <meta name="author" content="Book4Book">
+    <link rel="canonical" href="https://one-projectefinal.onrender.com{% url 'request_exchange' book.id %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/variables.css' %}">
     <link rel="stylesheet" href="{% static 'css/exchange.css' %}">
 </head>
 <body>
-    <h1>Sol·licitud d'intercanvi</h1>
+    <main>
+        <header>
+            <h1>Sol·licitud d'intercanvi</h1>
+        </header>
 
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% endif %}
+        {% if error %}
+            <p class="error" role="alert">{{ error }}</p>
+        {% endif %}
 
-    <div id="main-content" class="container">
-        <!-- Llibre que vols -->
-        <div class="book-section">
-            <div class="book-label">Llibre que vols:</div>
-            <div class="preview-title">{{ book.title }}</div>
-            <div class="book-box">
-                {% if book.image %}
-                    <img src="{{ book.image.url }}" alt="{{ book.title }}">
-                {% else %}
-                    <img src="{% static 'img/logo.png' %}" alt="Imatge predeterminada">
-                {% endif %}
-            </div>
+        <div id="main-content" class="container">
+            <!-- Llibre que vols -->
+            <section class="book-section">
+                <h2 class="book-label">Llibre que vols:</h2>
+                <div class="preview-title">{{ book.title }}</div>
+                <div class="book-box">
+                    {% if book.image %}
+                        <img src="{{ book.image.url }}" alt="{{ book.title }}">
+                    {% else %}
+                        <img src="{% static 'img/logo.png' %}" alt="Imatge predeterminada">
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- Llibre per intercanviar -->
+            <section class="book-section">
+                <h2 class="book-label">Llibre per intercanviar:</h2>
+                <div class="preview-title" id="user-book-title">Selecciona un llibre</div>
+                <div class="book-box" id="user-book-preview">
+                    <p class="no-img">Sense imatge</p>
+                </div>
+            </section>
+
+            <!-- Formulari -->
+            <section class="form-box">
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="book_to_exchange">Selecciona el teu llibre:</label>
+                    <select name="book_to_exchange" id="book_to_exchange">
+                        <option value="">-- Escull un llibre --</option>
+                        {% for user_book in user_books %}
+                            {% if user_book.image %}
+                            <option value="{{ user_book.id }}" data-img="{{ user_book.image.url }}" data-title="{{ user_book.title }}">{{ user_book.title }}</option>
+                            {% else %}
+                            <option value="{{ user_book.id }}" data-img="{% static 'img/logo.png' %}" data-title="{{ user_book.title }}">{{ user_book.title }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <button class="send-btn" type="submit">Sol·licitar intercanvi</button>
+                </form>
+            </section>
         </div>
 
-        <!-- Llibre per intercanviar -->
-        <div class="book-section">
-            <div class="book-label">Llibre per intercanviar:</div>
-            <div class="preview-title" id="user-book-title">Selecciona un llibre</div>
-            <div class="book-box" id="user-book-preview">
-                <p class="no-img">Sense imatge</p>
-            </div>
-        </div>
-
-        <!-- Formulari -->
-        <div class="form-box">
-            <form method="post">
-                {% csrf_token %}
-                <label for="book_to_exchange">Selecciona el teu llibre:</label>
-                <select name="book_to_exchange" id="book_to_exchange">
-                    <option value="">-- Escull un llibre --</option>
-                    {% for user_book in user_books %}
-                        {% if user_book.image %}
-                        <option value="{{ user_book.id }}" data-img="{{ user_book.image.url }}" data-title="{{ user_book.title }}">{{ user_book.title }}</option>
-                        {% else %}
-                        <option value="{{ user_book.id }}" data-img="{% static 'img/logo.png' %}" data-title="{{ user_book.title }}">{{ user_book.title }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-                <button class="send-btn" type="submit">Sol·licitar intercanvi</button>
-            </form>
-        </div>
-    </div>
-
-    <a class="back-link" href="{% url 'books' %}">← Tornar a la llista de llibres</a>
+        <nav aria-label="breadcrumb">
+            <a class="back-link" href="{% url 'books' %}">← Tornar a la llista de llibres</a>
+        </nav>
+    </main>
 
     <!-- Enlace al archivo JavaScript -->
     <script src="{% static 'js/preview_exchange.js' %}"></script>

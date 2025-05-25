@@ -94,6 +94,7 @@
                             {% endif %}
                             <h4>{{ book.title }}</h4>
                             <p>{{ book.author }}</p>
+                            <p>{{ book.category }}</p>
                             <p>Propietari: 
                                 <a href="{% url 'view_profile' book.owner_id %}">
                                     {{ book.owner.first_name }}

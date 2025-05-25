@@ -7,16 +7,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if existing_review %}Actualitzar valoració{% else %}Afegir valoració{% endif %}</title>
+    <meta name="description" content="Valora un altre usuari de Book4Book. Dona la teva opinió i ajuda a la comunitat a créixer amb confiança.">
+    <meta name="keywords" content="valoració, usuari, review, book4book, confiança, comunitat">
+    <meta name="author" content="Book4Book">
+    <link rel="canonical" href="https://one-projectefinal.onrender.com{% url 'add_review_user' user_to_review.id %}">
     {% load static %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/variables.css' %}">
     <link rel="stylesheet" href="{% static 'css/add_review.css' %}">
 </head>
 <body>
-    <div id="main-content" class="container mt-4">
-        <div class="review-container">
-            <h1>{% if existing_review %}Actualitzar valoració{% else %}Afegir valoració{% endif %}</h1>
-            <p><strong>Usuari:</strong> {{ user_to_review.first_name }} {{ user_to_review.last_name }}</p>
+    <main id="main-content" class="container mt-4" tabindex="-1">
+        <section class="review-container">
+            <header>
+                <h1>{% if existing_review %}Actualitzar valoració{% else %}Afegir valoració{% endif %}</h1>
+                <p><strong>Usuari:</strong> {{ user_to_review.first_name }} {{ user_to_review.last_name }}</p>
+            </header>
             <form method="post" action="{% url 'add_review_user' user_to_review.id %}">
                 {% csrf_token %}
                 <div class="mb-3">
@@ -39,8 +45,8 @@
                     <a href="{% url 'view_profile' user_to_review.id %}" class="btn btn-back">Cancel·lar</a>
                 </div>
             </form>
-        </div>
-    </div>
+        </section>
+    </main>
 </body>
 </html>
 {% endblock %}

@@ -7,62 +7,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
+    <title>Novetats</title>
+
     <script>
         const toggleWishlistUrl = "{% url 'toggle_wishlist' %}";
     </script>
     <script src="{% static 'js/wishlist.js' %}"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/variables.css' %}">
     <link rel="stylesheet" href="{% static 'css/books.css' %}">
-    <title>Novetats</title>
 </head>
 <body>
-    <div id="main-content" class="container mt-4">
-        <h1 class="text-center">Novetats</h1>
-        <br>
+
+<main id="main-content" class="container mt-4">
+    <header class="text-center">
+        <h1>Novetats</h1>
+    </header>
+
+    <section aria-label="Llista de llibres nous" class="mt-4">
         {% if books %}
         <div class="row justify-content-center row-cols-1 row-cols-md-3 g-3">
+
             {% for book in books %}
-            <div class="col">
+            <article class="col">
                 <div class="book-card">
-                    {% if book.image %}
                     <a href="{% url 'book_details' book.id %}">
-                        <img src="{{ book.image.url }}" alt="{{ book.title }}" class="img-fluid">
+                        {% if book.image %}
+                            <img src="{{ book.image.url }}" alt="{{ book.title }}" class="img-fluid">
+                        {% else %}
+                            <img src="{% static 'img/logo.png' %}" alt="{{ book.title }}" class="img-fluid">
+                        {% endif %}
                     </a>
-                    {% else %}
-                    <a href="{% url 'book_details' book.id %}">
-                        <img src="{% static 'img/logo.png' %}" alt="{{ book.title }}" class="img-fluid">
-                    </a>
-                    {% endif %}
-                    <h4>{{ book.title }}</h4>
-                    <p>{{ book.author }}</p>
-                    <p>Propietari: 
-                        <a href="{% url 'view_profile' book.owner_id %}">
-                            {{ book.owner.first_name }}
-                        </a>
-                    </p>
-                    <a href="{% url 'book_details' book.id %}" class="btn btn-primary btn-sm">Consultar detalls</a>
-                    <form method="post" class="wishlist-form d-inline">
-                        {% csrf_token %}
-                        <button type="button" 
-                                class="btn btn-secondary btn-sm wishlist-btn" 
-                                data-book-id="{{ book.id }}" 
-                                data-in-wishlist="{% if user_wishlist and book.isbn in user_wishlist.get_isbns %}true{% else %}false{% endif %}">
-                            {% if user_wishlist and book.isbn in user_wishlist.get_isbns %}
-                                Eliminar de la llista de desitjats
-                            {% else %}
-                                Afegir a llista de desitjats
-                            {% endif %}
-                        </button>
-                    </form>
+
+                    <header>
+                        <h4>{{ book.title }}</h4>
+                        <p>{{ book.author }}</p>
+                        <p>
+                            Propietari: 
+                            <a href="{% url 'view_profile' book.owner_id %}">
+                                {{ book.owner.first_name }}
+                            </a>
+                        </p>
+                    </header>
+
+                    <footer>
+                        <a href="{% url 'book_details' book.id %}" class="btn btn-primary btn-sm mb-2">Consultar detalls</a>
+
+                        <form method="post" class="wishlist-form d-inline">
+                            {% csrf_token %}
+                            <button type="button" 
+                                    class="btn btn-secondary btn-sm wishlist-btn" 
+                                    data-book-id="{{ book.id }}" 
+                                    data-in-wishlist="{% if user_wishlist and book.isbn in user_wishlist.get_isbns %}true{% else %}false{% endif %}">
+                                {% if user_wishlist and book.isbn in user_wishlist.get_isbns %}
+                                    Eliminar de la llista de desitjats
+                                {% else %}
+                                    Afegir a llista de desitjats
+                                {% endif %}
+                            </button>
+                        </form>
+                    </footer>
                 </div>
-            </div>
+            </article>
             {% endfor %}
+
         </div>
         {% else %}
         <p class="text-center">No hi ha llibres</p>
         {% endif %}
-    </div>
-    {% endblock %}
+    </section>
+</main>
+
 </body>
 </html>
+{% endblock %}

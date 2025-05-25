@@ -6,57 +6,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Missatges</title>
+    <meta name="description" content="Consulta i gestiona els teus missatges privats a Book4Book. Comunica't amb altres usuaris de manera segura i organitzada.">
+    <meta name="keywords" content="missatges, xat, privat, converses, book4book, comunitat">
+    <meta name="author" content="Book4Book">
+    <link rel="canonical" href="https://one-projectefinal.onrender.com{% url 'inbox' %}">
     {% load static %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/variables.css' %}">
     <link rel="stylesheet" href="{% static 'css/inbox.css' %}">
-    
 </head>
 <body>
-    
-    <div id="main-content" class="inbox-container">
+    <div id="main-content" class="inbox-container" tabindex="-1">
         <h1 class="inbox-title">Missatges</h1>
 
         <!-- Chats con mensajes no leídos -->
-{% if unread_conversations %}
-<div class="inbox-section">
-    <h2 class="section-title">Missatges no llegits</h2>
-    <ul class="message-list">
-        {% for item in unread_conversations %}
-        <li class="message-item unread">
-            <a class="message-link" href="{% url 'private_chat' item.other_user_id %}">
-                Conversa amb <strong>{{ item.other_user_name }}</strong>
-            </a>
-            <span class="badge">{{ item.unread_count }} nous</span>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
+        {% if unread_conversations %}
+        <div class="inbox-section">
+            <h2 class="section-title">Missatges no llegits</h2>
+            <ul class="message-list">
+                {% for item in unread_conversations %}
+                <li class="message-item unread">
+                    <a class="message-link" href="{% url 'private_chat' item.other_user_id %}">
+                        Conversa amb <strong>{{ item.other_user_name }}</strong>
+                    </a>
+                    <span class="badge">{{ item.unread_count }} nous</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
 
-<!-- Chats leídos -->
-{% if conversations %}
-<div class="inbox-section">
-    <h2 class="section-title">Altres converses</h2>
-    <ul class="message-list">
-        {% for item in conversations %}
-        <li class="message-item">
-            <a class="message-link" href="{% url 'private_chat' item.other_user_id %}">
-                Conversa amb <strong>{{ item.other_user_name }}</strong>
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
+        <!-- Chats leídos -->
+        {% if conversations %}
+        <div class="inbox-section">
+            <h2 class="section-title">Altres converses</h2>
+            <ul class="message-list">
+                {% for item in conversations %}
+                <li class="message-item">
+                    <a class="message-link" href="{% url 'private_chat' item.other_user_id %}">
+                        Conversa amb <strong>{{ item.other_user_name }}</strong>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
 
-{% if not conversations %}
-<p class="empty-message">No tens converses actives.</p>
-{% endif %}
+        {% if not conversations %}
+        <p class="empty-message">No tens converses actives.</p>
+        {% endif %}
     </div>
-
-    
-    
 </body>
 </html>
 {% endblock %}

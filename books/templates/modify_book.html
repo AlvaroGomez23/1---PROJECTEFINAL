@@ -6,128 +6,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Llibre</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/variables.css' %}">
     <link rel="stylesheet" href="{% static 'css/cm_books.css' %}">
-    <title>Modificar Llibre</title>
 </head>
 <body>
-<!-- Bootstrap y estilos -->
 
-<div id="main-content" class="container mt-5">
-    <h1 class="text-center mb-4">Modificar llibre: {{ book.title }}</h1>
-    <form method="post" enctype="multipart/form-data" action="{% url 'modify_book' book.id %}">
-        {% csrf_token %}
-        <div class="row">
-            <!-- Columna de Imagen -->
-            <div class="col-md-5">
-                <div class="image-preview mb-4">
-                    {% if form.image.value %}
-                        <img src="{{ form.image.value.url }}" alt="Previsualització" class="img-fluid">
-                    {% endif %}
-                    <label for="id_image" class="w-100 h-100 d-flex align-items-center justify-content-center flex-column">
-                        {% if not form.image.value %}
-                        <span>Puja una imatge per veure-la</span>
+<main id="main-content" class="container mt-5">
+    <header class="text-center mb-4">
+        <h1>Modificar llibre: {{ book.title }}</h1>
+    </header>
+
+    <section aria-label="Formulari per modificar un llibre">
+        <form method="post" enctype="multipart/form-data" action="{% url 'modify_book' book.id %}">
+            {% csrf_token %}
+            <div class="row">
+
+                <!-- Columna de imatge -->
+                <aside class="col-md-5">
+                    <div class="image-preview mb-4">
+                        {% if form.image.value %}
+                            <img src="{{ form.image.value.url }}" alt="Previsualització" class="img-fluid">
                         {% endif %}
-                    </label>
-                </div>
-            </div>
+                        <label for="id_image" class="w-100 h-100 d-flex align-items-center justify-content-center flex-column">
+                            {% if not form.image.value %}
+                                <span>Puja una imatge per veure-la</span>
+                            {% endif %}
+                        </label>
+                    </div>
+                </aside>
 
-            <!-- Columna del formulario -->
-            <div class="col-md-7">
-                <div class="form-container">
-                    {{ form.non_field_errors }}
+                <!-- Columna del formulari -->
+                <article class="col-md-7">
+                    <div class="form-container">
+                        {{ form.non_field_errors }}
 
-                    <div class="row g-3">
-                        <!-- Campo ISBN -->
-                        <div class="col-12">
-                            <div class="form-group">
-                                {{ form.isbn.label_tag }} <p>( Afegir-ho sense guions, només numeros )</p>
+                        <div class="row g-3">
+
+                            <!-- ISBN -->
+                            <div class="col-12 form-group">
+                                {{ form.isbn.label_tag }} <p>(Afegir-ho sense guions, només números)</p>
                                 {{ form.isbn }}
                             </div>
-                        </div>
 
-                        <div class="col-12">
-                            <div class="form-group">
+                            <!-- Títol -->
+                            <div class="col-12 form-group">
                                 {{ form.title.label_tag }}
                                 {{ form.title }}
                             </div>
-                        </div>
 
-                        <!-- Fila 1: Descripción y Autor -->
-                        <div class="col-md-6">
-                            <div class="form-group">
+                            <!-- Descripció i autor -->
+                            <div class="col-md-6 form-group">
                                 {{ form.description.label_tag }}
                                 {{ form.description }}
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
+                            <div class="col-md-6 form-group">
                                 {{ form.author.label_tag }}
                                 {{ form.author }}
                             </div>
-                        </div>
 
-                        <!-- Fila 2: Precio y Estado -->
-                        <div class="col-md-6">
-                            <div class="form-group">
+                            <!-- Preu i estat -->
+                            <div class="col-md-6 form-group">
                                 {{ form.price.label_tag }}
                                 {{ form.price }}
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
+                            <div class="col-md-6 form-group">
                                 {{ form.state.label_tag }}
                                 {{ form.state }}
                             </div>
-                        </div>
 
-                        <!-- Fila 3: Categoría y Enlace -->
-                        <div class="col-md-6">
-                            <div class="form-group">
+                            <!-- Categoria i estat d'enllaç -->
+                            <div class="col-md-6 form-group">
                                 {{ form.category.label_tag }}
                                 {{ form.category }}
                             </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
+                            <div class="col-6 form-group">
                                 {{ form.status.label_tag }}
                                 {{ form.status }}
                             </div>
-                        </div>
 
-                        <div class="col-12">
-                            <div class="form-group">
-                                {{ form.visible.label_tag }} <p>( Si no es marca com a visible, no es pot intercanviar )</p>
+                            <!-- Visible i imatge -->
+                            <div class="col-12 form-group">
+                                {{ form.visible.label_tag }} <p>(Si no es marca com a visible, no es pot intercanviar)</p>
                                 {{ form.visible }}
                             </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="form-group">
+                            <div class="col-12 form-group">
                                 {{ form.image.label_tag }}
                                 {{ form.image }}
                             </div>
+
                         </div>
+
+                        <footer class="mt-3">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+
+                            {% if success %}
+                                <p class="text-success mt-3">{{ success }}</p>
+                            {% endif %}
+                            {% if errors %}
+                                <p class="text-danger mt-3">{{ errors }}</p>
+                            {% endif %}
+                        </footer>
                     </div>
+                </article>
 
-                    <button type="submit" class="mt-3">Guardar</button>
-
-                    {% if success %}
-                        <p class="text-success mt-3">{{ success }}</p>
-                    {% endif %}
-                    {% if errors %}
-                        <p class="text-danger mt-3">{{ errors }}</p>
-                    {% endif %}
-                </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </section>
+</main>
 
-<!-- Enlace al archivo JavaScript -->
 <script src="{% static 'js/preview_img.js' %}"></script>
 </body>
 </html>

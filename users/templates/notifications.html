@@ -5,85 +5,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificacions | Book4Book</title>
+    <meta name="description" content="Consulta totes les teves notificacions d'intercanvi, missatges i alertes a Book4Book. Mantén-te informat de l'activitat de la comunitat.">
+    <meta name="keywords" content="notificacions, alertes, intercanvi, missatges, book4book, comunitat">
+    <meta name="author" content="Book4Book">
+    <link rel="canonical" href="https://one-projectefinal.onrender.com{% url 'notifications' %}">
     {% load static %}
-    <!-- Bootstrap CSS -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/variables.css' %}">
     <link rel="stylesheet" href="{% static 'css/notifications.css' %}">
-
 </head>
 <body>
 <div class="container-fluid mt-4">
     {% if messages %}
         <div class="container mt-3">
             {% for message in messages %}
-    {% if 'error' in message.tags %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% elif 'success' in message.tags %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% elif 'warning' in message.tags %}
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        Aquest usuari ha estat vetat. No es poden fer valoracions ara mateix.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% else %}
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endif %}
-    {% endfor %}
-    </div>
-    {% endif %}
-    <div id="main-content" class="notifications-wrapper mx-auto px-4 py-2" style="max-width: 800px;">
-        <h1 class="mb-4 text-center">Bústia</h1>
-
-        {% if notifications %}
-            {% for notification in notifications %}
-            <div class="notification p-4 mb-4 rounded shadow-sm {% if not notification.is_read %}bg-warning-subtle{% else %}bg-light{% endif %}">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div class="notification__content">
-                        <h3 class="notification__title text-primary-emphasis">{{ notification.title }}</h3>
-                        <p class="notification__message">{{ notification.message|safe }}</p>
+                {% if 'error' in message.tags %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <div class="notification__actions text-end ms-3">
-                        {% if not notification.is_read %}
-                        <form method="post" action="{% url 'mark_as_read' notification.id %}" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-secondary mb-1">Marcar com llegida</button>
-                        </form>
-                        {% endif %}
-
-                        {% if notification.exchange %}
-                            {% if not notification.exchange.completed and not notification.exchange.declined %}
-                            <form method="post" action="{% url 'accept_exchange' notification.exchange.id %}" class="d-inline">
+                {% elif 'success' in message.tags %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% elif 'warning' in message.tags %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        Aquest usuari ha estat vetat. No es poden fer valoracions ara mateix.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <main id="main-content" class="notifications-wrapper mx-auto px-4 py-2" style="max-width: 800px;" tabindex="-1">
+        <header>
+            <h1 class="mb-4 text-center">Bústia</h1>
+        </header>
+        <section>
+            {% if notifications %}
+                {% for notification in notifications %}
+                <article class="notification p-4 mb-4 rounded shadow-sm {% if not notification.is_read %}bg-warning-subtle{% else %}bg-light{% endif %}">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="notification__content">
+                            <h2 class="notification__title text-primary-emphasis">{{ notification.title }}</h2>
+                            <p class="notification__message">{{ notification.message|safe }}</p>
+                        </div>
+                        <div class="notification__actions text-end ms-3">
+                            {% if not notification.is_read %}
+                            <form method="post" action="{% url 'mark_as_read' notification.id %}" class="d-inline">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-sm btn-success mb-1">Acceptar</button>
-                            </form>
-                            <form method="post" action="{% url 'decline_exchange' notification.exchange.id %}" class="d-inline">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-sm btn-danger mb-1">Declinar</button>
+                                <button type="submit" class="btn btn-sm btn-secondary mb-1">Marcar com llegida</button>
                             </form>
                             {% endif %}
-                        {% endif %}
+
+                            {% if notification.exchange %}
+                                {% if not notification.exchange.completed and not notification.exchange.declined %}
+                                <form method="post" action="{% url 'accept_exchange' notification.exchange.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-success mb-1">Acceptar</button>
+                                </form>
+                                <form method="post" action="{% url 'decline_exchange' notification.exchange.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger mb-1">Declinar</button>
+                                </form>
+                                {% endif %}
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-            </div>
-            {% endfor %}
-        {% else %}
-            <p class="text-center">No tens notificacions.</p>
-        {% endif %}
-    </div>
+                </article>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">No tens notificacions.</p>
+            {% endif %}
+        </section>
+    </main>
 </div>
 </body>
 </html>
-
 {% endblock %}
