@@ -186,7 +186,7 @@ class UserProfile(models.Model):
 
     def change_password(self, new_password):
         self.user.set_password(new_password)
-        self.recovery_token = None  # Limpiar token una vez usada
+        self.recovery_token = None 
         self.user.save()
         self.save()
 
@@ -205,10 +205,7 @@ class Conversation(models.Model):
         return self.participants.exclude(id=user.id).first()
 
     def get_info_for_user(self, user):
-        """
-        Devuelve un dict con la información de la conversación y el otro participante, 
-        para mostrar en la bandeja de entrada.
-        """
+
         other = self.get_other_participant(user)
         return {
             "conversation": self,
@@ -218,10 +215,7 @@ class Conversation(models.Model):
 
     @classmethod
     def get_conversations_for_user(cls, user):
-        """
-        Devuelve la lista de conversaciones del usuario, ya con la info preparada
-        para la vista.
-        """
+        
         conversations = cls.objects.filter(participants=user)
         return [conv.get_info_for_user(user) for conv in conversations]
 

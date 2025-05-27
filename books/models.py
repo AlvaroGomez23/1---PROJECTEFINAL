@@ -38,7 +38,7 @@ class Book(models.Model):
         return 0
 
     def is_exchangeable_by(self, user):
-        """Verifica si el usuario puede solicitar un intercambio por este libro"""
+        
         if user.userprofile.veto:
             return False, "Has sigut vetat degut a un comportament inadequat. No pots intercanviar llibres."
         if self.owner.userprofile.veto:
@@ -48,7 +48,7 @@ class Book(models.Model):
         return True, None
 
     def has_pending_exchange_with(self, user):
-        """Comprueba si ya existe un intercambio pendiente con este libro"""
+        
         return Exchange.objects.filter(
             book_for=self,
             book_from__in=Book.objects.filter(owner=user),
@@ -61,7 +61,7 @@ class Book(models.Model):
 
     @classmethod
     def create_book(cls, form, user):
-        """Crea un libro a partir de un formulario y usuario"""
+        
         book = form.save(commit=False)
         book.owner = user
         book.save()
@@ -69,7 +69,7 @@ class Book(models.Model):
 
     @classmethod
     def update_book(cls, form):
-        """Actualiza un libro desde un formulario ya vinculado a la instancia"""
+        
         updated_book = form.save(commit=False)
         updated_book.save()
         return updated_book
@@ -88,7 +88,7 @@ class Book(models.Model):
 
     @classmethod
     def filter_books(cls, books, params):
-        """Aplica filtros dinámicos según los parámetros recibidos"""
+        
         title_or_isbn = params.get('title', '')
         author = params.get('author', '')
         min_price = params.get('min_price')
@@ -109,8 +109,8 @@ class Book(models.Model):
         return books
 
     @classmethod
-    def get_exchanges_pending_map(cls, books, user):
-        """Devuelve un diccionario que indica si cada libro tiene un intercambio pendiente para el usuario"""
+    def get_exchanges_pending(cls, books, user):
+        
         return {
             book.id: Exchange.objects.filter(
                 book_for=book,
@@ -209,13 +209,12 @@ class Exchange(models.Model):
 
     def perform_accept_exchange(self, current_user):
         if self.book_for.owner != current_user:
-            raise PermissionError("Este usuario no puede aceptar el intercambio.")
+            raise PermissionError("Error al declinar l'intercanvi. No tens permís per fer-ho.")
 
         self.accepted = True
         self.completed = True
         self.save()
 
-        # Intercambio de propietarios
         self.book_from.owner = self.to_user
         self.book_for.owner = self.from_user
 
@@ -227,7 +226,7 @@ class Exchange(models.Model):
 
     def perform_decline_exchange(self, current_user):
         if self.to_user != current_user:
-            raise PermissionError("Este usuario no puede rechazar este intercambio.")
+            raise PermissionError("Error al declinar l'intercanvi. No tens permís per fer-ho.")
 
         self.declined = True
         self.completed = True

@@ -22,7 +22,7 @@ def books(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    exchanges_pending = Book.get_exchanges_pending_map(page_obj.object_list, request.user)
+    exchanges_pending = Book.get_exchanges_pending(page_obj.object_list, request.user)
 
     context = {
         'books': page_obj.object_list,
