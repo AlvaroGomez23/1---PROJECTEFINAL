@@ -64,14 +64,19 @@ INSTALLED_APPS = [
 ]
 
 LOGIN_REDIRECT_URL = '/core/dashboard/'
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_UNIQUE_EMAIL = True
+
+LOGIN_REDIRECT_URL = '/core/dashboard/'
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_LOGIN_METHODS = {'email'}  # ← usa un conjunto (set)
+
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']  # los campos obligatorios llevan asterisco
+
 SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCIALACCOUNT_LOGIN_ON_GET=True
-ACCOUNT_USERNAME_REQUIRED = False
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
 SOCIALACCOUNT_ADAPTER = 'projectefinal.adapters.CustomSocialAccountAdapter'
 ACCOUNT_ADAPTER = 'projectefinal.adapters.CustomAccountAdapter'
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 
 
 

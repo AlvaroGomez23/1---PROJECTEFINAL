@@ -38,8 +38,8 @@
             
             <!-- Imagen del libro -->
             <figure class="col-md-4 text-center">
-                {% if book.image %}
-                    <img src="{{ book.image.url }}" alt="Portada de {{ book.title }}" class="book-image">
+                {% if book.image_url %}
+                    <img src="{{ book.image_url }}" alt="Portada de {{ book.title }}" class="book-image">
                 {% else %}
                     <img src="{% static 'img/logo.png' %}" alt="Imatge predeterminada" class="book-image">
                 {% endif %}

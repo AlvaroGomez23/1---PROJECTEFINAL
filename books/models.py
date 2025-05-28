@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 
 class Book(models.Model):
     title = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='books/covers', null=True, blank=True)
+    image_url = models.URLField(null=True, blank=True)
     description = models.TextField()
     author = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)

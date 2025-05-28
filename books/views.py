@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.core.paginator import Paginator
 import requests
+import uuid
 
 
 # Create your views here.
@@ -38,6 +39,7 @@ def books(request):
 def book_details(request, book_id):
     book = Book.get_book(book_id)
     reviews = book.book_reviews_recieved.all()
+    print(book.image_url)
     average_rating = reviews.aggregate(Avg('rating'))['rating__avg'] or 0
     context = {
         'book': book,
@@ -63,30 +65,45 @@ def check_isbn_in_wishlists(isbn):
 @login_required
 def create_book(request):
     form = createBook(request.POST or None, request.FILES or None)
-    
+
     if request.method == 'POST' and form.is_valid():
-        book = Book.create_book(form, request.user)
+        book = form.save(commit=False)
+        book.owner = request.user
+
+        # Subir imagen a Supabase si hay una
+        image = request.FILES.get('image')
+        if image:
+            filename = f"{uuid.uuid4()}_{image.name}"
+            try:
+                public_url = upload_image_to_supabase(image, filename)
+                book.image_url = public_url
+            except Exception as e:
+                print(f"Error uploading image: {e}")
+                messages.error(request, f"No s'ha pogut pujar la imatge: {e}")
+                return render(request, 'create_book.html', {'form': form})
+
+        book.save()
         return redirect('book_details', book_id=book.pk)
 
     return render(request, 'create_book.html', {'form': form})
     
-@login_required
 def upload_image_to_supabase(file_obj, filename):
-
-    SUPABASE_URL = "https://xyzcompany.supabase.co/storage/v1/object"
+    SUPABASE_URL = "https://vglxraahlckdanallbfi.supabase.co"
     SUPABASE_BUCKET = "book-covers"
-    SUPABASE_ANON_KEY = "eyJ...your_anon_key..."
+    SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZnbHhyYWFobGNrZGFuYWxsYmZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MzMxMDEsImV4cCI6MjA2NDAwOTEwMX0.5llPYfELZ33P2uU-9nyJcF6_gXwsuiyMmkBa-X_25TgeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZnbHhyYWFobGNrZGFuYWxsYmZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MzMxMDEsImV4cCI6MjA2NDAwOTEwMX0.5llPYfELZ33P2uU-9nyJcF6_gXwsuiyMmkBa-X_25Tg"
+    SUPABASE_SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZnbHhyYWFobGNrZGFuYWxsYmZpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0ODQzMzEwMSwiZXhwIjoyMDY0MDA5MTAxfQ.AKLby4R-u2W6DvWUvhpAb2FRHs6ex5jvcugx7CCKCMk"
 
-    url = f"{SUPABASE_URL}/upload/{SUPABASE_BUCKET}/{filename}"
+    url = f"{SUPABASE_URL}/storage/v1/object/{SUPABASE_BUCKET}/{filename}"
     headers = {
         "apikey": SUPABASE_ANON_KEY,
-        "Authorization": f"Bearer {SUPABASE_ANON_KEY}",
+        "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
         "Content-Type": file_obj.content_type
     }
+
     response = requests.post(url, headers=headers, data=file_obj.read())
-    if response.status_code == 200:
-        # Construimos la URL pública
-        public_url = f"{SUPABASE_URL}/public/{SUPABASE_BUCKET}/{filename}"
+
+    if response.status_code in [200, 201]:
+        public_url = f"{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET}/{filename}"
         return public_url
     else:
         raise Exception(f"Error uploading to Supabase: {response.text}")

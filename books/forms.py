@@ -2,9 +2,11 @@ from django import forms
 from .models import Category, Book, Exchange
 
 class createBook(forms.ModelForm):
+    image = forms.ImageField(required=False, label='Imatge')
+
     class Meta:
         model = Book
-        fields = ['title', 'author', 'category', 'description','price', 'isbn', 'state', 'image', 'visible']
+        fields = ['title', 'author', 'category', 'description', 'price', 'isbn', 'state', 'visible']
         labels = {
             'title': 'Títol',
             'author': 'Autor',
@@ -13,7 +15,6 @@ class createBook(forms.ModelForm):
             'price': 'Preu',
             'isbn': 'ISBN',
             'state': 'Estat',
-            'image': 'Imatge',
             'visible': 'Visible'
         }
 

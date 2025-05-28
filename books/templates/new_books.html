@@ -33,8 +33,8 @@
             <article class="col">
                 <div class="book-card">
                     <a href="{% url 'book_details' book.id %}">
-                        {% if book.image %}
-                            <img src="{{ book.image.url }}" alt="{{ book.title }}" class="img-fluid">
+                        {% if book.image_url %}
+                            <img src="{{ book.image_url }}" alt="{{ book.title }}" class="img-fluid">
                         {% else %}
                             <img src="{% static 'img/logo.png' %}" alt="{{ book.title }}" class="img-fluid">
                         {% endif %}
