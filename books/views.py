@@ -9,6 +9,7 @@ from django.db.models import Avg
 from django.contrib import messages
 from django.urls import reverse
 from django.core.paginator import Paginator
+from django.conf import settings
 import requests
 import uuid
 
@@ -88,10 +89,10 @@ def create_book(request):
     return render(request, 'create_book.html', {'form': form})
     
 def upload_image_to_supabase(file_obj, filename):
-    SUPABASE_URL = "https://vglxraahlckdanallbfi.supabase.co"
-    SUPABASE_BUCKET = "book-covers"
-    SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZnbHhyYWFobGNrZGFuYWxsYmZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MzMxMDEsImV4cCI6MjA2NDAwOTEwMX0.5llPYfELZ33P2uU-9nyJcF6_gXwsuiyMmkBa-X_25TgeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZnbHhyYWFobGNrZGFuYWxsYmZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MzMxMDEsImV4cCI6MjA2NDAwOTEwMX0.5llPYfELZ33P2uU-9nyJcF6_gXwsuiyMmkBa-X_25Tg"
-    SUPABASE_SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZnbHhyYWFobGNrZGFuYWxsYmZpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0ODQzMzEwMSwiZXhwIjoyMDY0MDA5MTAxfQ.AKLby4R-u2W6DvWUvhpAb2FRHs6ex5jvcugx7CCKCMk"
+    SUPABASE_URL = settings.SUPABASE_URL
+    SUPABASE_ANON_KEY = settings.SUPABASE_ANON_KEY
+    SUPABASE_SERVICE_ROLE_KEY = settings.SUPABASE_SERVICE_ROLE_KEY
+    SUPABASE_BUCKET = settings.SUPABASE_BUCKET
 
     url = f"{SUPABASE_URL}/storage/v1/object/{SUPABASE_BUCKET}/{filename}"
     headers = {
