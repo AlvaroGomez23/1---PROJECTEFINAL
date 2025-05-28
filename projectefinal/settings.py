@@ -68,7 +68,10 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_LOGIN_ON_GET=True
+ACCOUNT_USERNAME_REQUIRED = False
 SOCIALACCOUNT_ADAPTER = 'projectefinal.adapters.CustomSocialAccountAdapter'
+ACCOUNT_ADAPTER = 'projectefinal.adapters.CustomAccountAdapter'
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 
 
 
@@ -86,6 +89,7 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = [
+    'users.auth_backend.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]

@@ -9,6 +9,7 @@ from django.db.models import Avg
 from django.contrib import messages
 from django.urls import reverse
 from django.core.paginator import Paginator
+import requests
 
 
 # Create your views here.
@@ -18,7 +19,7 @@ def books(request):
     all_books = Book.get_visible_books_for_user(request.user)
     filtered_books = Book.filter_books(all_books, request.GET)
 
-    paginator = Paginator(filtered_books, 2)  # 9 libros por página
+    paginator = Paginator(filtered_books, 9)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -69,6 +70,26 @@ def create_book(request):
 
     return render(request, 'create_book.html', {'form': form})
     
+@login_required
+def upload_image_to_supabase(file_obj, filename):
+
+    SUPABASE_URL = "https://xyzcompany.supabase.co/storage/v1/object"
+    SUPABASE_BUCKET = "book-covers"
+    SUPABASE_ANON_KEY = "eyJ...your_anon_key..."
+
+    url = f"{SUPABASE_URL}/upload/{SUPABASE_BUCKET}/{filename}"
+    headers = {
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": f"Bearer {SUPABASE_ANON_KEY}",
+        "Content-Type": file_obj.content_type
+    }
+    response = requests.post(url, headers=headers, data=file_obj.read())
+    if response.status_code == 200:
+        # Construimos la URL pública
+        public_url = f"{SUPABASE_URL}/public/{SUPABASE_BUCKET}/{filename}"
+        return public_url
+    else:
+        raise Exception(f"Error uploading to Supabase: {response.text}")
 
 @login_required
 def modify_book(request, book_id):

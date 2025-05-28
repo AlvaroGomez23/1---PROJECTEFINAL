@@ -33,7 +33,7 @@ def login(request):
         if not profile:
             messages.error(request, "L'usuari no existeix")
         else:
-            user = authenticate(request, username=profile.user.username, password=password)
+            user = authenticate(request, email=email, password=password)
             if user is not None:
                 _login(request, user)
                 return redirect('dashboard')

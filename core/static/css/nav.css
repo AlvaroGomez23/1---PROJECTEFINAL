@@ -67,41 +67,41 @@ body, html {
 
 
 .btn {
-    padding: 0.8rem 1.5rem;
-    border-radius: 1.5625rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    border: 0.125rem solid transparent;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 1.5625rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none !important;
+    border: 0.125rem solid transparent !important;
 }
 
 
 .btn-login {
-    background-color: transparent;
-    color: var(--primaryColor);
-    border-color: var(--primaryColor);
+    background-color: transparent !important;
+    color: var(--primaryColor) !important;
+    border-color: var(--primaryColor) !important;
 }
 
 .btn-login:hover {
-    background-color: var(--primaryColor);
-    color: var(--fullWhite);
+    background-color: var(--primaryColor) !important;
+    color: var(--fullWhite) !important;
 }
 
 
 .btn-register {
-    background-color: var(--primaryColor);
-    color: white;
-    max-width: 100%;
-    width: auto;
+    background-color: var(--primaryColor) !important;
+    color: white !important;
+    max-width: 100% !important;
+    width: auto !important;
 }
 
 .btn-register:hover {
-    background-color: white;
-    color: var(--primaryColor);
-    box-shadow: 0 0.25rem 0.9375rem rgba(41, 128, 185, 0.3);
-    color: var(--primaryColor);
-    border-color: var(--primaryColor);
+    background-color: white !important;
+    color: var(--primaryColor) !important;
+    box-shadow: 0 0.25rem 0.9375rem rgba(41, 128, 185, 0.3) !important;
+    color: var(--primaryColor) !important;
+    border-color: var(--primaryColor) !important;
 }
 
 

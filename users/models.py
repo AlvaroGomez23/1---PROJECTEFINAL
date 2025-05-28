@@ -123,6 +123,10 @@ class UserProfile(models.Model):
     @classmethod
     def get_user_profile_by_email(cls, email):
         return cls.objects.filter(user__email=email).first()
+    
+    @classmethod
+    def register_allauth_user(cls, user):
+        cls.objects.create(user=user)
 
     @classmethod
     def register_user(cls, name, email, password, password2):
