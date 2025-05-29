@@ -10,24 +10,22 @@ User = get_user_model()
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     def pre_social_login(self, request, sociallogin):
-        pass
         email = sociallogin.account.extra_data.get('email')
 
-        if email:
+        if not sociallogin.is_existing:
             try:
                 existing_user = User.objects.get(email=email)
-
-                # Si el login social no está vinculado a una cuenta existente
-                if not sociallogin.is_existing:
+                # Si el usuario ya existe pero NO está vinculado a esta cuenta social
+                if not sociallogin.account.user.pk:
+                    # Solo bloqueamos si NO es la primera vez y hay conflicto real
                     messages.error(
                         request,
                         "Aquest correu electrònic ja està registrat. Si no t'enrecordes de la contrasenya, prova a restablir-la."
                     )
-                    # Evita la pantalla fea usando HttpResponseRedirect directamente
-                    raise ImmediateHttpResponse(HttpResponseRedirect('/users/login'))
+                    raise ImmediateHttpResponse(redirect('/users/login'))
 
             except User.DoesNotExist:
-                pass
+                pass  # Usuario nuevo, todo OK
 
     def is_auto_signup_allowed(self, request, sociallogin):
         """
