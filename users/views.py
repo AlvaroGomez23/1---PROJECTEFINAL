@@ -335,11 +335,10 @@ def change_recovery_password(request, token):
 
 
 def redirect_accounts_login(request):
-    # Solo redirige si viene de acceso directo (no por redirección interna)
     if request.method == "GET" and not request.META.get("HTTP_REFERER", "").startswith(request.build_absolute_uri('/accounts/')):
         messages.error(request, "Has estat redirigit al formulari de login.")
         return redirect('/users/login/')
-    return redirect('/users/login/')
+    
 
 def redirect_signup_to_login_with_message(request):
 
@@ -348,5 +347,4 @@ def redirect_signup_to_login_with_message(request):
             request,
             "No és possible registrar-se amb un compte de tercers. Si ja tens un compte, inicia sessió."
         )
-        print("Tumami")
         return redirect('/users/login')

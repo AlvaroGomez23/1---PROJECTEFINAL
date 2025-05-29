@@ -22,16 +22,6 @@ from django.conf.urls.static import static
 from users  import views as users
 
 
-def redirect(request):
-    """
-    Redirects to the login page.
-    """
-    print("Ejecutar")
-    if request.method == 'GET':
-        # If the request is a GET request, redirect to the login page
-        return redirect('/users/login/')
-    return redirect('/users/login/')
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', core_views.index, name='index'),
@@ -39,7 +29,7 @@ urlpatterns = [
     path('core/', include('core.urls')),
     path('books/', include('books.urls')),
     path('accounts/signup/', users.redirect_accounts_login),
-    path('accounts/3rdparty/signup', redirect, name='signup_3rdparty'),
+    path('accounts/3rdparty/signup', users.redirect_accounts_login, name='signup_3rdparty'),
     
     path('accounts/', include('allauth.urls')),
     

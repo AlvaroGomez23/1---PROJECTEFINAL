@@ -15,9 +15,9 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         if not sociallogin.is_existing:
             try:
                 existing_user = User.objects.get(email=email)
-                # Si el usuario ya existe pero NO está vinculado a esta cuenta social
+                
                 if not sociallogin.account.user.pk:
-                    # Solo bloqueamos si NO es la primera vez y hay conflicto real
+                   
                     messages.error(
                         request,
                         "Aquest correu electrònic ja està registrat. Si no t'enrecordes de la contrasenya, prova a restablir-la."
@@ -25,37 +25,28 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
                     raise ImmediateHttpResponse(redirect('/users/login'))
 
             except User.DoesNotExist:
-                pass  # Usuario nuevo, todo OK
+                pass 
 
     def is_auto_signup_allowed(self, request, sociallogin):
-        """
-        Bloquea el acceso a /accounts/3rdparty/signup con redirección a /users/login y mensaje.
-        """
         if request.path == '/accounts/3rdparty/signup/':
             raise ImmediateHttpResponse(redirect('/users/login'))
 
         return True
 
     def populate_user(self, request, sociallogin, data):
-        """
-        Este método se llama al crear el usuario. Usamos el email como username.
-        """
         user = super().populate_user(request, sociallogin, data)
 
-        # Obtener el email desde extra_data o data
+        
         email = sociallogin.account.extra_data.get('email') or data.get('email') or ''
         user.username = email
-        user.email = email  # Por si acaso no lo asignó automáticamente
+        user.email = email 
 
         return user
     
     def save_user(self, request, sociallogin, form=None):
-        """
-        Este método guarda el usuario y luego crea el UserProfile.
-        """
+
         user = super().save_user(request, sociallogin, form)
 
-        # Crear el perfil si no existe
         UserProfile.objects.get_or_create(user=user)
 
         return user
@@ -63,21 +54,12 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
 
 class CustomAccountAdapter(DefaultAccountAdapter):
     def is_open_for_signup(self, request):
-        """
-        Controla si se permite el signup local (opcional).
-        """
         return True
 
     def clean_username(self, username):
-        """
-        Si `ACCOUNT_USERNAME_REQUIRED = False`, esto puede quedar vacío o pasarse por alto.
-        """
-        return username  # No validamos unicidad si no es necesario
+        return username 
     
     def get_login_redirect_url(self, request):
-        """
-        Redirige al usuario a /core/dashboard después del login social.
-        """
         return '/core/dashboard'
     
     def get_connect_redirect_url(self, request, socialaccount):
