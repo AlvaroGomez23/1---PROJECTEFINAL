@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -138,6 +139,17 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default="postgresql://alvaro:Gw1Bba3munhM9959H1WzAIUrNmX1G3kT@dpg-d0s1njm3jp1c73e83a50-a.oregon-postgres.render.com/book4book",
+        conn_max_age=600,
+    )
+        
+    
+}
+
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -150,9 +162,10 @@ DATABASES = {
             'charset': 'utf8mb4',
             'init_command': "SET NAMES 'utf8mb4'",
         },
-        'CONN_MAX_AGE': 0,  # ✅ CORRECTO AQUÍ
+        'CONN_MAX_AGE': 0,
     }
 }
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
