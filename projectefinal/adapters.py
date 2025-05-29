@@ -10,7 +10,7 @@ User = get_user_model()
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     def pre_social_login(self, request, sociallogin):
-   
+        pass
         email = sociallogin.account.extra_data.get('email')
 
         if email:
@@ -30,7 +30,13 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
                 pass
 
     def is_auto_signup_allowed(self, request, sociallogin):
-        return True  # Permitimos el auto-signup solo si no se ha bloqueado antes
+        """
+        Bloquea el acceso a /accounts/3rdparty/signup con redirección a /users/login y mensaje.
+        """
+        if request.path == '/accounts/3rdparty/signup/':
+            raise ImmediateHttpResponse(redirect('/users/login'))
+
+        return True
 
     def populate_user(self, request, sociallogin, data):
         """
