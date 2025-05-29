@@ -75,3 +75,6 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         Redirige al usuario a /core/dashboard después del login social.
         """
         return '/core/dashboard'
+    
+    def get_connect_redirect_url(self, request, socialaccount):
+        return '/core/dashboard'
