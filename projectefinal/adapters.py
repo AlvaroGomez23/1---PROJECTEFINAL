@@ -38,10 +38,8 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         Este método se llama al crear el usuario. Usamos el `first_name` como username.
         """
         user = super().populate_user(request, sociallogin, data)
-        first_name = sociallogin.account.extra_data.get('given_name') or \
-                     sociallogin.account.extra_data.get('name') or \
-                     'usuari'
-        user.username = first_name.lower()
+        email = sociallogin.account.extra_data.get('email')
+        user.username = email
         return user
     
     def save_user(self, request, sociallogin, form=None):

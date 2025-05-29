@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-mbxz3cws8k#)0+$)h@o0my*$4$ax#ldd$ebn&@%!2$@%j@)gf!
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-SITE_ID = 1
+SITE_ID = 3
 
 ALLOWED_HOSTS = [
     'one-projectefinal.onrender.com',
@@ -140,13 +140,15 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 
+
+CITIES_LIGHT_INCLUDE_COUNTRIES = ['ES']  # Solo España
+
+
 DATABASES = {
     'default': dj_database_url.config(
         default="postgresql://alvaro:Gw1Bba3munhM9959H1WzAIUrNmX1G3kT@dpg-d0s1njm3jp1c73e83a50-a.oregon-postgres.render.com/book4book",
         conn_max_age=600,
-    )
-        
-    
+    )   
 }
 
 """
