@@ -33,13 +33,24 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     def is_auto_signup_allowed(self, request, sociallogin):
         return True  # Permitimos el auto-signup solo si no se ha bloqueado antes
 
-    def populate_user(self, request, sociallogin, data):
+def populate_user(self, request, sociallogin, data):
+    """
+    Este método se llama al crear el usuario. Usamos el email como username.
+    """
+    user = super().populate_user(request, sociallogin, data)
+    email = user.email or sociallogin.account.extra_data.get('email') or 'usuario@example.com'
+    user.username = email.lower()
+    return user
+
+def save_user(self, request, sociallogin, form=None):
         """
-        Este método se llama al crear el usuario. Usamos el email como username.
+        Este método guarda el usuario y luego crea el UserProfile.
         """
-        user = super().populate_user(request, sociallogin, data)
-        email = user.email or sociallogin.account.extra_data.get('email') or 'usuario@example.com'
-        user.username = email.lower()
+        user = super().save_user(request, sociallogin, form)
+
+        # Crear el perfil si no existe
+        UserProfile.objects.get_or_create(user=user)
+
         return user
     
     
