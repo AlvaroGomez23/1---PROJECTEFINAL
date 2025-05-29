@@ -123,8 +123,6 @@ class Book(models.Model):
         }
     
     def delete_book(self):
-        if self.image_url:
-            self.image_url.delete(save=False)
         self.delete()
 
 

@@ -62,6 +62,9 @@ def register(request):
     password2 = form.cleaned_data['password2']
 
     try:
+        # Validar seguretat de la contrasenya
+        validate_password(password)
+        
         UserProfile.register_user(name, email, password, password2)
         user = authenticate(username=email, password=password)
 
@@ -70,9 +73,15 @@ def register(request):
                 'form': form,
                 'errors': "Error al registrar l'usuari"
             })
-        
+
         _login(request, user)
         return redirect('dashboard')
+
+    except ValidationError as ve:
+        return render(request, 'register.html', {
+            'form': form,
+            'errors': "La contrasenya no és segura. Ha de contenir mínim 8 caràcters, majúscules, minúscules i números."
+        })
 
     except ValueError as e:
         return render(request, 'register.html', {
