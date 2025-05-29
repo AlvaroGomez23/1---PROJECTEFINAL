@@ -43,9 +43,13 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         return user
     
     def save_user(self, request, sociallogin, form=None):
-        """
-        Este método guarda el usuario y luego crea el UserProfile.
-        """
+        user = sociallogin.user
+
+        # Asegúrate de que el username no sea None
+        if not user.username:
+            email = sociallogin.account.extra_data.get('email')
+            user.username = email or sociallogin.account.uid  # Usa uid como fallback si no hay email
+
         user = super().save_user(request, sociallogin, form)
 
         # Crear el perfil si no existe
