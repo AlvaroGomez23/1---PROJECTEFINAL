@@ -27,6 +27,8 @@ SECRET_KEY = 'django-insecure-mbxz3cws8k#)0+$)h@o0my*$4$ax#ldd$ebn&@%!2$@%j@)gf!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 SITE_ID = 3
+LOGIN_URL = '/users/login/'
+
 
 ALLOWED_HOSTS = [
     'one-projectefinal.onrender.com',

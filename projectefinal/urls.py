@@ -19,8 +19,18 @@ from django.urls import path, include
 from core import views as core_views
 from django.conf import settings
 from django.conf.urls.static import static
-from users.views import redirect_signup_to_login_with_message
+from users  import views as users
 
+
+def redirect(request):
+    """
+    Redirects to the login page.
+    """
+    print("Ejecutar")
+    if request.method == 'GET':
+        # If the request is a GET request, redirect to the login page
+        return redirect('/users/login/')
+    return redirect('/users/login/')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,8 +38,11 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('core/', include('core.urls')),
     path('books/', include('books.urls')),
-    path('accounts/3rdparty/signup', redirect_signup_to_login_with_message),
+    path('accounts/signup/', users.redirect_accounts_login),
+    path('accounts/3rdparty/signup', redirect, name='signup_3rdparty'),
+    
     path('accounts/', include('allauth.urls')),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

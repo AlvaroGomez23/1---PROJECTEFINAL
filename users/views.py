@@ -22,6 +22,10 @@ import uuid
 # Create your views here.
 
 def login(request):
+
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    
     form = Login(request.POST or None)
 
     if request.method == 'POST':
@@ -330,6 +334,19 @@ def change_recovery_password(request, token):
     return redirect('login')
 
 
+def redirect_accounts_login(request):
+    # Solo redirige si viene de acceso directo (no por redirección interna)
+    if request.method == "GET" and not request.META.get("HTTP_REFERER", "").startswith(request.build_absolute_uri('/accounts/')):
+        messages.error(request, "Has estat redirigit al formulari de login.")
+        return redirect('/users/login/')
+    return redirect('/users/login/')
+
 def redirect_signup_to_login_with_message(request):
-    messages.error(request, "No es posible registrarse con terceras cuentas directamente. Si ja tens compte, inicia sessió.")
-    return redirect('/users/login')
+
+    if request.method == "GET":
+        messages.error(
+            request,
+            "No és possible registrar-se amb un compte de tercers. Si ja tens un compte, inicia sessió."
+        )
+        print("Tumami")
+        return redirect('/users/login')
