@@ -54,7 +54,7 @@
                     <select name="book_to_exchange" id="book_to_exchange">
                         <option value="">-- Escull un llibre --</option>
                         {% for user_book in user_books %}
-                            {% if user_book.image %}
+                            {% if user_book.image_url %}
                             <option value="{{ user_book.id }}" data-img="{{ user_book.image_url }}" data-title="{{ user_book.title }}">{{ user_book.title }}</option>
                             {% else %}
                             <option value="{{ user_book.id }}" data-img="{% static 'img/logo.png' %}" data-title="{{ user_book.title }}">{{ user_book.title }}</option>

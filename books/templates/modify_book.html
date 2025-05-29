@@ -27,11 +27,11 @@
                 <!-- Columna de imatge -->
                 <aside class="col-md-5">
                     <div class="image-preview mb-4">
-                        {% if form.image.value %}
-                            <img src="{{ form.image.value.url }}" alt="Previsualització" class="img-fluid">
+                        {% if book.image_url %}
+                            <img src="{{ book.image_url }}" alt="Previsualització" class="img-fluid">
                         {% endif %}
                         <label for="id_image" class="w-100 h-100 d-flex align-items-center justify-content-center flex-column">
-                            {% if not form.image.value %}
+                            {% if not book.image_url %}
                                 <span>Puja una imatge per veure-la</span>
                             {% endif %}
                         </label>
