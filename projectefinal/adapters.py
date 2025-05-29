@@ -35,27 +35,14 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
 
     def populate_user(self, request, sociallogin, data):
         """
-        Este método se llama al crear el usuario. Usamos el `first_name` como username.
+        Este método se llama al crear el usuario. Usamos el email como username.
         """
         user = super().populate_user(request, sociallogin, data)
-        email = sociallogin.account.extra_data.get('email')
-        user.username = email
+        email = user.email or sociallogin.account.extra_data.get('email') or 'usuario@example.com'
+        user.username = email.lower()
         return user
     
-    def save_user(self, request, sociallogin, form=None):
-        user = sociallogin.user
-
-        # Asegúrate de que el username no sea None
-        if not user.username:
-            email = sociallogin.account.extra_data.get('email')
-            user.username = email or sociallogin.account.uid  # Usa uid como fallback si no hay email
-
-        user = super().save_user(request, sociallogin, form)
-
-        # Crear el perfil si no existe
-        UserProfile.objects.get_or_create(user=user)
-
-        return user
+    
 
 
 class CustomAccountAdapter(DefaultAccountAdapter):
