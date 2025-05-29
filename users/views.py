@@ -328,3 +328,8 @@ def change_recovery_password(request, token):
     user_profile.change_password(password)
     messages.success(request, "La contrasenya s'ha canviat correctament.")
     return redirect('login')
+
+
+def redirect_signup_to_login_with_message(request):
+    messages.error(request, "No es posible registrarse con terceras cuentas directamente. Si ja tens compte, inicia sessió.")
+    return redirect('/users/login')

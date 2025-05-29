@@ -19,6 +19,7 @@ from django.urls import path, include
 from core import views as core_views
 from django.conf import settings
 from django.conf.urls.static import static
+from users.views import redirect_signup_to_login_with_message
 
 
 urlpatterns = [
@@ -27,6 +28,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('core/', include('core.urls')),
     path('books/', include('books.urls')),
+    path('accounts/3rdparty/signup', redirect_signup_to_login_with_message),
     path('accounts/', include('allauth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
