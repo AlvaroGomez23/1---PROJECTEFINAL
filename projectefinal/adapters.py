@@ -5,27 +5,26 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
 from users.models import UserProfile
-
+from django.http import HttpResponseRedirect
 User = get_user_model()
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     def pre_social_login(self, request, sociallogin):
-        """
-        Si un usuario intenta iniciar sesión con una cuenta social cuyo email ya está
-        registrado en el sistema, y no está enlazado, rechazamos el intento.
-        """
+   
         email = sociallogin.account.extra_data.get('email')
 
         if email:
             try:
                 existing_user = User.objects.get(email=email)
 
+                # Si el login social no está vinculado a una cuenta existente
                 if not sociallogin.is_existing:
                     messages.error(
                         request,
                         "Aquest correu electrònic ja està registrat. Si no t'enrecordes de la contrasenya, prova a restablir-la."
                     )
-                    raise ImmediateHttpResponse(redirect('/users/login'))
+                    # Evita la pantalla fea usando HttpResponseRedirect directamente
+                    raise ImmediateHttpResponse(HttpResponseRedirect('/users/login'))
 
             except User.DoesNotExist:
                 pass
@@ -70,3 +69,9 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         Si `ACCOUNT_USERNAME_REQUIRED = False`, esto puede quedar vacío o pasarse por alto.
         """
         return username  # No validamos unicidad si no es necesario
+    
+    def get_login_redirect_url(self, request):
+        """
+        Redirige al usuario a /core/dashboard después del login social.
+        """
+        return '/core/dashboard'
