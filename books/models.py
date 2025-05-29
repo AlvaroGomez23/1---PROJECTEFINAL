@@ -39,6 +39,7 @@ class Book(models.Model):
 
     def is_exchangeable_by(self, user):
         
+        
         if user.userprofile.veto:
             return False, "Has sigut vetat degut a un comportament inadequat. No pots intercanviar llibres."
         if self.owner.userprofile.veto:
@@ -122,8 +123,8 @@ class Book(models.Model):
         }
     
     def delete_book(self):
-        if self.image:
-            self.image.delete(save=False)
+        if self.image_url:
+            self.image_url.delete(save=False)
         self.delete()
 
 

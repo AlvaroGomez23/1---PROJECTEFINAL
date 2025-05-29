@@ -29,8 +29,8 @@
                 <h2 class="book-label">Llibre que vols:</h2>
                 <div class="preview-title">{{ book.title }}</div>
                 <div class="book-box">
-                    {% if book.image %}
-                        <img src="{{ book.image.url }}" alt="{{ book.title }}">
+                    {% if book.image_url %}
+                        <img src="{{ book.image_url }}" alt="{{ book.title }}">
                     {% else %}
                         <img src="{% static 'img/logo.png' %}" alt="Imatge predeterminada">
                     {% endif %}
@@ -55,7 +55,7 @@
                         <option value="">-- Escull un llibre --</option>
                         {% for user_book in user_books %}
                             {% if user_book.image %}
-                            <option value="{{ user_book.id }}" data-img="{{ user_book.image.url }}" data-title="{{ user_book.title }}">{{ user_book.title }}</option>
+                            <option value="{{ user_book.id }}" data-img="{{ user_book.image_url }}" data-title="{{ user_book.title }}">{{ user_book.title }}</option>
                             {% else %}
                             <option value="{{ user_book.id }}" data-img="{% static 'img/logo.png' %}" data-title="{{ user_book.title }}">{{ user_book.title }}</option>
                             {% endif %}

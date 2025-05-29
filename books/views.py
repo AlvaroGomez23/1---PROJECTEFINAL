@@ -119,7 +119,24 @@ def modify_book(request, book_id):
     form = createBook(request.POST or None, request.FILES or None, instance=book)
 
     if request.method == 'POST' and form.is_valid():
-        book.update_book(form)
+        book = form.save(commit=False)
+
+        # Comprobar si se ha subido una nueva imagen
+        image = request.FILES.get('image')
+        if image:
+            filename = f"{uuid.uuid4()}_{image.name}"
+            try:
+                public_url = upload_image_to_supabase(image, filename)
+                book.image_url = public_url
+            except Exception as e:
+                print(f"Error uploading image: {e}")
+                messages.error(request, f"No s'ha pogut pujar la imatge: {e}")
+                return render(request, 'modify_book.html', {
+                    'form': form,
+                    'book': book
+                })
+
+        book.save()
         messages.success(request, f"El llibre '{book.title}' s'ha modificat correctament.")
         return redirect('book_details', book_id=book.pk)
 

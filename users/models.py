@@ -173,6 +173,10 @@ class UserProfile(models.Model):
             'radius': self.movement_radius_km,
             'user': self.user,
         }
+    
+    @classmethod
+    def get_by_user(cls, user):
+        return cls.objects.filter(user=user).first()
 
     @classmethod
     def get_profile_for_map(cls, user_id=None, current_user=None):
