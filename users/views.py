@@ -323,6 +323,7 @@ def change_recovery_password(request, token):
 
     form = ChangeRecoveryPassword(request.POST)
     if not form.is_valid():
+        messages.error(request, "Si us plau, omple correctament tots els camps.")
         return render(request, 'change_recovery_password.html', {'form': form})
 
     password = form.cleaned_data['password']
@@ -334,8 +335,8 @@ def change_recovery_password(request, token):
 
     try:
         validate_password(password)
-    except ValidationError as e:
-        messages.error(request, e.messages)
+    except ValidationError:
+        messages.error(request, "La contrasenya no és segura. Ha de contenir mínim 8 caràcters, majúscules, minúscules i números.")
         return render(request, 'change_recovery_password.html', {'form': form})
 
     user_profile = UserProfile.get_by_token(token)
@@ -344,9 +345,8 @@ def change_recovery_password(request, token):
         return render(request, 'change_recovery_password.html', {'form': form})
 
     user_profile.change_password(password)
-    messages.success(request, "La contrasenya s'ha canviat correctament.")
+    messages.success(request, "La contrasenya s'ha canviat correctament. Ja pots iniciar sessió.")
     return redirect('login')
-
 
 def redirect_accounts_login(request):
     if request.method == "GET" and not request.META.get("HTTP_REFERER", "").startswith(request.build_absolute_uri('/accounts/')):
