@@ -88,7 +88,7 @@ class Notification(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, blank=True)
-    phone_number = models.CharField(max_length=255, blank=True, null=True)
+    phone_number = models.CharField(max_length=11, blank=True, null=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
     movement_radius_km = models.PositiveIntegerField(default=3)
@@ -218,7 +218,7 @@ class Conversation(models.Model):
         return {
             "conversation": self,
             "other_user_id": other.id if other else None,
-            "other_user_name": other.username if other else "Desconegut",
+            "other_user_name": other.first_name if other else "Desconegut",
         }
 
     @classmethod

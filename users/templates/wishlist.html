@@ -32,7 +32,7 @@
             {% for book in books %}
             <div class="col">
                 <article class="book-card">
-                    {% if book.image %}
+                    {% if book.image_url %}
                     <a href="{% url 'book_details' book.id %}">
                         <img src="{{ book.image_url }}" alt="{{ book.title }}" class="img-fluid">
                     </a>

@@ -80,7 +80,7 @@ def create_book(request):
                 book.image_url = public_url
             except Exception as e:
                 print(f"Error uploading image: {e}")
-                messages.error(request, f"No s'ha pogut pujar la imatge: {e}")
+                messages.error(request, f"No s'ha pogut pujar la imatge, prova amb un altre format o imatge")
                 return render(request, 'create_book.html', {'form': form})
 
         book.save()
@@ -204,7 +204,7 @@ def accept_exchange(request, exchange_id):
         exchange.perform_accept_exchange(request.user)
 
         title = f"Intercanvi acceptat de {exchange.book_for.title}"
-        message = f"{request.user.username} ha acceptat intercanvi {exchange.book_from.title} per {exchange.book_for.title}"
+        message = f"{request.user.first_name} ha acceptat intercanvi {exchange.book_from.title} per {exchange.book_for.title}"
 
         send_user_notification(exchange.from_user, request.user, title, message, None)
         send_user_email(exchange.from_user, title, message)
@@ -230,7 +230,7 @@ def decline_exchange(request, exchange_id):
         user = exchange.from_user
         user_from = request.user
         title = f"Intercanvi declinat de {exchange.book_for.title}"
-        message = f"{request.user.username} no vol intercanviar {exchange.book_from.title} per {exchange.book_for.title}"
+        message = f"{request.user.first_name} no vol intercanviar {exchange.book_from.title} per {exchange.book_for.title}"
 
         send_user_notification(user, user_from, title, message, None)
         send_user_email(user, title, message)

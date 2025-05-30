@@ -17,8 +17,8 @@
 
     </div>
     <div id="message-input-container" class="col-md-12 col-sm-12 col-lg-12">
-        <input id="message-input" type="text" placeholder="Escriu un missatge..." />
-        <button onclick="sendMessage()">Enviar</button>
+        <input id="message-input" type="text" placeholder="Escriu un missatge..." maxlength="200"/>
+        <button type="submit" onclick="sendMessage()">Enviar</button>
         <a class="return" href="{% url 'inbox' %}">Tornar a missatges</a>
     </div>
     <script>

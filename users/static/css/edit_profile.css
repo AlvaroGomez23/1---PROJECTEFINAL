@@ -32,6 +32,18 @@
     color: #1E1E24;
 }
 
+form label {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+form input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+}
 
 #city-results {
     max-height: 200px;

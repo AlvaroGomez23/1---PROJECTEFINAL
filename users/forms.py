@@ -9,7 +9,7 @@ class Login(forms.Form):
     
 
 class Register(forms.Form):
-    name = forms.CharField(label="Nom", max_length=100)
+    name = forms.CharField(label="Nom", max_length=30)
     email = forms.CharField(label="Correu", max_length=100)
     password = forms.CharField(label="Contrasenya", max_length=100, widget=forms.PasswordInput)
     password2 = forms.CharField(label="Repeteix contrasenya", max_length=100, widget=forms.PasswordInput)
@@ -19,12 +19,12 @@ class CombinedUserProfileForm(forms.Form):
     # Campos del modelo User
     first_name = forms.CharField(
         label='Nom *',
-        max_length=150,
+        max_length=30,
         required=True
     )
     last_name = forms.CharField(
         label='Cognom',
-        max_length=150,
+        max_length=50,
         required=False
     )
 
@@ -37,12 +37,13 @@ class CombinedUserProfileForm(forms.Form):
     )
     phone_number = forms.CharField(
         label='Número de telèfon',
-        max_length=255,
+        max_length=11,
         required=False
     )
     movement_radius_km = forms.IntegerField(
         label='Radi de moviment (km) *',
-        min_value=1
+        min_value=1,
+        max_value=100,
     )
 
     def __init__(self, *args, **kwargs):

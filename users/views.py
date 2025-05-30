@@ -191,13 +191,13 @@ def private_chat(request, user_id):
             send_user_notification(
                 other_user, 
                 request.user, 
-                f"{request.user.username} ha començat una conversa amb tu", 
+                f"{request.user.first_name} ha començat una conversa amb tu", 
                 "Probablement tinguis missatges nous, revisa-ho!", 
                 None
             )
             send_user_email(
                 other_user,
-                f"{request.user.username} ha començat una conversa amb tu",
+                f"{request.user.first_name} ha començat una conversa amb tu",
                 "Probablement tinguis missatges nous, revisa-ho!",
             )
 
@@ -299,7 +299,7 @@ def recovery_password(request):
                 send_user_email(
                     user,
                     "Restablir contrasenya",
-                    f"Fes clic aquí per restablir la teva contrasenya: http://127.0.0.1:8000/users/change_recovery_password/{recovery_token}/"
+                    f"Fes clic aquí per restablir la teva contrasenya: https://one-projectefinal.onrender.com/users/change_recovery_password/{recovery_token}/"
                 )
 
                 messages.success(request, "S'ha enviat un correu electrònic a " + email + " per restablir la contrasenya.")

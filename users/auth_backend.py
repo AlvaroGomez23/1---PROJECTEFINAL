@@ -8,7 +8,7 @@ class EmailBackend(BaseBackend):
         try:
             user = User.objects.get(email=email)
         except User.MultipleObjectsReturned:
-            return None  # Si hay más de un usuario con el mismo email, fallo seguro
+            return None
         except User.DoesNotExist:
             return None
 
