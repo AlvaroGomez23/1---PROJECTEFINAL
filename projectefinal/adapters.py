@@ -13,7 +13,8 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         email = sociallogin.account.extra_data.get('email')
 
         if not email:
-            return
+            messages.error(request, "No hem pogut obtenir el teu correu electrònic del proveïdor.")
+            raise ImmediateHttpResponse(redirect('/users/login'))
 
         if sociallogin.is_existing:
             return
@@ -30,9 +31,10 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
 
     def populate_user(self, request, sociallogin, data):
         user = super().populate_user(request, sociallogin, data)
-        email = sociallogin.account.extra_data.get('email') or data.get('email') or ''
-        user.username = email
-        user.email = email 
+        email = sociallogin.account.extra_data.get('email') or data.get('email')
+        if email:
+            user.username = email
+            user.email = email 
         return user
     
     def save_user(self, request, sociallogin, form=None):

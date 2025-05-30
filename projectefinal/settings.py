@@ -72,8 +72,7 @@ INSTALLED_APPS = [
 LOGIN_REDIRECT_URL = '/core/dashboard'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/users/login'
 
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_LOGIN_METHODS = {'email'} 
+ACCOUNT_AUTHENTICATION_METHOD = 'email' 
 
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 
