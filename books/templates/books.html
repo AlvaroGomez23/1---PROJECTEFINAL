@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/variables.css' %}">
     <link rel="stylesheet" href="{% static 'css/books.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <title>Buscar llibres</title>
     <script>
         const toggleWishlistUrl = "{% url 'toggle_wishlist' %}";
@@ -121,23 +122,36 @@
                     </div>
                     {% endfor %}
                 </div>
-                <div class="pagination">
-                    <span class="step-links">
+                <!-- Nueva paginación -->
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center">
                         {% if page_obj.has_previous %}
-                            <a href="?page=1{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}">« primera</a>
-                            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}">← anterior</a>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}{% if request.GET.author %}&author={{ request.GET.author }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}" aria-label="Anterior">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
                         {% endif %}
 
-                        <span class="current">
-                            Pàgina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-                        </span>
+                        {% for num in page_obj.paginator.page_range %}
+                        <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                            <a class="page-link" href="?page={{ num }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}{% if request.GET.author %}&author={{ request.GET.author }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}">{{ num }}</a>
+                        </li>
+                        {% endfor %}
 
                         {% if page_obj.has_next %}
-                            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}">següent →</a>
-                            <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}">última »</a>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}{% if request.GET.author %}&author={{ request.GET.author }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}" aria-label="Següent">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
                         {% endif %}
-                    </span>
-                </div>
+                    </ul>
+                </nav>
                 {% else %}
                 <p class="text-center">No hi ha llibres disponibles.</p>
                 {% endif %}

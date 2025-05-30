@@ -177,6 +177,28 @@ a:hover {
     text-decoration: none;
 }
 
+.page-link {
+    background-color: var(--primaryColor);
+    color: var(--fullWhite);
+    border: 2px solid #ddd;
+    padding: 0.625rem 0.9375rem;
+    font-size: 0.875rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.page-link:hover {
+    background-color: var(--secondaryColor);
+    color: black;
+}
+
+.page-item.active .page-link {
+    background-color: var(--secondaryColor);
+    color: black;
+    border-color: var(--secondaryColor);
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
 @media (max-width: 768px) {
     .btn-primary {
         margin-bottom: 15px;

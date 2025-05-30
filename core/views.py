@@ -7,11 +7,16 @@ from django.db.models import Q, Count
 from django.core.paginator import Paginator
 from django.http import QueryDict
 from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 
 # Create your views here.
 
 
 def index(request):
+
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+
     categories = {
         "Novel·la": Book.objects.filter(category_id=1),  # ID real de cada categoría
         "Acció": Book.objects.filter(category_id=2),

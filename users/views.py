@@ -48,6 +48,11 @@ def login(request):
     
 
 def register(request):
+
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+
+
     if request.method == 'GET':
         form = Register()
         return render(request, 'register.html', {'form': form})

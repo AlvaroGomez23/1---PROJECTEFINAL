@@ -40,7 +40,6 @@ def books(request):
 def book_details(request, book_id):
     book = Book.get_book(book_id)
     reviews = book.book_reviews_recieved.all()
-    print(book.image_url)
     average_rating = reviews.aggregate(Avg('rating'))['rating__avg'] or 0
     context = {
         'book': book,
@@ -71,7 +70,6 @@ def create_book(request):
         book = form.save(commit=False)
         book.owner = request.user
 
-        # Subir imagen a Supabase si hay una
         image = request.FILES.get('image')
         if image:
             filename = f"{uuid.uuid4()}_{image.name}"
@@ -121,7 +119,7 @@ def modify_book(request, book_id):
     if request.method == 'POST' and form.is_valid():
         book = form.save(commit=False)
 
-        # Comprobar si se ha subido una nueva imagen
+
         image = request.FILES.get('image')
         if image:
             filename = f"{uuid.uuid4()}_{image.name}"
@@ -160,7 +158,7 @@ def request_exchange(request, book_id):
     book = Book.get_book(book_id)
     user = request.user
 
-    # Validación de intercambio
+
     can_exchange, error_message = book.is_exchangeable_by(user)
     if not can_exchange:
         messages.error(request, error_message)
@@ -226,7 +224,7 @@ def decline_exchange(request, exchange_id):
     try:
         exchange.perform_decline_exchange(request.user)
 
-        # Notificación
+        # Notificació
         user = exchange.from_user
         user_from = request.user
         title = f"Intercanvi declinat de {exchange.book_for.title}"

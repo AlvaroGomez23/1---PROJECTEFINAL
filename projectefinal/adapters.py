@@ -12,20 +12,24 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     def pre_social_login(self, request, sociallogin):
         email = sociallogin.account.extra_data.get('email')
 
-        if not sociallogin.is_existing:
-            try:
-                existing_user = User.objects.get(email=email)
-                
-                if not sociallogin.account.user.pk:
-                   
-                    messages.error(
-                        request,
-                        "Aquest correu electrònic ja està registrat. Si no t'enrecordes de la contrasenya, prova a restablir-la."
-                    )
-                    raise ImmediateHttpResponse(redirect('/users/login'))
+        if not email:
+            return  # No se puede hacer nada sin email
 
-            except User.DoesNotExist:
-                pass 
+        try:
+            existing_user = User.objects.get(email=email)
+
+            # Si el sociallogin no está vinculado aún, pero hay un user con ese email
+            if not sociallogin.is_existing:
+                # Evitamos que se cree una cuenta nueva o se vincule automáticamente
+                messages.error(
+                    request,
+                    "Aquest correu electrònic ja està registrat amb un altre mètode. Intenta iniciar sessió d'una altra manera o restableix la contrasenya."
+                )
+                raise ImmediateHttpResponse(redirect('/users/login'))
+
+        except User.DoesNotExist:
+            pass  # No hay conflicto, Allauth seguirá con el flujo normal
+
 
     def is_auto_signup_allowed(self, request, sociallogin):
         if request.path == '/accounts/3rdparty/signup/':
