@@ -13,16 +13,19 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-mbxz3cws8k#)0+$)h@o0my*$4$ax#ldd$ebn&@%!2$@%j@)gf!'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -71,9 +74,9 @@ LOGIN_REDIRECT_URL = '/core/dashboard/'
 LOGIN_REDIRECT_URL = '/core/dashboard/'
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_LOGIN_METHODS = {'email'}  # ← usa un conjunto (set)
+ACCOUNT_LOGIN_METHODS = {'email'} 
 
-ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']  # los campos obligatorios llevan asterisco
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 
 SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
@@ -81,10 +84,10 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_ADAPTER = 'projectefinal.adapters.CustomSocialAccountAdapter'
 ACCOUNT_ADAPTER = 'projectefinal.adapters.CustomAccountAdapter'
 
-SUPABASE_URL = "https://vglxraahlckdanallbfi.supabase.co"
-SUPABASE_BUCKET = "book-covers"
-SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZnbHhyYWFobGNrZGFuYWxsYmZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MzMxMDEsImV4cCI6MjA2NDAwOTEwMX0.5llPYfELZ33P2uU-9nyJcF6_gXwsuiyMmkBa-X_25TgeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZnbHhyYWFobGNrZGFuYWxsYmZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0MzMxMDEsImV4cCI6MjA2NDAwOTEwMX0.5llPYfELZ33P2uU-9nyJcF6_gXwsuiyMmkBa-X_25Tg"
-SUPABASE_SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZnbHhyYWFobGNrZGFuYWxsYmZpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0ODQzMzEwMSwiZXhwIjoyMDY0MDA5MTAxfQ.AKLby4R-u2W6DvWUvhpAb2FRHs6ex5jvcugx7CCKCMk"
+SUPABASE_URL = os.getenv('SUPABASE_URL')
+SUPABASE_BUCKET = os.getenv('SUPABASE_BUCKET')
+SUPABASE_ANON_KEY = os.getenv('SUPABASE_ANON_KEY')
+SUPABASE_SERVICE_ROLE_KEY = os.getenv('SUPABASE_SERVICE_ROLE_KEY')
 
 
 MIDDLEWARE = [
@@ -148,28 +151,11 @@ CITIES_LIGHT_INCLUDE_COUNTRIES = ['ES']  # Solo España
 
 DATABASES = {
     'default': dj_database_url.config(
-        default="postgresql://alvaro:Gw1Bba3munhM9959H1WzAIUrNmX1G3kT@dpg-d0s1njm3jp1c73e83a50-a.oregon-postgres.render.com/book4book",
+        default=os.getenv("DATABASE_URL"),
         conn_max_age=600,
     )   
 }
 
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'book4book',
-        'USER': 'alvaro',
-        'PASSWORD': 'RBsSV5PPFjxnYVKFsPUX',
-        'HOST': 'book4book.c7a20yw2q3s5.eu-north-1.rds.amazonaws.com',
-        'PORT': '3306',
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'init_command': "SET NAMES 'utf8mb4'",
-        },
-        'CONN_MAX_AGE': 0,
-    }
-}
-"""
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -218,11 +204,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # VENV per enviar mail 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'a.gomez9@sapalomera.cat'
-EMAIL_HOST_PASSWORD = 'lepk fgby elkd unif'
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 
 
