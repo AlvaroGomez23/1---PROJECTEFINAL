@@ -304,7 +304,7 @@ def recovery_password(request):
                 send_user_email(
                     user,
                     "Restablir contrasenya",
-                    f"Fes clic aquí per restablir la teva contrasenya: https://one-projectefinal.onrender.com/users/change_recovery_password/{recovery_token}/"
+                    f"Fes clic aquí per restablir la teva contrasenya: <a href='https://one-projectefinal.onrender.com/users/change_recovery_password/{recovery_token}/'>Clica aquí</a>"
                 )
 
                 messages.success(request, "S'ha enviat un correu electrònic a " + email + " per restablir la contrasenya.")
