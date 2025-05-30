@@ -35,9 +35,8 @@
 
     <main id="main-content" class="container mt-4">
         <section class="book-details-container row">
-            
             <!-- Imagen del libro -->
-            <figure class="col-md-4 text-center">
+            <figure class="col-md-4 text-center d-flex align-items-start justify-content-center">
                 {% if book.image_url %}
                     <img src="{{ book.image_url }}" alt="Portada de {{ book.title }}" class="book-image">
                 {% else %}
@@ -45,7 +44,7 @@
                 {% endif %}
             </figure>
 
-            <!-- Detalles del libro -->
+            <!-- Detalles del libro al lado de la imagen -->
             <section class="col-md-8">
                 <header>
                     <h2>{{ book.title }}</h2>
@@ -70,29 +69,29 @@
 
                     <!-- Acciones -->
                     <div class="d-flex flex-wrap gap-2 mt-3">
-                        <a href="{% url 'add_review_book' book.id %}" class="btn">+ Afegir valoració</a>
-                        <a href="{% url 'books' %}" class="btn">Tornar a la llista de llibres</a>
+                        <a href="{% url 'add_review_book' book.id %}" class="btn flex-fill">+ Afegir valoració</a>
+                        <a href="{% url 'books' %}" class="btn flex-fill">Tornar a la llista de llibres</a>
 
                         {% if book.owner == request.user %}
-                            <a href="{% url 'modify_book' book.id %}" class="btn btn-edit">Editar</a>
+                            <a href="{% url 'modify_book' book.id %}" class="btn btn-edit flex-fill">Editar</a>
                         {% else %}
                             {% if book.visible %}
-                                <a href="{% url 'request_exchange' book.id %}" class="btn">Intercanviar</a>
+                                <a href="{% url 'request_exchange' book.id %}" class="btn flex-fill">Intercanviar</a>
                             {% endif %}
                         {% endif %}
-                        <form method="post" class="wishlist-form d-inline">
-                                {% csrf_token %}
-                                <button type="button" 
-                                        class="btn btn-secondary btn-sm wishlist-btn" 
-                                        data-book-id="{{ book.id }}" 
-                                        data-in-wishlist="{% if user_wishlist and book.isbn in user_wishlist.get_isbns %}true{% else %}false{% endif %}">
-                                    {% if user_wishlist and book.isbn in user_wishlist.get_isbns %}
-                                        Eliminar de la llista de desitjats
-                                    {% else %}
-                                        Afegir a llista de desitjats
-                                    {% endif %}
-                                </button>
-                            </form>
+                        <form method="post" class="wishlist-form d-inline flex-fill">
+                            {% csrf_token %}
+                            <button type="button" 
+                                    class="btn wishlist-btn w-100" 
+                                    data-book-id="{{ book.id }}" 
+                                    data-in-wishlist="{% if user_wishlist and book.isbn in user_wishlist.get_isbns %}true{% else %}false{% endif %}">
+                                {% if user_wishlist and book.isbn in user_wishlist.get_isbns %}
+                                    Eliminar de la llista de desitjats
+                                {% else %}
+                                    Afegir a llista de desitjats
+                                {% endif %}
+                            </button>
+                        </form>
                     </div>
                 </div>
             </section>

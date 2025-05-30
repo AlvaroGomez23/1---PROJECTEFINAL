@@ -351,7 +351,7 @@ def change_recovery_password(request, token):
 def redirect_accounts_login(request):
     if request.method == "GET" and not request.META.get("HTTP_REFERER", "").startswith(request.build_absolute_uri('/accounts/')):
         messages.error(request, "Has estat redirigit al formulari de login.")
-        return redirect('/users/login/')
+        return redirect('login')
     
 
 def redirect_signup_to_login_with_message(request):
