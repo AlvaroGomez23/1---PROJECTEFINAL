@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
 from users.models import UserProfile
-from django.http import HttpResponseRedirect
+
 User = get_user_model()
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
@@ -13,49 +13,31 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         email = sociallogin.account.extra_data.get('email')
 
         if not email:
-            return  # Sin email, no podemos validar nada
+            return
 
-        # Si el sociallogin ya está vinculado (is_existing), no hagas nada
         if sociallogin.is_existing:
             return
 
         try:
             existing_user = User.objects.get(email=email)
-
-            # Si ya hay un usuario con ese email, pero aún no está vinculado con esta cuenta social
-            if not sociallogin.user.pk:
-                messages.error(
-                    request,
-                    "Aquest correu electrònic ja està registrat amb un altre mètode. Intenta iniciar sessió d'una altra manera."
-                )
-                raise ImmediateHttpResponse(redirect('/users/login'))
-
+            # Asociar este login social con el usuario existente
+            sociallogin.connect(request, existing_user)
         except User.DoesNotExist:
-            pass  # No hay conflicto, sigue el flujo normal
-
+            pass  # Se permite el alta automática si no existe
 
     def is_auto_signup_allowed(self, request, sociallogin):
-        if request.path == '/accounts/3rdparty/signup/':
-            raise ImmediateHttpResponse(redirect('/users/login'))
-
         return True
 
     def populate_user(self, request, sociallogin, data):
         user = super().populate_user(request, sociallogin, data)
-
-        
         email = sociallogin.account.extra_data.get('email') or data.get('email') or ''
         user.username = email
         user.email = email 
-
         return user
     
     def save_user(self, request, sociallogin, form=None):
-
         user = super().save_user(request, sociallogin, form)
-
         UserProfile.objects.get_or_create(user=user)
-
         return user
 
 
