@@ -220,6 +220,9 @@ class Exchange(models.Model):
         self.book_from.exchange_count += 1
         self.book_for.exchange_count += 1
 
+        self.book_from.visible = False
+        self.book_for.visible = False
+
         self.book_from.save()
         self.book_for.save()
 
@@ -230,3 +233,4 @@ class Exchange(models.Model):
         self.declined = True
         self.completed = True
         self.save()
+

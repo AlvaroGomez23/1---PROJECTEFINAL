@@ -80,6 +80,19 @@
                                 <a href="{% url 'request_exchange' book.id %}" class="btn">Intercanviar</a>
                             {% endif %}
                         {% endif %}
+                        <form method="post" class="wishlist-form d-inline">
+                                {% csrf_token %}
+                                <button type="button" 
+                                        class="btn btn-secondary btn-sm wishlist-btn" 
+                                        data-book-id="{{ book.id }}" 
+                                        data-in-wishlist="{% if user_wishlist and book.isbn in user_wishlist.get_isbns %}true{% else %}false{% endif %}">
+                                    {% if user_wishlist and book.isbn in user_wishlist.get_isbns %}
+                                        Eliminar de la llista de desitjats
+                                    {% else %}
+                                        Afegir a llista de desitjats
+                                    {% endif %}
+                                </button>
+                            </form>
                     </div>
                 </div>
             </section>
@@ -139,6 +152,10 @@
     </main>
 
     <script src="{% static 'js/del_book_review.js' %}"></script>
+    <script src="{% static 'js/wishlist.js' %}"></script>
+    <script>
+        const toggleWishlistUrl = "{% url 'toggle_wishlist' %}";
+    </script>
 </body>
 </html>
 {% endblock %}

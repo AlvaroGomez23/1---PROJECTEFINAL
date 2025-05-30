@@ -89,7 +89,7 @@
                             <h4>{{ book.title }}</h4>
                             <p class="small">{{ book.author }}</p>
                             <a href="{% url 'book_details' book.id %}" class="btn btn-sm btn-primary">Editar ✏️</a>
-                            <button type="button" class="btn-elim btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-book-id="{{ book.id }}" data-book-title="{{ book.title }}">
+                            <button type="button" class="btn-elim btn-sm btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-book-id="{{ book.id }}" data-book-title="{{ book.title }}">
                                 Eliminar 🗑️
                             </button>
                         </div>

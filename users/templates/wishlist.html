@@ -48,7 +48,7 @@
                     <form method="post" class="wishlist-form d-inline">
                         {% csrf_token %}
                         <button type="button" 
-                                class="btn btn-secondary btn-sm wishlist-btn" 
+                                class="btn btn-secondary btn-sm wishlist-btn mt-2" 
                                 data-book-id="{{ book.id }}" 
                                 data-in-wishlist="{% if user_wishlist and book.isbn in user_wishlist.get_isbns %}true{% else %}false{% endif %}">
                             {% if user_wishlist and book.isbn in user_wishlist.get_isbns %}

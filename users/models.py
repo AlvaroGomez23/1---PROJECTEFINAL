@@ -63,6 +63,10 @@ class Wishlist(models.Model):
             self.books.add(book)
             self.add_isbn(book.isbn)
             return 'added'
+        
+    @classmethod
+    def for_user(cls, user):
+        return cls.objects.filter(user=user).first()
 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications")

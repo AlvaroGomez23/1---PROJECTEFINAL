@@ -75,6 +75,52 @@
     margin-bottom: 1rem;
 }
 
+/* Ocultamos el checkbox original */
+.form-container input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 2px solid var(--primaryColor);
+  border-radius: 0.3rem;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+  vertical-align: middle;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Cuando está checked, cambia el fondo y el borde */
+.form-container input[type="checkbox"]:checked {
+  background-color: var(--primaryColor);
+  border-color: var(--primaryColor);
+}
+
+/* Añadimos el checkmark con un ::after */
+.form-container input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 0.35rem;
+  top: 0.05rem;
+  width: 0.3rem;
+  height: 0.6rem;
+  border: solid var(--fullWhite);
+  border-width: 0 0.2rem 0.2rem 0;
+  transform: rotate(45deg);
+}
+
+/* Al hacer foco, mostramos outline */
+.form-container input[type="checkbox"]:focus {
+  outline: 2px solid var(--primaryHoverColor);
+  outline-offset: 2px;
+}
+
+.is-invalid {
+  border: 2px solid red !important;
+  background-color: #ffe6e6;
+}
+
 @media (max-width: 767.98px) {
     .image-preview {
         height: auto;

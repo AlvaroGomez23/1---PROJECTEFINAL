@@ -18,7 +18,7 @@ import uuid
 
 
 def books(request):
-    all_books = Book.get_visible_books_for_user(request.user)
+    all_books = Book.get_visible_books_for_user(request.user).order_by('-created_at')
     filtered_books = Book.filter_books(all_books, request.GET)
 
     paginator = Paginator(filtered_books, 9)
@@ -30,9 +30,9 @@ def books(request):
     context = {
         'books': page_obj.object_list,
         'exchanges_pending': exchanges_pending,
-        'user_wishlist': Wishlist.objects.filter(user=request.user).first(),
+        'user_wishlist': Wishlist.for_user(request.user),
         'categories': Category.objects.all(),
-        'page_obj': page_obj,  # útil para los controles de paginación
+        'page_obj': page_obj,
     }
     return render(request, 'books.html', context)
 
@@ -45,6 +45,7 @@ def book_details(request, book_id):
         'book': book,
         'reviews': reviews,
         'average_rating': average_rating,
+        'user_wishlist': Wishlist.for_user(request.user),
     }
     return render(request, 'book_details.html', context)
 
@@ -177,12 +178,22 @@ def request_exchange(request, book_id):
             book_to_exchange = form.cleaned_data['book_to_exchange']
             exchange = Exchange.create_exchange(book, book_to_exchange, user, book.owner)
 
-            # Notificació
+            # Notificació 1 
             title = f"Sol·licitud d'intercanvi per {book.title}"
             url = reverse('book_details', args=[exchange.book_from.id])
             message = f"{user.first_name} vol intercanviar <a href='{url}'>{exchange.book_from.title}</a> pel teu llibre {book.title}"
             send_user_notification(book.owner, user, title, message, exchange)
             send_user_email(book.owner, title, f"{user.first_name} vol intercanviar {exchange.book_from.title} pel teu llibre {book.title}")
+
+            # Notificació 2
+            title2 = f"Sol·licitud d'intercanvi enviada"
+            url2 = reverse('book_details', args=[book.id])
+            message2 = f"Has enviat una sol·licitud d'intercanvi per <a href='{url2}'>{book.title}</a>."
+            send_user_notification(user, None, title2, message2, None)
+            send_user_email(user, title2, message2)
+
+            # Alert
+            messages.success(request, f"Sol·licitud d'intercanvi enviada per {book.title}. Espera que l'altre usuari l'accepti o declini.")
 
             return redirect('book_details', book_id=book.pk)
     else:
@@ -199,6 +210,11 @@ def accept_exchange(request, exchange_id):
     exchange = Exchange.get_exchange(exchange_id)
 
     try:
+
+        if exchange.book_from.owner == exchange.book_for.owner:
+            messages.error(request, "No pots acceptar un intercanvi amb el teu propi llibre.")
+            return redirect('notifications')
+
         exchange.perform_accept_exchange(request.user)
 
         title = f"Intercanvi acceptat de {exchange.book_for.title}"
@@ -212,6 +228,9 @@ def accept_exchange(request, exchange_id):
     except PermissionError:
         messages.error(request, "No pots acceptar aquest intercanvi perquè el llibre no està en la teva possessió.")
     
+    except ValueError as e:
+        messages.error(request, str(e))
+
     except Exception:
         messages.error(request, "S'ha produït un error inesperat en acceptar l'intercanvi.")
 
