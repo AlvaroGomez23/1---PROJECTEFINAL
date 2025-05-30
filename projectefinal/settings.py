@@ -69,9 +69,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
 ]
 
-LOGIN_REDIRECT_URL = '/core/dashboard/'
-
-LOGIN_REDIRECT_URL = '/core/dashboard/'
+LOGIN_REDIRECT_URL = '/core/dashboard'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/users/login'
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_LOGIN_METHODS = {'email'} 
@@ -196,6 +195,7 @@ STATIC_URL = '/static/'
 
 
 LOGIN_URL = '/users/login/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
